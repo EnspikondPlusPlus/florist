@@ -1,0 +1,112 @@
+# {{ seed.title }}
+
+*Flower pack · tier: {{ seed.tier.value }} · flower v{{ flower.version }} (round {{ flower.round }}) · picked {{ generated }} · Florist {{ version }}*
+
+## The idea
+
+{{ flower.idea }}
+
+## Tier and constraints
+
+- **Tier:** {{ seed.tier.value }}
+- **Compute:** {{ constraints.compute or "not specified" }}
+- **Time:** {{ constraints.hours_per_week }} h/week{% if constraints.goal_date %}; goal date {{ constraints.goal_date }}{% endif %}
+
+{% if constraints.seed.time %}- **Seed time limit:** {{ constraints.seed.time }}
+{% endif %}
+{% if constraints.seed.compute %}- **Seed compute limit:** {{ constraints.seed.compute }}
+{% endif %}
+{% if constraints.seed.must_use %}- **Must use:** {{ constraints.seed.must_use | join(", ") }}
+{% endif %}
+{% if constraints.seed.must_avoid %}- **Must avoid:** {{ constraints.seed.must_avoid | join(", ") }}
+{% endif %}
+{% if constraints.seed.notes %}- **Notes:** {{ constraints.seed.notes }}
+{% endif %}
+- **Skills:** proficient in {{ constraints.proficient_in | join(", ") or "—" }}; learning {{ constraints.wants_to_learn | join(", ") or "—" }}
+
+## Major findings
+
+{% for f in flower.findings %}
+{{ loop.index }}. {{ f.text }}
+{% for e in f.evidence %}
+   - Evidence: {{ cite(e.ref) }}{% if e.quote %} — “{{ e.quote }}”{% endif %}
+
+{% endfor %}
+{% endfor %}
+
+## Novelty evidence
+
+{% if flower.novelty.closest_work %}
+Closest existing work:
+
+{% for c in flower.novelty.closest_work %}
+- {{ cite(c.ref) }} — {{ c.how_it_differs }}
+{% endfor %}
+{% else %}
+No close existing work was identified in the sources Florist read.
+{% endif %}
+
+**The gap:** {{ flower.novelty.gap or "not established" }}
+
+## Recommended direction{{ "s" if flower.directions | length > 1 else "" }}
+
+{% for d in flower.directions %}
+### {{ loop.index }}. {{ d.title }}
+
+{{ d.pitch }}
+
+{% if d.why_you %}*Why it fits you:* {{ d.why_you }}
+{% endif %}
+{% endfor %}
+
+## Rejected directions and why
+
+{% for p in pruned %}
+- **{{ p.title }}** (round {{ p.round }}) — {{ p.reason }}
+{% else %}
+- None were pruned.
+{% endfor %}
+
+## Risks and open questions
+
+{% for r in flower.risks %}
+- Risk: {{ r }}
+{% endfor %}
+{% for q in flower.open_questions %}
+- Open question: {{ q }}
+{% endfor %}
+
+## First steps
+
+{% for s in flower.first_steps %}
+{{ loop.index }}. {{ s }}
+{% endfor %}
+
+## Success criteria
+
+{% for s in flower.success_criteria %}
+- {{ s }}
+{% endfor %}
+
+## Visuals
+
+{% for v in visuals %}
+{% if v.files.svg is defined %}
+- **{{ v.title }}** — {{ v.caption }} → `visuals/{{ v.files.svg }}`
+{% elif v.files.mermaid is defined %}
+- **{{ v.title }}** — {{ v.caption }} → `visuals/{{ v.files.mermaid }}`
+{% endif %}
+{% endfor %}
+
+{% if smoke %}
+## Smoke checks
+
+{% for s in smoke %}
+- **{{ s.assumption }}** — {{ s.status }}{% if s.verdict %}: {{ s.verdict }}{% endif %} (`smoke/{{ s.id }}/`)
+{% endfor %}
+{% endif %}
+
+---
+
+Files: `flower.json` (machine-readable, schema {{ pack.schema_version }}), `sources.json` ({{ sources | length }} sources), `pruned.json`, `visuals/`, `smoke/`, `adapters/` ({{ pack.adapters | join(", ") if pack.adapters else "see folder" }}).
+Florist cost for this seed: ${{ "%.2f" | format(pack.cost.usd) }}, {{ pack.cost.tokens | int }} tokens.

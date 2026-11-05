@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "SourceNote": {
+      "properties": {
+        "ref": {
+          "description": "source node id being judged",
+          "title": "Ref",
+          "type": "string"
+        },
+        "keep": {
+          "default": true,
+          "title": "Keep",
+          "type": "boolean"
+        },
+        "relevance": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Relevance",
+          "type": "number"
+        },
+        "summary": {
+          "default": "",
+          "description": "one or two sentences, in terms of the seed",
+          "title": "Summary",
+          "type": "string"
+        },
+        "technologies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Technologies",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ref"
+      ],
+      "title": "SourceNote",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "notes": {
+      "items": {
+        "$ref": "#/$defs/SourceNote"
+      },
+      "minItems": 1,
+      "title": "Notes",
+      "type": "array"
+    },
+    "landscape": {
+      "default": "",
+      "description": "3-5 sentences: what exists, what is crowded, where gaps might be",
+      "title": "Landscape",
+      "type": "string"
+    }
+  },
+  "required": [
+    "notes"
+  ],
+  "title": "GroundTriage",
+  "type": "object"
+}

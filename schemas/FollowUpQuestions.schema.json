@@ -1,0 +1,49 @@
+{
+  "$defs": {
+    "Tier": {
+      "enum": [
+        "exploration",
+        "personal",
+        "formal"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "questions": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Questions",
+      "type": "array"
+    },
+    "title": {
+      "default": "",
+      "description": "short title for the seed if the user gave none",
+      "title": "Title",
+      "type": "string"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    },
+    "tier_suggestion": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Tier"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "FollowUpQuestions",
+  "type": "object"
+}

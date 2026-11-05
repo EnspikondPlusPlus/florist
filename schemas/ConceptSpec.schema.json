@@ -1,0 +1,99 @@
+{
+  "$defs": {
+    "ConceptEdge": {
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "maxLength": 32,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "ConceptEdge",
+      "type": "object"
+    },
+    "ConceptStep": {
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,24}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 48,
+          "title": "Label",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "maxLength": 160,
+          "title": "Detail",
+          "type": "string"
+        },
+        "group": {
+          "default": "",
+          "description": "optional lane: input / model / output / data ...",
+          "title": "Group",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ConceptStep",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "key_insight": {
+      "description": "one sentence: the core idea of the technique",
+      "title": "Key Insight",
+      "type": "string"
+    },
+    "steps": {
+      "items": {
+        "$ref": "#/$defs/ConceptStep"
+      },
+      "maxItems": 10,
+      "minItems": 2,
+      "title": "Steps",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/ConceptEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "caption": {
+      "default": "",
+      "title": "Caption",
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "key_insight",
+    "steps"
+  ],
+  "title": "ConceptSpec",
+  "type": "object"
+}

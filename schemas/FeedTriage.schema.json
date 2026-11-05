@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "FeedTriageItem": {
+      "properties": {
+        "ref": {
+          "description": "feed item id",
+          "title": "Ref",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "title": "Tags",
+          "type": "array"
+        },
+        "technologies": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "title": "Technologies",
+          "type": "array"
+        },
+        "relevance": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Relevance",
+          "type": "number"
+        },
+        "why": {
+          "description": "one line: why this matters to the user, naming the seed or interest",
+          "title": "Why",
+          "type": "string"
+        },
+        "related_seed_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Seed Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ref",
+        "summary",
+        "relevance",
+        "why"
+      ],
+      "title": "FeedTriageItem",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "items": {
+      "items": {
+        "$ref": "#/$defs/FeedTriageItem"
+      },
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "title": "FeedTriage",
+  "type": "object"
+}

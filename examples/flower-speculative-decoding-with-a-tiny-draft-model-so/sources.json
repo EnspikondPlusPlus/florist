@@ -1,0 +1,596 @@
+[
+  {
+    "id": "src_8cbd221e",
+    "title": "amagilabs/amagi-draftbench",
+    "url": "https://github.com/amagilabs/amagi-draftbench",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Sweeps draft models and n-gram lookup for llama.cpp and vLLM, reporting tok/s, acceptance rate and peak VRAM per budget. Maps closely onto the seed's goal of picking a tiny draft for a 7B model on one GPU.",
+    "tool": "github"
+  },
+  {
+    "id": "src_c1cacee9",
+    "title": "amanzainal/specdecode-roi",
+    "url": "https://github.com/amanzainal/specdecode-roi",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Benchmarks whether speculative decoding pays off on your own model and GPU by sweeping draft length and finding break-even. Supports llama.cpp, so it could serve as the measurement harness for the 4090 experiment.",
+    "tool": "github"
+  },
+  {
+    "id": "src_04113093",
+    "title": "RanganBorah/SpecDecode",
+    "url": "https://github.com/RanganBorah/SpecDecode",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Pairs a small draft with a larger target via llama.cpp on a laptop GPU, with benchmarks and a fine-tuned draft. The closest existing example of the seed's exact setup; the fine-tuned draft is an extra step to skip at first.",
+    "tool": "github"
+  },
+  {
+    "id": "src_57b250f5",
+    "title": "kuotunyu/qwen38-speculative-decoding-benchmark",
+    "url": "https://github.com/kuotunyu/qwen38-speculative-decoding-benchmark",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Pinned llama.cpp benchmark on a single RTX 4090 (WSL2) for Qwen3.8-27B Q4_K_M with MTP and n-gram speculation, using a paired-median and acceptance-rate methodology. Same GPU and runtime as the seed, but the draft is not a tiny model.",
+    "tool": "github"
+  },
+  {
+    "id": "src_578a06b8",
+    "title": "DRSY/SpeculativeDecoding",
+    "url": "https://github.com/DRSY/SpeculativeDecoding",
+    "kind": "repo",
+    "year": 2023,
+    "summary": "A PyTorch and Hugging Face implementation comparing standard autoregressive decoding with speculative decoding. A simple baseline for checking correctness and speedup before porting to llama.cpp.",
+    "tool": "github"
+  },
+  {
+    "id": "src_8321a05f",
+    "title": "neerajdad123-byte/zero-vram-spec",
+    "url": "https://github.com/neerajdad123-byte/zero-vram-spec",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Shows speculative decoding for local GGUF code models in llama.cpp on an RTX 4050 with no draft model and no extra VRAM. A cheap baseline to compare the tiny-draft approach against on the same stack.",
+    "tool": "github"
+  },
+  {
+    "id": "src_8a20ea91",
+    "title": "A Practical Investigation of Training-free Relaxed Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2607.08690",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Practically tests training-free relaxed speculative decoding, which relaxes acceptance to gain speed without retraining. Directly matches the 'no retraining' constraint, but it trades away the lossless guarantee the seed implicitly wants.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_ea354241",
+    "title": "A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2607.27735",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Gives a unified speedup model showing that longer speculation can hurt when acceptance falls below relative drafting cost, and proposes a train-free self-speculative method. The cost model is useful for picking draft length on a 4090.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_f95eb3d4",
+    "title": "suryavanshi/speculative_decoding",
+    "url": "https://github.com/suryavanshi/speculative_decoding",
+    "kind": "repo",
+    "year": 2025,
+    "summary": "A basic PyTorch implementation of speculative decoding. Useful for understanding the accept/reject loop before moving to llama.cpp.",
+    "tool": "github"
+  },
+  {
+    "id": "src_93860505",
+    "title": "coffeegrind123/instantcoffee",
+    "url": "https://github.com/coffeegrind123/instantcoffee",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Docker Compose setup running llama.cpp with MTP and n-gram speculation for Qwen3.8-27B on one RTX 4090; useful as a reproducible llama.cpp configuration reference, not a tiny-draft result.",
+    "tool": "github"
+  },
+  {
+    "id": "src_eb39deb4",
+    "title": "Approximate Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2608.03447",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Approximate speculative decoding reuses target-scored suffixes after mismatches. It changes the output, so it departs from the lossless behavior the seed implies.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_a49ee28d",
+    "title": "Speculative Acceptance Does Not Decay with Position: A Full-Length Diagnostic on Long Chain-of-Thought with Independent Drafts",
+    "url": "https://www.alphaxiv.org/abs/2610.30644",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Measures acceptance rate versus generation position on long chain-of-thought with independent drafts; useful for checking whether acceptance holds over long 7B generations on the 4090.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_b5b4497a",
+    "title": "GHGuide/self-draft",
+    "url": "https://github.com/GHGuide/self-draft",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Wraps MTP self-speculative decoding in llama.cpp with one flag, reporting ~1.5x on Arm64 cloud. Depends on MTP heads in the model and is not a tiny draft model; the hardware differs from the 4090.",
+    "tool": "github"
+  },
+  {
+    "id": "src_741b92f5",
+    "title": "bassrehab/speculative-decoding",
+    "url": "https://github.com/bassrehab/speculative-decoding",
+    "kind": "repo",
+    "year": 2025,
+    "summary": "Reference implementation covering speculative decoding, EAGLE, Medusa and KV-cache compression, with roofline analysis. Helpful for reading the throughput model, though it is broader than the seed needs.",
+    "tool": "github"
+  },
+  {
+    "id": "src_792262f2",
+    "title": "rajivmehtaflex/llama-server-up",
+    "url": "https://github.com/rajivmehtaflex/llama-server-up",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Automatically picks a speculative drafter and sizes llama-server to host RAM, but on CPU. Its drafter-selection logic is reusable for a GPU setup.",
+    "tool": "github"
+  },
+  {
+    "id": "src_ce1fb3d6",
+    "title": "DLoop: Looped Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.07659",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Proposes adaptive draft length so the target skips verification when it accepts every drafted token. Useful as a later tuning idea, but it assumes a looped draft/target design rather than a plain tiny draft model.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_f402fce4",
+    "title": "wtlow003/ngram-decoding",
+    "url": "https://github.com/wtlow003/ngram-decoding",
+    "kind": "repo",
+    "year": 2024,
+    "summary": "Re-implements Prompt Lookup Decoding, a draft-free baseline that copies n-grams from the prompt; useful as a no-draft comparison point for the 7B run, not as the tiny-draft method.",
+    "tool": "github"
+  },
+  {
+    "id": "src_eccafcc1",
+    "title": "joelvarun/suffixspec",
+    "url": "https://github.com/joelvarun/suffixspec",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Draft-free suffix-retrieval speculation with confidence-tiered draft length; reduces wasted verification versus fixed prompt lookup but uses no draft model.",
+    "tool": "github"
+  },
+  {
+    "id": "src_236c098f",
+    "title": "my-other-github-account/minimax-m27-ngram-spec-spark",
+    "url": "https://github.com/my-other-github-account/minimax-m27-ngram-spec-spark",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Reproducer for n-gram speculation in llama.cpp (--spec-type ngram-simple) on DGX Spark, showing 1.255x over autoregressive on a large MoE-class model; hardware and model differ from the seed.",
+    "tool": "github"
+  },
+  {
+    "id": "src_855358c2",
+    "title": "joanmedina/qwen3-llama-cpp-inference-tuning",
+    "url": "https://github.com/joanmedina/qwen3-llama-cpp-inference-tuning",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Tuning guide and benchmarks for MTP and n-gram speculation in llama.cpp on AMD Strix Halo with Vulkan; reports +73% tok/s but on different hardware and model families.",
+    "tool": "github"
+  },
+  {
+    "id": "src_c27bff9b",
+    "title": "Understanding Target Probability Reuse in Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.29210",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Studies reuse of target next-token distributions when verifying draft trees. Relevant only if the project moves to tree drafting later.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_a61b0544",
+    "title": "Testing Processor Contracts in Speculative Decoding Engines",
+    "url": "https://www.alphaxiv.org/abs/2611.04042",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Shows that speculative sampling preserves the target distribution only if logits processors get the right prefix and state; relevant only if the seed adds custom samplers, and it tests on tiny random models.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_0cf69abd",
+    "title": "Speculative Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2603.03251",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Parallelizes speculation with verification to remove the sequential dependency; a systems-level change that would need a custom engine rather than stock llama.cpp.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_d8179e37",
+    "title": "Speculative Diffusion is a Tale of Two Tradeoffs",
+    "url": "https://www.alphaxiv.org/abs/2610.31819",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Analyzes speculative decoding against diffusion LLMs, which trade quality for speed. Only tangential to a lossless tiny-draft setup for a 7B model on a 4090.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_c065eab1",
+    "title": "CAST: Cost-Aware Speculative Trees from One-Pass Block Drafters",
+    "url": "https://www.alphaxiv.org/abs/2610.00321",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Builds cost-aware verification trees from one-pass block drafters. Assumes a block drafter, not a plain tiny autoregressive draft.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_936cbbee",
+    "title": "naver-ai/DLoop",
+    "url": "https://github.com/naver-ai/DLoop",
+    "kind": "repo",
+    "year": 2026,
+    "summary": "Official PyTorch code for DLoop's looped drafting. Not directly usable for a plain tiny draft on a 7B model.",
+    "tool": "github"
+  },
+  {
+    "id": "src_ea55043d",
+    "title": "LongSpark: Efficient speculative decoding with a fixed-cost parallel drafter",
+    "url": "https://www.alphaxiv.org/abs/2609.37029",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "A fixed-cost parallel drafter aimed at long contexts. Likely needs a trained drafter, and the seed's short prompts are not its target.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_8a6ce3c5",
+    "title": "Long-Context Drafting Does Not Require Long-Context Drafters",
+    "url": "https://www.alphaxiv.org/abs/2610.20865",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Argues that long-context speculative drafting is not needed at ultra-long context. Mainly relevant to long prompts, which the seed does not target.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_09e6cca3",
+    "title": "JetSpec++: Foresight Parallel Drafting with Self Refinements",
+    "url": "https://www.alphaxiv.org/abs/2610.19792",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Co-designs a learned draft with self-refinement to hide draft cost; needs training a draft model, which conflicts with the seed's no-retraining constraint.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_8a312966",
+    "title": "Phase-Scoped Query Layouts for Reference-Constrained Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.03228",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Graph-level attention transformation for speculative verification on a quantized target, tested on CUDA; relevant only if the seed moves to a custom engine instead of llama.cpp.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_1f832235",
+    "title": "Introducing Beam: Reflection\u2019s 501B open-weight model",
+    "url": "https://www.alphaxiv.org/abs/2610.introducing-beam",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Beam is a 501B-parameter sparse Mixture-of-Experts model (23B active) trained with 23.8T pretraining tokens and over 100M RL rollouts for coding, reasoning, and agentic workloads.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_9b22525f",
+    "title": "HobbyLM: A Sparse Mixture-of-Experts Model Family on a Hobby Budget",
+    "url": "https://www.alphaxiv.org/abs/2610.34582",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "We describe HobbyLM, a family of small sparse Mixture-of-Experts (MoE) models trained from scratch with a few hundred to a few thousand dollars of rented GPU time. The core is a decoder-only transformer with fine-grained experts, sigmoid routing with auxiliary-loss-free load balancing, grouped-query",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_dc801bec",
+    "title": "Matching Workloads to Blackwell: Power-Resolved Benchmarking of NVIDIA B200 and B300 across HPC and AI Workloads",
+    "url": "https://www.alphaxiv.org/abs/2610.41919",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "We evaluate NVIDIA B200 and B300 (Blackwell Ultra) GPUs on two independent eight-GPU clusters, spanning computer-vision inference and training, LLM inference with Llama-3-8B and 70B~\\cite{llama3}, and six production HPC codes. The B300 is not a uniform successor to the B200: it trails by up to 5.6$\\",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_66718ffa",
+    "title": "Swap, Replicate, Read the Mass: A Protocol for Auditing Demographic Bias in System One Decision Models",
+    "url": "https://www.alphaxiv.org/abs/2611.00496",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "System One decision models replace text generation with typed, probability-scored answers and are entering production. Answers execute without a person in the loop, and no multi-model audit exists on established bias benchmarks. We provide that audit: three benchmarks: BBQ (all eleven categories), C",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_f409a3e4",
+    "title": "Twice as Fast, Until It Isn't: Quantized Serving of Mid-Size Open LLMs",
+    "url": "https://www.alphaxiv.org/abs/2611.04380",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "A team serving a 9B-20B open-weight language model on vLLM or SGLang must choose a quantization recipe, and needs two numbers: the speedup over BF16 and the accuracy given up. We assemble every public measurement of these numbers that we could verify and find that the record supplies them only in pi",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_5319d2d0",
+    "title": "Trees from Marginals: Autoregressive drafting with factorized priors",
+    "url": "https://www.alphaxiv.org/abs/2607.06763",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Speculative decoding greatly increases the interactivity of autoregressive language models by trading off computation for extra tokens generated in a single forward pass. Factorized draft models are especially efficient because they predict future-token marginals in parallel, but their independence ",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_1c50a8d8",
+    "title": "Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware",
+    "url": "https://www.alphaxiv.org/abs/2607.17283",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Single-stream autoregressive decoding of large language models is bound by memory bandwidth: each generated token requires one full forward pass through the target model, and successive passes cannot be parallelized. Speculative decoding restructures this computation: a small draft model proposes $K",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_ddffdd37",
+    "title": "Speculative Pipeline Decoding: Higher-Accuracy Drafting with Hidden Latency via Pipeline Parallelism",
+    "url": "https://www.alphaxiv.org/abs/2605.30852",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Speculative Decoding (SD) accelerates low-concurrency LLM inference with a draft-then-verify paradigm. Mainstream methods, however, rely on multi-token prediction, which incurs compounding prediction difficulty and exposed draft latency. We propose Speculative Pipeline Decoding (SPD), which partitio",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_8154368f",
+    "title": "Return or Revise? Learning When Revision Helps Retrieval-Augmented QA",
+    "url": "https://www.alphaxiv.org/abs/2609.30087",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "We consider the decision of whether to return an existing draft answer or revise it using retrieved evidence, as in answer-revision systems. Draft confidence estimates whether the current answer is correct, but the decision requires estimating the effect of a specified revision. For offline training",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_3fdcd9c2",
+    "title": "The efficacy-competitiveness frontier in the Swiss system",
+    "url": "https://www.alphaxiv.org/abs/2610.01997",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "An ideal tournament is both efficacious and attractive: it selects the best player as the winner, but only at the end of the tournament in order to maintain suspense as long as possible. We identify and explore the trade-off between these criteria in Swiss-system chess team tournaments via simulatio",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_9e6a670b",
+    "title": "Text, Pixels, or Both? Evaluating Input Representations for Multimodal Document QA",
+    "url": "https://www.alphaxiv.org/abs/2609.22628",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Every document QA system begins with a choice that is rarely studied on its own: whether to feed the model page images, extracted text, or both. We isolate this choice, holding the prompt, judge, and scoring pipeline fixed, across four commercial model endpoints, two corpora, and two context regimes",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_725c1afb",
+    "title": "Outdated numeric values from Norwegian statutes and regulations in a further-trained model and its base model: a preregistered paired comparison of Borealis 2 and Gemma 4",
+    "url": "https://www.alphaxiv.org/abs/2611.02334",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "We compare how often two released language models give outdated numeric values from Norwegian statutes and regulations: NbAiLab/borealis2-26b-a4b-preview (Borealis 2), which the National Library of Norway further trained from google/gemma-4-26B-A4B-it (Gemma 4), and Gemma 4 itself. The study was pre",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_631f23f6",
+    "title": "Target Regeneration Shrinks the Gains of Draft-Training Objectives in Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.29013",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Speculative decoding accelerates large language models by verifying drafted tokens in parallel. New draft-training objectives are usually credited with the acceptance they add over cross-entropy on externally written responses, yet many pipelines let the target rewrite them. We ask how much of that ",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_d3f95438",
+    "title": "EnigmaForge: The Question Is Hidden in the Story",
+    "url": "https://www.alphaxiv.org/abs/2609.30144",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Most benchmarks hand the model a question. EnigmaForge hands it a stack of old documents and no question at all. Buried in the letters, receipts, and logbook margins is a small logic puzzle whose solution is unique - proved by a SAT solver at generation time, with an ablation certificate showing eve",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_8af2816a",
+    "title": "Jev-as-a-Judge for RAG Claim Verification: Confidence-Gated Cascading Between a Non-Generative Verifier and a Frontier LLM",
+    "url": "https://www.alphaxiv.org/abs/2610.20634",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Retrieval-augmented generation asks one question at volume: does this evidence support this claim? The answer is one bit, yet most pipelines obtain it from a text generator and pay generation prices for the prose wrapped around it. We compare a non-generative decision model, which returns a typed va",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_14b34e1b",
+    "title": "Benchmarking candidate coverage and rejection policy transfer in typed decision models",
+    "url": "https://www.alphaxiv.org/abs/2610.03387",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Rejection policies must remain useful as candidate sets and tasks change. We compare Laya, Jev and Qwen2.5-7B-Instruct using public reference labels, testing Laya/Jev policy transfer at equal calibration budgets and all three models on artificial omission, natural retrieval misses and public out-of-",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_e7ba11cb",
+    "title": "When Does Better Acceptance Pay? A Controlled Study of Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.24993",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "The throughput gains of speculative decoding depend on the trade-off between acceptance length and execution latency. We ask when additional acceptance is worth the cost of obtaining it. We establish a comparison protocol spanning training, inference, and evaluation, remeasuring released checkpoints",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_73a2970e",
+    "title": "Group Versus Batch Baseline Under a Fixed Sampling Budget",
+    "url": "https://www.alphaxiv.org/abs/2609.group-batch-means-sampling-budget",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "When the number of sampled responses is fixed, using several responses for one prompt leaves fewer opportunities to sample other prompts. A group reward mean is worthwhile when its local correction reduces gradient noise enough to pay for this cost. We make this comparison explicit and test 16 diffi",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_50a04cdb",
+    "title": "Acceptance Is Not Speed: Length Inflation in Training-Free Lossy Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.23818",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Speculative decoding typically characterizes speedup by draft tokens accepted per verification round. Lossless verification preserves the target model's output distribution and thus expected completion length, making this metric a meaningful efficiency proxy. Relaxed (lossy) verification accepts tok",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_997424d4",
+    "title": "The Handoff Tax: Continuing Non-Native Trajectories in LLM Agents",
+    "url": "https://www.alphaxiv.org/abs/2608.24358",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Coding agents perform long-running tasks spanning dozens of model calls, tool uses, and code edits. As these runs unfold, users face a practical cost-quality trade-off: escalating to a stronger model when a cheaper one struggles, or downshifting once the hard reasoning is complete. Each switch requi",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_1e107258",
+    "title": "EntityWeaver: Visual Exploration and Curation of Named-Entity Relationships in Document Collections",
+    "url": "https://www.alphaxiv.org/abs/2609.37329",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "We present an interactive visualization system for exploring named entities and their relationships across document collections, with a strong focus on handling uncertainty and supporting both distant and close reading. The system is built around a graph that links documents, entity mentions, and en",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_b827b158",
+    "title": "FrankenReport: Early Exiting in Long-Form Generation Using Expected Value of Computation",
+    "url": "https://www.alphaxiv.org/abs/2609.06320",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "While deep research systems address interactive information-seeking needs impressively, their real-world deployments face latency and resource-consumption challenges. We present FrankenReport, an interface for long-form knowledge-seeking report generation that supports adaptive early exiting per sec",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_23550560",
+    "title": "Object Model Analysis of a Supercomputer with Digital Twin",
+    "url": "https://www.alphaxiv.org/abs/2609.13571",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Operators and developers need a mental model of both the structure and the live behavior of a large supercomputer, but its physical layout, logical organization, and streams of per-node telemetry are difficult to relate to one another, making it hard to trace a metric or event back to a specific har",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_a5320f47",
+    "title": "Ordo-M: An Externally Addressed Sparse Memory Grafted onto a Frozen Language Model",
+    "url": "https://www.alphaxiv.org/abs/2608.ordo-m-sparse-memory-frozen-model",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "A sparse, externally addressed memory attached to a frozen model whose weights are never modified \u2014 and reports what it does and does not deliver across thirty-two measurement rounds on three real domains and two standard editing benchmarks.",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_70bb4b43",
+    "title": "Joint or Per-Option? Compact Encoders for Closed-Set Decisions from 17 Million to 1 Billion Parameters",
+    "url": "https://www.alphaxiv.org/abs/2610.30970",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Many language-model pipelines end in a closed-set decision, such as selecting a tool. Prompting a large language model for it is slow and order-sensitive. We ask how small an encoder for such decisions can be and whether it should read the options jointly or separately. In a three-seed study at 32 m",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_de7c11d0",
+    "title": "No Step at the Window Edge: Confusable Fake Facts in Matched Sliding-Window Hybrids",
+    "url": "https://www.alphaxiv.org/abs/2610.sliding-window-hybrids-fake-facts",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "To save memory, many recent language models are hybrids. Some of their layers read only the last few hundred tokens (a \"local window\"), and the rest read the whole text. Does a misleading fact become more dangerous once it falls inside that window? We tested this by planting a look-alike fake fact i",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_9aef1bb0",
+    "title": "Measuring and Reducing Cross-Vendor Mismatch in Language Models",
+    "url": "https://www.alphaxiv.org/abs/2610.05458",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Running the same language model on different graphics processing unit (GPU) vendors can produce different logits, even when the model weights and inputs are the same. We analyze cross-vendor mismatch in two dense and two mixture-of-experts (MoE) models with five metric families, namely bitwise equal",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_f2fc7eef",
+    "title": "Mixing Matters: Evidence Position Bias Across Sequence Mixers in Long-Context Question Answering",
+    "url": "https://www.alphaxiv.org/abs/2610.31135",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Long-context models often use answer-bearing evidence less effectively when it appears away from a prompt boundary. We compare this position bias across Transformer, state-space, and hybrid Mamba architectures by moving one gold document through a fixed set of nine distractors. The evaluated Transfo",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_3bad4b0f",
+    "title": "You don't need long context",
+    "url": "https://www.alphaxiv.org/abs/2611.05306",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Later tokens are costlier to generate than earlier tokens. On frontier open weight models, the disparity in cost may rise to as much as 7x. Through frequent compaction, we show across a broad range of long-horizon and long-input tasks that frontier language models sacrifice little to no task accurac",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_318eae5e",
+    "title": "RangeSWA: Training-Free Length Extrapolation for Continuous Diffusion Language Models",
+    "url": "https://www.alphaxiv.org/abs/2610.42084",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Continuous diffusion language models show promising potential in text generation tasks, but are prone to problems such as text repetition, semantic drift, and generation quality degradation when the generation length exceeds the training length. To address these challenges, we propose RangeSWA, a tr",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_f3fd2a19",
+    "title": "FOLD: Position-Free Far Memory with Local Order for Long-Context Speculative Decoding",
+    "url": "https://www.alphaxiv.org/abs/2610.20392",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Speculative decoding accelerates LLM generation through lightweight drafting and parallel verification. It is particularly promising for long inputs, where KV-cache access costs can be amortized over multiple accepted tokens. Yet most drafters are trained on short sequences and degrade on long input",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_d18898d6",
+    "title": "Adaptive Multi-Token Prediction: How far should we go?",
+    "url": "https://www.alphaxiv.org/abs/2610.28619",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Multi-token prediction (MTP) can accelerate language-model decoding by drafting several tokens and verifying them in a single target-model pass. However, the best speculation horizon changes with context: longer drafts offer greater amortization when reliable, but can waste compute on suffixes disca",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_599a6eb6",
+    "title": "DELA: Learning Controllable Edits for Diffusion Language Models",
+    "url": "https://www.alphaxiv.org/abs/2610.32096",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Diffusion language models (DLMs) support bidirectional denoising and iterative refinement, but generation remains largely controlled by token-level masking schedules. This leaves draft-level refinement implicit and limits explicit control over when to insert missing content, delete redundant spans, ",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_db46d36b",
+    "title": "Metacognitive Decoding: Efficient Inference for Diffusion Language Agents",
+    "url": "https://www.alphaxiv.org/abs/2610.37642",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Diffusion language models offer a promising path to efficient agents through parallel token generation. However, efficient interaction requires adapting both where computation is spent and how much text is generated. We introduce a metacognitive controller that guides diffusion generation according ",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_ce79f5a8",
+    "title": "Next Token or Vector? Learning How Far to Decode",
+    "url": "https://www.alphaxiv.org/abs/2610.22788",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Standard autoregressive decoding advances one token at a time, even when several upcoming tokens can be predicted together. We propose CADENCE (Context-Adaptive DEcoding), a generation method that learns both what to draft and how far to draft. Gaussian prediction heads represent future spans as con",
+    "tool": "alphaxiv"
+  },
+  {
+    "id": "src_80cfca29",
+    "title": "PID-Gated Continual Prompt Adaptation Under Noisy Feedback",
+    "url": "https://www.alphaxiv.org/abs/2610.16129",
+    "kind": "paper",
+    "year": 2026,
+    "summary": "Deploying LLM agents in non-stationary environments requires continually revising their instructions as the task drifts, yet rewriting after every reported mistake can turn noisy feedback into persistent errors. This raises an often-overlooked scheduling question in prompt adaptation: when should fe",
+    "tool": "alphaxiv"
+  }
+]

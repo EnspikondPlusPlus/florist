@@ -1,0 +1,235 @@
+{
+  "$defs": {
+    "Constraints": {
+      "properties": {
+        "time": {
+          "default": "",
+          "title": "Time",
+          "type": "string"
+        },
+        "compute": {
+          "default": "",
+          "title": "Compute",
+          "type": "string"
+        },
+        "skills": {
+          "default": "",
+          "title": "Skills",
+          "type": "string"
+        },
+        "must_use": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Use",
+          "type": "array"
+        },
+        "must_avoid": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Avoid",
+          "type": "array"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "title": "Constraints",
+      "type": "object"
+    },
+    "FollowUp": {
+      "properties": {
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "answer": {
+          "default": "",
+          "title": "Answer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question"
+      ],
+      "title": "FollowUp",
+      "type": "object"
+    },
+    "SeedBudget": {
+      "properties": {
+        "max_rounds": {
+          "default": 3,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Rounds",
+          "type": "integer"
+        },
+        "max_usd": {
+          "default": 2.0,
+          "minimum": 0,
+          "title": "Max Usd",
+          "type": "number"
+        }
+      },
+      "title": "SeedBudget",
+      "type": "object"
+    },
+    "SeedState": {
+      "enum": [
+        "candidate",
+        "dormant",
+        "growing",
+        "flowering",
+        "picked",
+        "composted"
+      ],
+      "title": "SeedState",
+      "type": "string"
+    },
+    "Tier": {
+      "enum": [
+        "exploration",
+        "personal",
+        "formal"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "slug": {
+      "title": "Slug",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "prompt": {
+      "description": "what the idea is about, a sentence or a paragraph",
+      "title": "Prompt",
+      "type": "string"
+    },
+    "tier": {
+      "$ref": "#/$defs/Tier",
+      "default": "personal"
+    },
+    "state": {
+      "$ref": "#/$defs/SeedState",
+      "default": "dormant"
+    },
+    "priority": {
+      "default": 3,
+      "description": "1 = lowest, 5 = highest",
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Priority",
+      "type": "integer"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    },
+    "related_papers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Related Papers",
+      "type": "array"
+    },
+    "compost_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Compost Ids",
+      "type": "array"
+    },
+    "feed_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Feed Ids",
+      "type": "array"
+    },
+    "constraints": {
+      "$ref": "#/$defs/Constraints"
+    },
+    "followups": {
+      "items": {
+        "$ref": "#/$defs/FollowUp"
+      },
+      "title": "Followups",
+      "type": "array"
+    },
+    "passive": {
+      "default": false,
+      "description": "queued for background growth during downtime",
+      "title": "Passive",
+      "type": "boolean"
+    },
+    "budget": {
+      "$ref": "#/$defs/SeedBudget"
+    },
+    "origin": {
+      "default": "manual",
+      "enum": [
+        "manual",
+        "feed",
+        "compost",
+        "mining",
+        "ideate"
+      ],
+      "title": "Origin",
+      "type": "string"
+    },
+    "conference_targets": {
+      "description": "per-project venues",
+      "items": {
+        "type": "string"
+      },
+      "title": "Conference Targets",
+      "type": "array"
+    },
+    "deadline": {
+      "default": "",
+      "description": "ISO date the user wants to hand off by",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "rounds_done": {
+      "default": 0,
+      "title": "Rounds Done",
+      "type": "integer"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    },
+    "updated": {
+      "title": "Updated",
+      "type": "string"
+    },
+    "priority_since": {
+      "title": "Priority Since",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "slug",
+    "title",
+    "prompt"
+  ],
+  "title": "Seed",
+  "type": "object"
+}

@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+app/node_modules/
+app/dist/
+*.egg-info/
+.florist-test/
+build/
+dist/
+hackathon/*

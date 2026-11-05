@@ -1,0 +1,191 @@
+/* The Florist character rig. Palette is deliberately modest: two greens from the design sheet,
+   one light leaf tone, cream for paper, and a muted water blue. */
+.flc {
+  --c-dark: #1e6b2c; --c-mid: #38a243; --c-light: #8fd19a; --c-cream: #f3ecd8; --c-water: #8ec3d6;
+  --lx: 0; --ly: 0;
+  overflow: visible; display: block;
+}
+.flc .c-dark { fill: var(--c-dark); }
+.flc .c-mid { fill: var(--c-mid); }
+.flc .c-light { fill: var(--c-light); }
+.flc .c-cream { fill: var(--c-cream); }
+.flc .flc-shadow { fill: currentColor; opacity: 0.08; }
+.flc .flc-seam { fill: none; stroke: var(--c-dark); stroke-opacity: .18; stroke-width: 2; stroke-linecap: round; }
+.flc .flc-band { fill: none; stroke: var(--c-mid); stroke-width: 3; stroke-linecap: round; opacity: .55; }
+.flc .flc-stroke { fill: none; stroke: var(--c-dark); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.flc .flc-stroke-thin { stroke-width: 2.3; }
+.flc .flc-stem { stroke: var(--c-mid); stroke-width: 2.6; stroke-linecap: round; }
+.flc .flc-spout { stroke: var(--c-dark); stroke-width: 3.4; stroke-linecap: round; }
+.flc .flc-handle { fill: none; stroke: var(--c-dark); stroke-width: 2.6; }
+.flc .flc-handle-thick { stroke: var(--c-dark); stroke-width: 3.6; stroke-linecap: round; }
+.flc .flc-lens { fill: #fff; fill-opacity: .35; stroke: var(--c-dark); stroke-width: 3; }
+.flc .flc-drop { fill: var(--c-water); opacity: 0; }
+.flc .flc-page { stroke: var(--c-dark); stroke-width: 1.4; stroke-linejoin: round; }
+.flc .flc-spine { stroke: var(--c-dark); stroke-width: 1.6; }
+.flc .flc-lines { fill: none; stroke: var(--c-dark); stroke-opacity: .3; stroke-width: 1.2; stroke-linecap: round; }
+.flc .flc-flip { fill: var(--c-cream); stroke: var(--c-dark); stroke-width: 1.2; opacity: 0; transform-origin: 86px 140px; }
+.flc .flc-spark { fill: var(--c-light); }
+.flc .flc-z { fill: var(--c-dark); font: 700 13px var(--sans); opacity: 0; }
+.flc .flc-q { fill: var(--c-dark); font: 800 22px var(--sans); }
+.flc .flc-sweat { fill: var(--c-water); }
+.flc .flc-burst { stroke: var(--c-dark); stroke-width: 2.6; stroke-linecap: round; }
+
+/* ---- layering: parallax → pose → loop --------------------------------------------- */
+.flc .flc-px { transition: transform .35s cubic-bezier(.2, .8, .3, 1); }
+.flc .flc-px-hair { transform: translate(calc(var(--lx) * -1.2px), calc(var(--ly) * -0.6px)); }
+.flc .flc-px-body { transform: translate(calc(var(--lx) * 0.6px), 0); }
+.flc .flc-px-head { transform: translate(calc(var(--lx) * 2.4px), calc(var(--ly) * 1.6px)); }
+.flc .flc-px-eyes { transform: translate(calc(var(--lx) * 2.2px), calc(var(--ly) * 1.8px)); }
+.flc .flc-px-hat { transform: translate(calc(var(--lx) * 1.4px), calc(var(--ly) * 0.8px)); }
+.flc .flc-px-hands { transform: translate(calc(var(--lx) * 1.2px), calc(var(--ly) * 1px)); }
+
+.flc [class^="flc-pose"], .flc .flc-face-shift, .flc .flc-look, .flc .flc-eye-l {
+  transition: transform .55s cubic-bezier(.34, 1.45, .55, 1), opacity .3s ease;
+}
+.flc .flc-pose-head { transform-origin: 86px 92px; }
+.flc .flc-pose-hat { transform-origin: 84px 54px; }
+
+/* ---- idle loops ------------------------------------------------------------------- */
+.flc .flc-root { animation: flc-bob 3.6s ease-in-out infinite; }
+.flc .flc-body { transform-origin: 86px 181px; animation: flc-breathe 3.6s ease-in-out infinite; }
+.flc .flc-hair { transform-origin: 85px 42px; animation: flc-hair 4.4s ease-in-out infinite; }
+.flc .flc-hat { transform-origin: 84px 54px; animation: flc-hat 3.6s ease-in-out .35s infinite; }
+.flc .flc-head { transform-origin: 86px 92px; animation: flc-head 7s ease-in-out infinite; }
+.flc .flc-hand-l { animation: flc-float 2.9s ease-in-out infinite; }
+.flc .flc-hand-r { animation: flc-float 3.4s ease-in-out .5s infinite; }
+.flc .flc-eye { transform-box: fill-box; transform-origin: center; }
+.flc[data-blink="1"] .flc-eyeball { transform-box: fill-box; transform-origin: center; animation: flc-blink .17s ease-in-out; }
+.flc .flc-hat-flower { animation: flc-flower 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+@keyframes flc-bob { 50% { transform: translateY(-1.6px); } }
+@keyframes flc-breathe { 50% { transform: scale(1.012, 1.028); } }
+@keyframes flc-hair { 0%, 100% { transform: rotate(-1.3deg); } 50% { transform: rotate(1.5deg); } }
+@keyframes flc-hat { 0%, 100% { transform: rotate(0) translateY(0); } 55% { transform: rotate(-1.8deg) translateY(-1.2px); } }
+@keyframes flc-head { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-1.6deg); } 70% { transform: rotate(1.4deg); } }
+@keyframes flc-float { 50% { transform: translateY(-3.2px); } }
+@keyframes flc-blink { 50% { transform: scaleY(.08); } }
+@keyframes flc-flower { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(25deg); } }
+
+/* squash & stretch on mood change */
+.flc .flc-pop { transform-origin: 86px 182px; }
+.flc[data-pop="a"] .flc-pop { animation: flc-pop-a .5s cubic-bezier(.3, 1.6, .5, 1); }
+.flc[data-pop="b"] .flc-pop { animation: flc-pop-b .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes flc-pop-a { 0% { transform: scale(1.07, .9); } 45% { transform: scale(.97, 1.05); } 100% { transform: scale(1); } }
+@keyframes flc-pop-b { 0% { transform: scale(1.07, .9); } 45% { transform: scale(.97, 1.05); } 100% { transform: scale(1); } }
+
+/* ---- side profile (turned toward the plant) -------------------------------------- */
+.flc[data-view="side"] .flc-face-shift { transform: translate(7px, 0); }
+.flc[data-view="side"] .flc-eye-l { opacity: 0; }
+.flc[data-view="side"] .flc-pose-hair { transform: translate(-5px, 0); }
+.flc[data-view="side"] .flc-pose-hat { transform: translate(4px, 0) rotate(3deg); }
+
+/* ---- moods ------------------------------------------------------------------------ */
+
+/* wave: right hand up and waving, hat tip */
+.flc[data-mood="wave"] .flc-pose-hand-r, .flc[data-fidget="wave"] .flc-pose-hand-r { transform: translate(8px, -46px); }
+.flc[data-mood="wave"] .flc-hand-r, .flc[data-fidget="wave"] .flc-hand-r { transform-origin: 124px 128px; animation: flc-wave .5s ease-in-out infinite alternate; }
+.flc[data-mood="wave"] .flc-pose-hat { transform: rotate(-8deg) translate(1px, -3px); }
+@keyframes flc-wave { from { transform: rotate(-14deg); } to { transform: rotate(16deg); } }
+
+/* thinking: hand to chin, look up, head tilt, thought bubble */
+.flc[data-mood="thinking"] .flc-pose-hand-r { transform: translate(-28px, -48px); }
+.flc[data-mood="thinking"] .flc-pose-hand-l { transform: translate(6px, 6px); }
+.flc[data-mood="thinking"] .flc-pose-head { transform: rotate(-7deg); }
+.flc[data-mood="thinking"] .flc-look { transform: translate(2.5px, -3px); }
+.flc[data-mood="thinking"] .flc-pose-hat { transform: rotate(-4deg) translate(0, -1px); }
+.flc .flc-b1, .flc .flc-b2, .flc .flc-b3 { transform-box: fill-box; transform-origin: center; animation: flc-bubble-in .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+.flc .flc-b2 { animation-delay: .12s; } .flc .flc-b3 { animation-delay: .24s; }
+.flc .flc-dot { animation: flc-dot 1.2s ease-in-out infinite; }
+.flc .flc-dot2 { animation-delay: .2s; } .flc .flc-dot3 { animation-delay: .4s; }
+@keyframes flc-bubble-in { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes flc-dot { 0%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+/* reading: hands hold the book, eyes scan, a page flips now and then */
+.flc[data-mood="reading"] .flc-pose-hand-l { transform: translate(18px, 0); }
+.flc[data-mood="reading"] .flc-pose-hand-r { transform: translate(-17px, 0); }
+.flc[data-mood="reading"] .flc-look { transform: translate(-1px, 3px); }
+.flc[data-mood="reading"] .flc-pose-head { transform: rotate(3deg) translateY(1px); }
+.flc[data-mood="reading"] .flc-eyes { animation: flc-scan 2.4s ease-in-out infinite; }
+.flc .flc-flip { animation: flc-flip 4.8s ease-in-out infinite; }
+@keyframes flc-scan { 0%, 100% { transform: translateX(-2.2px); } 45% { transform: translateX(2.2px); } 50% { transform: translateX(-2.2px); } }
+@keyframes flc-flip { 0%, 70% { opacity: 0; transform: scaleX(1); } 72% { opacity: 1; } 90% { opacity: 1; transform: scaleX(-1); } 92%, 100% { opacity: 0; transform: scaleX(-1); } }
+
+/* searching: magnifier sweeps, eyes follow */
+.flc[data-mood="searching"] .flc-pose-hand-r { transform: translate(4px, -30px); }
+.flc[data-mood="searching"] .flc-hand-r { animation: flc-sweep 2.6s ease-in-out infinite; }
+.flc[data-mood="searching"] .flc-eyes { animation: flc-follow 2.6s ease-in-out infinite; }
+.flc[data-mood="searching"] .flc-pose-hat { transform: rotate(-3deg); }
+@keyframes flc-sweep { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-26px, 8px); } }
+@keyframes flc-follow { 0%, 100% { transform: translate(2.5px, -0.5px); } 50% { transform: translate(-2.5px, 1px); } }
+
+/* working: turned to the side, watering a sprout that grows */
+.flc[data-mood="working"] .flc-pose-hand-r { transform: translate(10px, -26px); }
+.flc[data-mood="working"] .flc-pose-hand-l { transform: translate(96px, -14px); }
+.flc[data-mood="working"] .flc-look { transform: translate(3px, 2px); }
+.flc[data-mood="working"] .flc-pose-head { transform: rotate(5deg); }
+.flc .flc-can { transform-origin: 148px 112px; animation: flc-pour 2.8s ease-in-out infinite; }
+.flc .flc-drop { animation: flc-drop 2.8s linear infinite; }
+.flc .flc-drop.d2 { animation-delay: .22s; } .flc .flc-drop.d3 { animation-delay: .44s; }
+.flc .flc-sprout { transform-origin: 172px 183px; animation: flc-grow 5.6s ease-in-out infinite; }
+@keyframes flc-pour { 0%, 18% { transform: rotate(0); } 38%, 72% { transform: rotate(26deg); } 90%, 100% { transform: rotate(0); } }
+@keyframes flc-drop { 0%, 38% { opacity: 0; transform: translate(0, 0); } 44% { opacity: 1; } 72% { opacity: 1; transform: translate(-4px, 34px); } 74%, 100% { opacity: 0; transform: translate(-4px, 34px); } }
+@keyframes flc-grow { 0% { transform: scaleY(.5); } 45%, 85% { transform: scaleY(1); } 100% { transform: scaleY(.5); } }
+
+/* happy: hop, arms up, hat pops off (revealing the second eye), sparkles */
+.flc[data-mood="happy"] .flc-root { animation: flc-hop .9s cubic-bezier(.3, .7, .4, 1) 2, flc-bob 3.6s ease-in-out 1.8s infinite; }
+.flc[data-mood="happy"] .flc-pose-hand-l { transform: translate(2px, -46px); }
+.flc[data-mood="happy"] .flc-pose-hand-r { transform: translate(-1px, -46px); }
+.flc[data-mood="happy"] .flc-hand-l, .flc[data-mood="happy"] .flc-hand-r { animation: flc-jazz .35s ease-in-out infinite alternate; }
+.flc[data-mood="happy"] .flc-hat { animation: flc-hat-pop 1.8s cubic-bezier(.3, .7, .4, 1) 1; }
+.flc .flc-spark { transform-box: fill-box; transform-origin: center; animation: flc-twinkle 1.6s ease-in-out infinite; }
+.flc .s2 { animation-delay: .3s; } .flc .s3 { animation-delay: .6s; } .flc .s4 { animation-delay: .9s; } .flc .s5 { animation-delay: 1.2s; }
+@keyframes flc-hop { 0%, 100% { transform: translateY(0) scale(1); } 30% { transform: translateY(-13px) scale(.97, 1.04); } 62% { transform: translateY(0) scale(1.05, .95); } 78% { transform: scale(.98, 1.02); } }
+@keyframes flc-jazz { from { transform: translate(0, 0); } to { transform: translate(0, -4px) scale(1.06); } }
+@keyframes flc-hat-pop { 0% { transform: none; } 30% { transform: translate(-2px, -22px) rotate(-16deg); } 55% { transform: translate(1px, -12px) rotate(10deg); } 80% { transform: translate(0, 2px) rotate(-3deg); } 100% { transform: none; } }
+@keyframes flc-twinkle { 0%, 100% { transform: scale(0) rotate(0); opacity: 0; } 50% { transform: scale(1) rotate(45deg); opacity: 1; } }
+
+/* surprised: hat jumps, hands to cheeks, big eyes */
+.flc[data-mood="surprised"] .flc-pose-hat { transform: translate(0, -11px) rotate(-6deg); }
+.flc[data-mood="surprised"] .flc-pose-hand-l { transform: translate(18px, -48px); }
+.flc[data-mood="surprised"] .flc-pose-hand-r { transform: translate(-16px, -48px); }
+.flc .flc-exclaim { animation: flc-dot .8s ease-in-out infinite; }
+
+/* confused: shrug, tilt, question mark, sweat */
+.flc[data-mood="confused"] .flc-pose-hand-l { transform: translate(-6px, -18px); }
+.flc[data-mood="confused"] .flc-pose-hand-r { transform: translate(6px, -18px); }
+.flc[data-mood="confused"] .flc-pose-head { transform: rotate(9deg); }
+.flc[data-mood="confused"] .flc-pose-hat { transform: rotate(7deg) translate(2px, -2px); }
+.flc[data-mood="confused"] .flc-look { transform: translate(-2px, 0); }
+.flc .flc-q { animation: flc-q 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom; }
+.flc .flc-sweat { animation: flc-sweat 2.4s ease-in infinite; }
+@keyframes flc-q { 0%, 100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(8deg) translateY(-3px); } }
+@keyframes flc-sweat { 0%, 30% { transform: translateY(0); opacity: 1; } 90% { transform: translateY(8px); opacity: 0; } 100% { opacity: 0; } }
+
+/* sleep: head droops, slow breathing, rising z's */
+.flc[data-mood="sleep"] .flc-pose-head { transform: rotate(9deg) translateY(3px); }
+.flc[data-mood="sleep"] .flc-pose-hat { transform: rotate(6deg) translate(1px, 3px); }
+.flc[data-mood="sleep"] .flc-pose-hand-l { transform: translate(6px, 8px); }
+.flc[data-mood="sleep"] .flc-pose-hand-r { transform: translate(-6px, 8px); }
+.flc[data-mood="sleep"] .flc-body { animation-duration: 5.2s; }
+.flc .flc-z { animation: flc-z 3s ease-out infinite; }
+.flc .z2 { animation-delay: 1s; } .flc .z3 { animation-delay: 2s; }
+@keyframes flc-z { 0% { opacity: 0; transform: translate(0, 6px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(8px, -10px); } }
+
+/* ---- idle fidgets ------------------------------------------------------------------ */
+.flc[data-fidget="glance"] .flc-look { animation: flc-glance 1.6s ease-in-out; }
+@keyframes flc-glance { 0%, 100% { transform: none; } 20%, 45% { transform: translate(-3px, -0.5px); } 60%, 85% { transform: translate(3px, 0.5px); } }
+.flc[data-fidget="hat"] .flc-pose-hand-r { transform: translate(-16px, -88px); }
+.flc[data-fidget="hat"] .flc-pose-hat { transform: rotate(-6deg) translate(0, -3px); }
+.flc[data-fidget="hop"] .flc-root { animation: flc-hop .9s cubic-bezier(.3, .7, .4, 1) 1; }
+.flc[data-fidget="stretch"] .flc-pose-hand-l { transform: translate(14px, -98px); }
+.flc[data-fidget="stretch"] .flc-pose-hand-r { transform: translate(-14px, -98px); }
+.flc[data-fidget="stretch"] .flc-body { animation: flc-stretch 1.6s ease-in-out; }
+@keyframes flc-stretch { 40%, 70% { transform: scale(.98, 1.05); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .flc *, .flc .flc-pop { animation: none !important; }
+}
+
+/* one eye under the brim, as in the design; the second appears when the hat lifts */
+.flc .flc-eye-l { opacity: 0; }
+.flc[data-mood="happy"] .flc-eye-l, .flc[data-mood="surprised"] .flc-eye-l { opacity: 1; }

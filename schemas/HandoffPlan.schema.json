@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "Milestone": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "goal": {
+          "default": "",
+          "title": "Goal",
+          "type": "string"
+        },
+        "tasks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tasks",
+          "type": "array"
+        },
+        "est_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Est Hours"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "Milestone",
+      "type": "object"
+    }
+  },
+  "description": "Pick step output \u2014 the handoff block of a flower pack.",
+  "properties": {
+    "objective": {
+      "title": "Objective",
+      "type": "string"
+    },
+    "metric": {
+      "description": "what number says it worked, and which direction is better",
+      "title": "Metric",
+      "type": "string"
+    },
+    "metric_direction": {
+      "default": "maximize",
+      "enum": [
+        "maximize",
+        "minimize",
+        "qualitative"
+      ],
+      "title": "Metric Direction",
+      "type": "string"
+    },
+    "baseline": {
+      "default": "",
+      "title": "Baseline",
+      "type": "string"
+    },
+    "may_change": {
+      "items": {
+        "type": "string"
+      },
+      "title": "May Change",
+      "type": "array"
+    },
+    "must_not_change": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Must Not Change",
+      "type": "array"
+    },
+    "constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "background": {
+      "default": "",
+      "title": "Background",
+      "type": "string"
+    },
+    "preferences": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Preferences",
+      "type": "array"
+    },
+    "milestones": {
+      "items": {
+        "$ref": "#/$defs/Milestone"
+      },
+      "title": "Milestones",
+      "type": "array"
+    },
+    "first_session": {
+      "items": {
+        "type": "string"
+      },
+      "title": "First Session",
+      "type": "array"
+    },
+    "tools": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tools",
+      "type": "array"
+    },
+    "conventions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conventions",
+      "type": "array"
+    },
+    "first_experiments": {
+      "items": {
+        "type": "string"
+      },
+      "title": "First Experiments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "objective",
+    "metric"
+  ],
+  "title": "HandoffPlan",
+  "type": "object"
+}

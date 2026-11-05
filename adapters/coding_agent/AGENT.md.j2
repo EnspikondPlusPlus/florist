@@ -1,0 +1,63 @@
+# {{ seed.title }}
+
+This repository implements a project planned with Florist (flower pack, {{ generated }}).
+The full brief with evidence is in `flower.md`; read it when a decision needs context.
+
+## Goal
+
+{{ handoff.objective }}
+
+Success metric: {{ handoff.metric }} ({{ handoff.metric_direction }}).{% if handoff.baseline %} Baseline: {{ handoff.baseline }}.{% endif %}
+
+
+## Context
+
+{{ handoff.background }}
+
+## Plan
+
+{% for m in handoff.milestones %}
+{{ loop.index }}. **{{ m.title }}** — {{ m.goal }}
+{% for t in m.tasks %}
+   - {{ t }}
+{% endfor %}
+{% endfor %}
+
+Start with:
+
+{% for t in handoff.first_session %}
+- {{ t }}
+{% endfor %}
+
+## Constraints
+
+{% for c in handoff.constraints %}
+- {{ c }}
+{% endfor %}
+- Do not change: {{ handoff.must_not_change | join("; ") or "evaluation code and data splits" }}
+
+## Conventions
+
+{% for c in handoff.conventions %}
+- {{ c }}
+{% endfor %}
+{% for p in handoff.preferences %}
+- {{ p }}
+{% endfor %}
+
+## Tools and references
+
+{% for t in handoff.tools %}
+- {{ t }}
+{% endfor %}
+{% for s in sources[:8] %}
+- [{{ s.title }}]({{ s.url }})
+{% endfor %}
+
+## Already ruled out
+
+{% for p in pruned %}
+- {{ p.title }} — {{ p.reason }}
+{% else %}
+- Nothing yet.
+{% endfor %}

@@ -1,0 +1,58 @@
+{
+  "$defs": {
+    "SearchQuery": {
+      "properties": {
+        "query": {
+          "minLength": 2,
+          "title": "Query",
+          "type": "string"
+        },
+        "kind": {
+          "default": "paper",
+          "enum": [
+            "paper",
+            "repo",
+            "post",
+            "any"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "why": {
+          "default": "",
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "SearchQuery",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "queries": {
+      "items": {
+        "$ref": "#/$defs/SearchQuery"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Queries",
+      "type": "array"
+    },
+    "technologies": {
+      "description": "key technologies to map",
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    }
+  },
+  "required": [
+    "queries"
+  ],
+  "title": "GroundPlan",
+  "type": "object"
+}

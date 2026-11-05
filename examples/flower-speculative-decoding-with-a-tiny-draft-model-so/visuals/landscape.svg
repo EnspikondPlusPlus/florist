@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" font-family="-apple-system, 'Segoe UI', system-ui, Inter, Roboto, sans-serif" role="img" aria-label="Landscape map">
+<rect width="900" height="640" rx="14" fill="#ffffff"/>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker><radialGradient id="halo"><stop offset="0" stop-color="#3a8dff" stop-opacity="0.16"/><stop offset="1" stop-color="#3a8dff" stop-opacity="0"/></radialGradient></defs>
+<text x="40" y="44" font-size="20" font-weight="650" fill="#171717">Landscape: Speculative decoding with a tiny draft model so…</text>
+<text x="40" y="66" font-size="12.5" fill="#6b6b6b">Existing work (dots) vs. directions (numbered). Nearby means similar; halos show where work is dense.</text>
+<rect x="40" y="88" width="600" height="500" rx="10" fill="#fcfcfc" stroke="#e5e5e5"/>
+<circle cx="467.7" cy="314.7" r="46" fill="url(#halo)"/>
+<circle cx="493.5" cy="215.3" r="46" fill="url(#halo)"/>
+<circle cx="527.9" cy="305.3" r="46" fill="url(#halo)"/>
+<circle cx="498.7" cy="282.0" r="46" fill="url(#halo)"/>
+<circle cx="604.0" cy="207.7" r="46" fill="url(#halo)"/>
+<circle cx="429.2" cy="369.2" r="46" fill="url(#halo)"/>
+<circle cx="126.2" cy="369.3" r="46" fill="url(#halo)"/>
+<circle cx="214.9" cy="378.3" r="46" fill="url(#halo)"/>
+<circle cx="243.0" cy="410.4" r="46" fill="url(#halo)"/>
+<circle cx="102.7" cy="468.0" r="46" fill="url(#halo)"/>
+<circle cx="293.4" cy="355.6" r="46" fill="url(#halo)"/>
+<circle cx="366.0" cy="414.3" r="46" fill="url(#halo)"/>
+<circle cx="244.4" cy="118.0" r="46" fill="url(#halo)"/>
+<circle cx="307.2" cy="182.8" r="46" fill="url(#halo)"/>
+<circle cx="443.3" cy="339.2" r="46" fill="url(#halo)"/>
+<circle cx="276.9" cy="122.9" r="46" fill="url(#halo)"/>
+<circle cx="602.4" cy="257.3" r="46" fill="url(#halo)"/>
+<circle cx="548.9" cy="326.5" r="46" fill="url(#halo)"/>
+<circle cx="519.8" cy="253.4" r="46" fill="url(#halo)"/>
+<circle cx="472.6" cy="506.8" r="46" fill="url(#halo)"/>
+<circle cx="456.6" cy="532.6" r="46" fill="url(#halo)"/>
+<circle cx="479.2" cy="493.3" r="46" fill="url(#halo)"/>
+<circle cx="489.7" cy="534.7" r="46" fill="url(#halo)"/>
+<circle cx="464.2" cy="472.6" r="46" fill="url(#halo)"/>
+<circle cx="537.0" cy="335.9" r="46" fill="url(#halo)"/>
+<circle cx="507.2" cy="227.8" r="46" fill="url(#halo)"/>
+<circle cx="517.8" cy="341.9" r="46" fill="url(#halo)"/>
+<circle cx="475.5" cy="501.0" r="46" fill="url(#halo)"/>
+<circle cx="487.7" cy="502.7" r="46" fill="url(#halo)"/>
+<circle cx="481.1" cy="552.5" r="46" fill="url(#halo)"/>
+<circle cx="472.8" cy="504.9" r="46" fill="url(#halo)"/>
+<circle cx="560.5" cy="308.1" r="46" fill="url(#halo)"/>
+<circle cx="482.8" cy="499.4" r="46" fill="url(#halo)"/>
+<circle cx="502.6" cy="545.5" r="46" fill="url(#halo)"/>
+<circle cx="475.8" cy="488.5" r="46" fill="url(#halo)"/>
+<circle cx="487.1" cy="420.2" r="46" fill="url(#halo)"/>
+<circle cx="427.7" cy="502.2" r="46" fill="url(#halo)"/>
+<circle cx="464.7" cy="270.2" r="46" fill="url(#halo)"/>
+<circle cx="446.2" cy="478.3" r="46" fill="url(#halo)"/>
+<circle cx="305.5" cy="437.6" r="46" fill="url(#halo)"/>
+<circle cx="305.5" cy="430.2" r="46" fill="url(#halo)"/>
+<circle cx="125.5" cy="460.7" r="46" fill="url(#halo)"/>
+<circle cx="225.1" cy="428.2" r="46" fill="url(#halo)"/>
+<circle cx="140.7" cy="423.9" r="46" fill="url(#halo)"/>
+<circle cx="182.5" cy="449.5" r="46" fill="url(#halo)"/>
+<circle cx="499.3" cy="342.6" r="46" fill="url(#halo)"/>
+<circle cx="443.9" cy="475.3" r="46" fill="url(#halo)"/>
+<circle cx="464.2" cy="367.8" r="46" fill="url(#halo)"/>
+<circle cx="432.0" cy="353.9" r="46" fill="url(#halo)"/>
+<circle cx="468.7" cy="216.4" r="46" fill="url(#halo)"/>
+<circle cx="472.3" cy="494.9" r="46" fill="url(#halo)"/>
+<circle cx="480.9" cy="472.3" r="46" fill="url(#halo)"/>
+<circle cx="462.8" cy="472.7" r="46" fill="url(#halo)"/>
+<circle cx="479.0" cy="498.6" r="46" fill="url(#halo)"/>
+<circle cx="500.2" cy="515.8" r="46" fill="url(#halo)"/>
+<circle cx="472.1" cy="503.3" r="46" fill="url(#halo)"/>
+<circle cx="492.1" cy="496.8" r="46" fill="url(#halo)"/>
+<circle cx="474.5" cy="558.0" r="46" fill="url(#halo)"/>
+<circle cx="529.5" cy="504.0" r="46" fill="url(#halo)"/>
+<circle cx="555.3" cy="511.7" r="46" fill="url(#halo)"/>
+<circle cx="588.3" cy="349.5" r="46" fill="url(#halo)"/>
+<circle cx="517.8" cy="350.7" r="46" fill="url(#halo)"/>
+<circle cx="530.9" cy="504.0" r="46" fill="url(#halo)"/>
+<circle cx="601.2" cy="466.4" r="46" fill="url(#halo)"/>
+<circle cx="535.3" cy="398.1" r="46" fill="url(#halo)"/>
+<circle cx="485.3" cy="518.9" r="46" fill="url(#halo)"/>
+<circle cx="467.7" cy="314.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Speculative Diffusion is a Tale of Two Tradeoffs</title></circle>
+<circle cx="493.5" cy="215.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>DLoop: Looped Speculative Decoding</title></circle>
+<circle cx="527.9" cy="305.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Understanding Target Probability Reuse in Speculative Decoding</title></circle>
+<circle cx="498.7" cy="282.0" r="5" fill="#3a8dff" fill-opacity="0.85"><title>A Practical Investigation of Training-free Relaxed Speculative Decoding</title></circle>
+<circle cx="604.0" cy="207.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>CAST: Cost-Aware Speculative Trees from One-Pass Block Drafters</title></circle>
+<circle cx="429.2" cy="369.2" r="5" fill="#3a8dff" fill-opacity="0.85"><title>A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding</title></circle>
+<circle cx="126.2" cy="369.3" r="5" fill="#9c5cff" fill-opacity="0.85"><title>neerajdad123-byte/zero-vram-spec</title></circle>
+<circle cx="214.9" cy="378.3" r="5" fill="#9c5cff" fill-opacity="0.85"><title>GHGuide/self-draft</title></circle>
+<circle cx="243.0" cy="410.4" r="5" fill="#9c5cff" fill-opacity="0.85"><title>amanzainal/specdecode-roi</title></circle>
+<circle cx="102.7" cy="468.0" r="5" fill="#9c5cff" fill-opacity="0.85"><title>amagilabs/amagi-draftbench</title></circle>
+<circle cx="293.4" cy="355.6" r="5" fill="#9c5cff" fill-opacity="0.85"><title>RanganBorah/SpecDecode</title></circle>
+<circle cx="366.0" cy="414.3" r="5" fill="#9c5cff" fill-opacity="0.85"><title>rajivmehtaflex/llama-server-up</title></circle>
+<circle cx="244.4" cy="118.0" r="5" fill="#9c5cff" fill-opacity="0.85"><title>suryavanshi/speculative_decoding</title></circle>
+<circle cx="307.2" cy="182.8" r="5" fill="#9c5cff" fill-opacity="0.85"><title>naver-ai/DLoop</title></circle>
+<circle cx="443.3" cy="339.2" r="5" fill="#9c5cff" fill-opacity="0.85"><title>bassrehab/speculative-decoding</title></circle>
+<circle cx="276.9" cy="122.9" r="5" fill="#9c5cff" fill-opacity="0.85"><title>DRSY/SpeculativeDecoding</title></circle>
+<circle cx="602.4" cy="257.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>LongSpark: Efficient speculative decoding with a fixed-cost parallel drafter</title></circle>
+<circle cx="548.9" cy="326.5" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Long-Context Drafting Does Not Require Long-Context Drafters</title></circle>
+<circle cx="519.8" cy="253.4" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Approximate Speculative Decoding</title></circle>
+<circle cx="472.6" cy="506.8" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Introducing Beam: Reflection’s 501B open-weight model</title></circle>
+<circle cx="456.6" cy="532.6" r="5" fill="#3a8dff" fill-opacity="0.85"><title>HobbyLM: A Sparse Mixture-of-Experts Model Family on a Hobby Budget</title></circle>
+<circle cx="479.2" cy="493.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Matching Workloads to Blackwell: Power-Resolved Benchmarking of NVIDIA B200 and B300 across HPC and AI Workloads</title></circle>
+<circle cx="489.7" cy="534.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Swap, Replicate, Read the Mass: A Protocol for Auditing Demographic Bias in System One Decision Models</title></circle>
+<circle cx="464.2" cy="472.6" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Twice as Fast, Until It Isn&#x27;t: Quantized Serving of Mid-Size Open LLMs</title></circle>
+<circle cx="537.0" cy="335.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Trees from Marginals: Autoregressive drafting with factorized priors</title></circle>
+<circle cx="507.2" cy="227.8" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware</title></circle>
+<circle cx="517.8" cy="341.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Speculative Pipeline Decoding: Higher-Accuracy Drafting with Hidden Latency via Pipeline Parallelism</title></circle>
+<circle cx="475.5" cy="501.0" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Return or Revise? Learning When Revision Helps Retrieval-Augmented QA</title></circle>
+<circle cx="487.7" cy="502.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>The efficacy-competitiveness frontier in the Swiss system</title></circle>
+<circle cx="481.1" cy="552.5" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Text, Pixels, or Both? Evaluating Input Representations for Multimodal Document QA</title></circle>
+<circle cx="472.8" cy="504.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Outdated numeric values from Norwegian statutes and regulations in a further-trained model and its base model: a preregistered paired comparison of Borealis 2 and Gemma 4</title></circle>
+<circle cx="560.5" cy="308.1" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Target Regeneration Shrinks the Gains of Draft-Training Objectives in Speculative Decoding</title></circle>
+<circle cx="482.8" cy="499.4" r="5" fill="#3a8dff" fill-opacity="0.85"><title>EnigmaForge: The Question Is Hidden in the Story</title></circle>
+<circle cx="502.6" cy="545.5" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Jev-as-a-Judge for RAG Claim Verification: Confidence-Gated Cascading Between a Non-Generative Verifier and a Frontier LLM</title></circle>
+<circle cx="475.8" cy="488.5" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Benchmarking candidate coverage and rejection policy transfer in typed decision models</title></circle>
+<circle cx="487.1" cy="420.2" r="5" fill="#3a8dff" fill-opacity="0.85"><title>When Does Better Acceptance Pay? A Controlled Study of Speculative Decoding</title></circle>
+<circle cx="427.7" cy="502.2" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Group Versus Batch Baseline Under a Fixed Sampling Budget</title></circle>
+<circle cx="464.7" cy="270.2" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Acceptance Is Not Speed: Length Inflation in Training-Free Lossy Speculative Decoding</title></circle>
+<circle cx="446.2" cy="478.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>The Handoff Tax: Continuing Non-Native Trajectories in LLM Agents</title></circle>
+<circle cx="305.5" cy="437.6" r="5" fill="#9c5cff" fill-opacity="0.85"><title>wtlow003/ngram-decoding</title></circle>
+<circle cx="305.5" cy="430.2" r="5" fill="#9c5cff" fill-opacity="0.85"><title>joelvarun/suffixspec</title></circle>
+<circle cx="125.5" cy="460.7" r="5" fill="#9c5cff" fill-opacity="0.85"><title>kuotunyu/qwen38-speculative-decoding-benchmark</title></circle>
+<circle cx="225.1" cy="428.2" r="5" fill="#9c5cff" fill-opacity="0.85"><title>my-other-github-account/minimax-m27-ngram-spec-spark</title></circle>
+<circle cx="140.7" cy="423.9" r="5" fill="#9c5cff" fill-opacity="0.85"><title>coffeegrind123/instantcoffee</title></circle>
+<circle cx="182.5" cy="449.5" r="5" fill="#9c5cff" fill-opacity="0.85"><title>joanmedina/qwen3-llama-cpp-inference-tuning</title></circle>
+<circle cx="499.3" cy="342.6" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Testing Processor Contracts in Speculative Decoding Engines</title></circle>
+<circle cx="443.9" cy="475.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Speculative Acceptance Does Not Decay with Position: A Full-Length Diagnostic on Long Chain-of-Thought with Independent Drafts</title></circle>
+<circle cx="464.2" cy="367.8" r="5" fill="#3a8dff" fill-opacity="0.85"><title>JetSpec++: Foresight Parallel Drafting with Self Refinements</title></circle>
+<circle cx="432.0" cy="353.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Phase-Scoped Query Layouts for Reference-Constrained Speculative Decoding</title></circle>
+<circle cx="468.7" cy="216.4" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Speculative Speculative Decoding</title></circle>
+<circle cx="472.3" cy="494.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>EntityWeaver: Visual Exploration and Curation of Named-Entity Relationships in Document Collections</title></circle>
+<circle cx="480.9" cy="472.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>FrankenReport: Early Exiting in Long-Form Generation Using Expected Value of Computation</title></circle>
+<circle cx="462.8" cy="472.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Object Model Analysis of a Supercomputer with Digital Twin</title></circle>
+<circle cx="479.0" cy="498.6" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Ordo-M: An Externally Addressed Sparse Memory Grafted onto a Frozen Language Model</title></circle>
+<circle cx="500.2" cy="515.8" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Joint or Per-Option? Compact Encoders for Closed-Set Decisions from 17 Million to 1 Billion Parameters</title></circle>
+<circle cx="472.1" cy="503.3" r="5" fill="#3a8dff" fill-opacity="0.85"><title>No Step at the Window Edge: Confusable Fake Facts in Matched Sliding-Window Hybrids</title></circle>
+<circle cx="492.1" cy="496.8" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Measuring and Reducing Cross-Vendor Mismatch in Language Models</title></circle>
+<circle cx="474.5" cy="558.0" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Mixing Matters: Evidence Position Bias Across Sequence Mixers in Long-Context Question Answering</title></circle>
+<circle cx="529.5" cy="504.0" r="5" fill="#3a8dff" fill-opacity="0.85"><title>You don&#x27;t need long context</title></circle>
+<circle cx="555.3" cy="511.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>RangeSWA: Training-Free Length Extrapolation for Continuous Diffusion Language Models</title></circle>
+<circle cx="588.3" cy="349.5" r="5" fill="#3a8dff" fill-opacity="0.85"><title>FOLD: Position-Free Far Memory with Local Order for Long-Context Speculative Decoding</title></circle>
+<circle cx="517.8" cy="350.7" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Adaptive Multi-Token Prediction: How far should we go?</title></circle>
+<circle cx="530.9" cy="504.0" r="5" fill="#3a8dff" fill-opacity="0.85"><title>DELA: Learning Controllable Edits for Diffusion Language Models</title></circle>
+<circle cx="601.2" cy="466.4" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Metacognitive Decoding: Efficient Inference for Diffusion Language Agents</title></circle>
+<circle cx="535.3" cy="398.1" r="5" fill="#3a8dff" fill-opacity="0.85"><title>Next Token or Vector? Learning How Far to Decode</title></circle>
+<circle cx="485.3" cy="518.9" r="5" fill="#3a8dff" fill-opacity="0.85"><title>PID-Gated Continual Prompt Adaptation Under Noisy Feedback</title></circle>
+<circle cx="335.6" cy="441.0" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Position-Wise Acceptance on Long 7B Generations (pruned: It is a low-novelty replication of src_a49ee28d that likely confirms a flat acceptance curve. It also needs custom per-token logging, and its interest score is the lowest (0.6).)</title></circle>
+<circle cx="344.1" cy="283.8" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Lossless vs Relaxed Acceptance Tradeoff (pruned: src_50a04cdb already covers training-free relaxed acceptance, and the PyTorch prototype is the least feasible (0.65) with noisy quality metrics at about 200 prompts.)</title></circle>
+<circle cx="319.8" cy="430.7" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Adaptive Draft Length Controller in llama.cpp (pruned: Its feasibility is only 0.6 because the C++ patch to llama.cpp could use up the four weekends. The area is crowded (576 recent matches, src_d18898d6, src_ce79f5a8), and the gain over the best fixed draft length may be small.)</title></circle>
+<circle cx="128.7" cy="433.5" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>4090 Draft-Model Sweep for a 7B (pruned: A pure measurement sweep that overlaps heavily with src_1c50a8d8 in a crowded area; a small draft-size comparison can be folded into the kept comparison study instead.)</title></circle>
+<circle cx="253.7" cy="222.3" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Build Speculative Decoding From Scratch in PyTorch (pruned: A learning build with low novelty (0.3) whose HF eager-mode overhead and KV-cache rollback risks may hide any speedup, so it does little to make the 7B faster within four weekends.)</title></circle>
+<circle cx="125.4" cy="485.5" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Tiny Draft vs No-Draft N-gram Lookup (pruned: The round-2 direction dir_1dd6374b covers the same draft vs n-gram comparison and adds harness references, paired-median measurement and a probe-based chooser, so this version is superseded.)</title></circle>
+<circle cx="312.7" cy="470.5" r="6" fill="#fff" stroke="#a1a1a1" stroke-width="1.4" stroke-dasharray="3 2"><title>Visual Explainer: When Does Drafting Pay Off? (pruned: The round-2 direction dir_b33513ef narrows and replaces it with an explicit schema and a no-patch fallback for per-token logging, so keeping both would duplicate work.)</title></circle>
+<circle cx="76.0" cy="505.7" r="22" fill="none" stroke="#00a85a" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="76.0" y="478.7" font-size="10.5" font-weight="700" fill="#00773a" text-anchor="middle" letter-spacing="0.08em">GAP</text>
+<circle cx="76.0" cy="505.7" r="11" fill="#00a85a" stroke="#fff" stroke-width="2"><title>Tiny Draft vs N-gram: Hybrid Chooser on 4090</title></circle>
+<text x="76.0" y="509.7" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<circle cx="294.6" cy="450.8" r="11" fill="#00a85a" stroke="#fff" stroke-width="2"><title>Interactive Draft-Length Explainer with Measured 4090 Points</title></circle>
+<text x="294.6" y="454.8" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="666" y="102" font-size="12" font-weight="650" fill="#171717">Legend</text>
+<circle cx="672" cy="122" r="5" fill="#3a8dff"/>
+<text x="686" y="126" font-size="11.5" fill="#6b6b6b">paper</text>
+<circle cx="672" cy="144" r="5" fill="#9c5cff"/>
+<text x="686" y="148" font-size="11.5" fill="#6b6b6b">repository</text>
+<circle cx="672" cy="166" r="5" fill="#da9100"/>
+<text x="686" y="170" font-size="11.5" fill="#6b6b6b">post / discussion</text>
+<circle cx="672" cy="188" r="5" fill="#209a84"/>
+<text x="686" y="192" font-size="11.5" fill="#6b6b6b">web</text>
+<circle cx="672" cy="210" r="7" fill="#00a85a" stroke="#00773a"/>
+<text x="686" y="214" font-size="11.5" fill="#6b6b6b">recommended direction</text>
+<circle cx="672" cy="232" r="7" fill="#7fd1a6" stroke="#00773a"/>
+<text x="686" y="236" font-size="11.5" fill="#6b6b6b">candidate direction</text>
+<circle cx="672" cy="254" r="7" fill="#fff" stroke="#a1a1a1" stroke-dasharray="3 2"/>
+<text x="686" y="258" font-size="11.5" fill="#6b6b6b">pruned direction</text>
+<text x="666" y="298" font-size="12" font-weight="650" fill="#171717">Directions</text>
+<circle cx="673" cy="316" r="8" fill="#00a85a"/>
+<text x="673" y="320" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="687" y="320" font-size="11.5" fill="#171717" font-weight="600">Interactive Draft-Length</text>
+<text x="687" y="334" font-size="11.5" fill="#171717" font-weight="600">Explainer with Measured</text>
+<circle cx="673" cy="354" r="8" fill="#00a85a"/>
+<text x="673" y="358" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<text x="687" y="358" font-size="11.5" fill="#171717" font-weight="600">Tiny Draft vs N-gram:</text>
+<text x="687" y="372" font-size="11.5" fill="#171717" font-weight="600">Hybrid Chooser on 4090</text>
+<text x="666" y="402" font-size="11" fill="#a1a1a1">66 sources · 7 pruned (hover)</text>
+</svg>

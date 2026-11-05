@@ -1,0 +1,16 @@
+{
+  "id": "smk_215fa7aa",
+  "seed_id": "sd_ad1b64d1",
+  "direction_id": "dir_6b691ae0",
+  "assumption": "llama.cpp's speculative example is installed locally and exposes draft-model and logging options, so accepted/rejected draft tokens can be captured to a file.",
+  "rationale": "The visual explainer needs per-token accept/reject data from real runs. If the binary is missing or has no verbose/log output, the plan needs a custom logging patch, which costs weekend time.",
+  "expected": "speculative_found=1, has_draft_flag=1 and (has_log_flag=1 or has_verbose_flag=1). Then per-round acceptance can likely be parsed from logs.",
+  "timeout_s": 40,
+  "status": "pending",
+  "stdout": "",
+  "stderr": "",
+  "metrics": {},
+  "verdict": "",
+  "created": "2026-11-04T09:37:03+00:00",
+  "finished": ""
+}

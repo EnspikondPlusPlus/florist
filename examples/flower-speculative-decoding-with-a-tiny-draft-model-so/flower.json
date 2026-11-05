@@ -1,0 +1,1878 @@
+{
+  "schema_version": "1.0",
+  "florist_version": "0.1.0",
+  "slug": "speculative-decoding-with-a-tiny-draft-model-so",
+  "seed": {
+    "id": "sd_ad1b64d1",
+    "slug": "speculative-decoding-with-a-tiny-draft-model-so",
+    "title": "Speculative decoding with a tiny draft model so…",
+    "prompt": "Speculative decoding with a tiny draft model so a 7B LLM runs noticeably faster on a single RTX 4090, without retraining the big model",
+    "tier": "personal",
+    "state": "picked",
+    "priority": 3,
+    "technologies": [
+      "llama.cpp",
+      "PyTorch"
+    ],
+    "related_papers": [],
+    "compost_ids": [],
+    "feed_ids": [],
+    "constraints": {
+      "time": "four weekends",
+      "compute": "1x RTX 4090, no cloud",
+      "skills": "",
+      "must_use": [],
+      "must_avoid": [],
+      "notes": ""
+    },
+    "followups": [],
+    "passive": false,
+    "budget": {
+      "max_rounds": 3,
+      "max_usd": 2.0
+    },
+    "origin": "manual",
+    "rounds_done": 2,
+    "created": "2026-11-04T09:35:30+00:00",
+    "updated": "2026-11-04T09:40:45+00:00",
+    "priority_since": "2026-11-04T09:35:30+00:00"
+  },
+  "constraints_snapshot": {
+    "seed": {
+      "time": "four weekends",
+      "compute": "1x RTX 4090, no cloud",
+      "skills": "",
+      "must_use": [],
+      "must_avoid": [],
+      "notes": ""
+    },
+    "compute": "1× consumer GPU (e.g. RTX 4090)",
+    "budget_usd_month": 0.0,
+    "hours_per_week": 8.0,
+    "goal_date": "",
+    "proficient_in": [
+      "Python",
+      "PyTorch",
+      "React"
+    ],
+    "wants_to_learn": [
+      "Rust",
+      "CUDA kernels"
+    ],
+    "work_preferences": [
+      "small steps",
+      "prefers simple baselines",
+      "likes visual explanations"
+    ]
+  },
+  "flower": {
+    "schema_version": "1.0",
+    "seed_id": "sd_ad1b64d1",
+    "version": 2,
+    "round": 2,
+    "idea": "Measure when speculative decoding with a tiny same-tokenizer draft model speeds up a 7B Q4 GGUF on one RTX 4090 in llama.cpp, lossless and with no retraining. The core is a small comparison of no speculation, tiny draft and draft-free n-gram lookup on three prompt sets (code edit, summarization, chat), logging tok/s, acceptance and VRAM to a shared JSON schema with the paired-median method. A cheap n-gram hit-rate probe on the prompt is tested as a mode chooser. A one-page React/D3 explainer, with sliders for acceptance, draft length and cost ratio, overlays the measured points on the predicted speedup curve and shows a per-token accept/reject strip. The explainer can start on mock data in weekend 1 and swap in real logs later.",
+    "findings": [
+      {
+        "text": "llama.cpp benchmark methodology on a single RTX 4090 already exists (paired-median, acceptance rate), but for a 27B target with MTP and n-gram, not a tiny draft on a dense 7B. The method is reusable but the numbers do not transfer.",
+        "evidence": [
+          {
+            "ref": "src_57b250f5",
+            "quote": "Pinned llama.cpp benchmark on a single RTX 4090 (WSL2) ... paired-median and acceptance-rate methodology"
+          },
+          {
+            "ref": "src_93860505",
+            "quote": "llama.cpp with MTP and n-gram speculation for Qwen3.8-27B on one RTX 4090"
+          }
+        ]
+      },
+      {
+        "text": "Harness tooling exists for sweeping drafts and n-gram lookup in llama.cpp and for finding break-even draft length, so a harness need not be written from scratch.",
+        "evidence": [
+          {
+            "ref": "src_8cbd221e",
+            "quote": "Sweeps draft models and n-gram lookup for llama.cpp and vLLM, reporting tok/s, acceptance rate and peak VRAM"
+          },
+          {
+            "ref": "src_c1cacee9",
+            "quote": "sweeping draft length and finding break-even. Supports llama.cpp"
+          }
+        ]
+      },
+      {
+        "text": "A speedup model exists showing longer speculation can hurt when acceptance falls below relative drafting cost. It can drive the explainer's sliders and be checked against measured points.",
+        "evidence": [
+          {
+            "ref": "src_ea354241",
+            "quote": "longer speculation can hurt when acceptance falls below relative drafting cost"
+          }
+        ]
+      },
+      {
+        "text": "The closest setups are a small-draft llama.cpp pairing on a laptop GPU and a draft-free variant on an RTX 4050. Neither reports 4090 numbers, so those are unknown until measured.",
+        "evidence": [
+          {
+            "ref": "src_04113093",
+            "quote": "Pairs a small draft with a larger target via llama.cpp on a laptop GPU"
+          },
+          {
+            "ref": "src_8321a05f",
+            "quote": "no draft model and no extra VRAM"
+          }
+        ]
+      },
+      {
+        "text": "Relaxed or approximate acceptance methods fit the no-retraining rule but break lossless output, so they are out of scope.",
+        "evidence": [
+          {
+            "ref": "src_8a20ea91",
+            "quote": "trades away the lossless guarantee"
+          },
+          {
+            "ref": "src_eb39deb4",
+            "quote": "It changes the output"
+          }
+        ]
+      },
+      {
+        "text": "Plain PyTorch accept/reject loops exist, a fallback for recording per-token traces if llama.cpp cannot log them without a patch.",
+        "evidence": [
+          {
+            "ref": "src_f95eb3d4",
+            "quote": "Useful for understanding the accept/reject loop before moving to llama.cpp"
+          },
+          {
+            "ref": "src_578a06b8",
+            "quote": "comparing standard autoregressive decoding with speculative decoding"
+          }
+        ]
+      }
+    ],
+    "directions": [
+      {
+        "title": "Tiny Draft vs N-gram: Hybrid Chooser on 4090",
+        "node_id": "dir_1dd6374b",
+        "pitch": "On one 7B Q4 GGUF, compare a tiny same-tokenizer draft, llama.cpp n-gram lookup and no speculation across three prompt sets of about 20 prompts. Log tok/s, acceptance and VRAM with the paired-median method, then test whether an n-gram hit-rate probe beats the best fixed mode. Do this first, because it produces the data for the explainer.",
+        "why_you": "It uses llama.cpp and Python, starts from simple baselines, fits 8 h/week on one 4090, and gives you the efficient-inference result you care about."
+      },
+      {
+        "title": "Interactive Draft-Length Explainer with Measured 4090 Points",
+        "node_id": "dir_b33513ef",
+        "pitch": "Build a static React/D3 page with sliders for acceptance, draft length and cost ratio. It plots measured points over the predicted speedup curve and shows one real accept/reject strip. Start with mock data against the shared JSON schema so it never waits on the benchmark.",
+        "why_you": "It plays to your React and data-viz skills and your liking for visual explanations, and the formula is simple enough to finish in small steps."
+      }
+    ],
+    "novelty": {
+      "closest_work": [
+        {
+          "ref": "src_8cbd221e",
+          "title": "amagilabs/amagi-draftbench",
+          "how_it_differs": "A general sweep tool. It has no task-type split on a 7B 4090, no mode-choice probe and no interactive explainer."
+        },
+        {
+          "ref": "src_57b250f5",
+          "title": "kuotunyu/qwen38-speculative-decoding-benchmark",
+          "how_it_differs": "Same GPU and runtime, but a 27B target with MTP and n-gram, not a tiny draft on a dense 7B."
+        },
+        {
+          "ref": "src_ea354241",
+          "title": "A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding",
+          "how_it_differs": "Gives the speedup formula, but no interactive tool and no overlay of measured 4090 points."
+        }
+      ],
+      "gap": "A measured tiny-draft vs n-gram vs baseline comparison on a dense 7B Q4 on one 4090, split by task type, with a hit-rate probe chooser and an interactive explainer with the measured points overlaid. Retrieval was weak, and overlap with src_1c50a8d8 is unverified, so the gap is tentative."
+    },
+    "risks": [
+      "N-gram lookup may simply win on code and lose elsewhere, an obvious result.",
+      "The probe rule may add little over the best fixed mode.",
+      "No suitable same-tokenizer tiny draft GGUF may exist for the chosen 7B.",
+      "llama.cpp may not log per-token accept/reject without a patch, so a PyTorch trace may be needed.",
+      "Overlap with src_1c50a8d8 is unchecked, and retrieval was weak."
+    ],
+    "open_questions": [
+      "Which 7B and which same-tokenizer tiny draft GGUF should be used?",
+      "Does the llama.cpp speculative example log per-token acceptance without a patch?",
+      "Does src_1c50a8d8 already cover n-gram lookup or task-type splits?",
+      "Does the speedup formula in src_ea354241 match the measured runs?"
+    ],
+    "first_steps": [
+      "Pick a 7B Q4 GGUF and a tiny same-tokenizer draft, and confirm both load in llama.cpp on the 4090.",
+      "Measure no-speculation tok/s and VRAM on one prompt.",
+      "Read the READMEs of src_8cbd221e and src_c1cacee9 and decide whether to reuse a harness or write a small script.",
+      "Fix the JSON log schema and write the three prompt sets (code edit, summarization, chat).",
+      "Build the explainer page with mock data and the speedup formula from src_ea354241."
+    ],
+    "success_criteria": [
+      "A table of tok/s, acceptance and VRAM for baseline, tiny draft and n-gram on 3 task types, all on the 4090.",
+      "Greedy outputs match the baseline, confirming lossless output.",
+      "The best mode shows a measured speedup on at least one task type, or the report states that none does.",
+      "The hit-rate probe is tested against the best fixed mode and the result is reported either way.",
+      "The explainer loads the real JSON and shows 3-5 measured points on the curve plus one accept/reject strip."
+    ],
+    "stability": 0.216,
+    "visuals": [
+      "vis_ad1b64d1_concept",
+      "vis_ad1b64d1_graph",
+      "vis_ad1b64d1_landscape",
+      "vis_ad1b64d1_scores"
+    ],
+    "updated": "2026-11-04T09:39:54+00:00"
+  },
+  "handoff": {
+    "objective": "On one RTX 4090, measure when lossless speculative decoding with a tiny same-tokenizer draft model (or draft-free n-gram lookup) speeds up a 7B Q4 GGUF in llama.cpp with no retraining. Then show the results in a one-page React/D3 explainer with measured points overlaid on the predicted speedup curve.",
+    "metric": "Decode tokens/s of the best speculative mode divided by no-speculation tokens/s (paired median, greedy, identical outputs), reported per task type (code edit, summarization, chat). Maximize. Acceptance rate and peak VRAM are logged as secondary numbers.",
+    "metric_direction": "maximize",
+    "baseline": "llama.cpp with no speculation on the chosen 7B Q4 GGUF, greedy decoding, same prompts and same output length. Next baseline: llama.cpp n-gram lookup (draft-free, no extra VRAM; see zero-vram-spec, src_8321a05f). Reuse the paired-median method from kuotunyu/qwen38-speculative-decoding-benchmark (src_57b250f5).",
+    "may_change": [
+      "Draft model choice and size (a tiny same-tokenizer GGUF)",
+      "Draft length / max draft tokens and min acceptance probability flags",
+      "N-gram lookup parameters",
+      "The probe rule: n-gram hit-rate threshold and probe length",
+      "Own benchmark script, prompt files and the explainer's React/D3 code",
+      "Log files that follow the JSON schema"
+    ],
+    "must_not_change": [
+      "The target 7B model and its quantization once chosen",
+      "Greedy sampling and the lossless requirement (outputs must match the baseline)",
+      "Prompt sets and output length after they are fixed in weekend 1",
+      "The JSON log schema after it is fixed in weekend 1 (additive changes only)",
+      "Metric computation code, once validated",
+      "Hardware: a single RTX 4090 with no cloud use"
+    ],
+    "constraints": [
+      "Compute: 1x RTX 4090, no cloud, API budget $0",
+      "Time: four weekends at about 8 h/week, so about 32 h total",
+      "Lossless only: no relaxed acceptance (src_8a20ea91) and no retraining or fine-tuning of a draft",
+      "No patched llama.cpp. If per-token accept/reject cannot be logged, record one trace with the PyTorch loop (src_f95eb3d4)",
+      "Keep it to 3 prompt sets of about 20 prompts and at most 2 draft sizes",
+      "No MTP; the explainer is a static page with no live server"
+    ],
+    "background": "No source reports tiny-draft numbers for a dense 7B on a 4090, so those results are unknown until measured. The closest runtime and GPU match is kuotunyu/qwen38-speculative-decoding-benchmark (src_57b250f5), which uses a 27B target with MTP and n-gram. It gives a reusable paired-median and acceptance method, but its numbers do not transfer. Harness references are amagilabs/amagi-draftbench (src_8cbd221e), which sweeps drafts and n-gram lookup and reports tok/s, acceptance and VRAM, and amanzainal/specdecode-roi (src_c1cacee9), which sweeps draft length and finds break-even. The paper \"A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding\" (src_ea354241) gives a speedup model: longer speculation hurts when acceptance falls below relative drafting cost. That model drives the explainer's sliders and is checked against the measured runs. zero-vram-spec (src_8321a05f) is the draft-free n-gram reference. Overlap with src_1c50a8d8 is unverified, so the novelty claim is tentative.",
+    "preferences": [
+      "Small steps, with one thing working before the next starts",
+      "Simple baselines first",
+      "Visual explanations: plots and the explainer page matter, not only tables",
+      "Python and PyTorch for scripts, React for the page; Rust and CUDA are optional learning goals and are not needed here"
+    ],
+    "milestones": [
+      {
+        "title": "Weekend 1: setup, baseline, schema and mock explainer",
+        "goal": "Models load, baseline is measured, JSON schema is fixed and the explainer runs on mock data.",
+        "tasks": [
+          "Pick a 7B Q4 GGUF and a tiny same-tokenizer draft GGUF; confirm both load in llama.cpp on the 4090",
+          "Measure no-speculation tok/s and VRAM",
+          "Read the READMEs of src_8cbd221e and src_c1cacee9 and decide whether to reuse a harness or write a small script",
+          "Fix the JSON log schema and write the three prompt sets",
+          "Build the explainer with mock data and the formula from src_ea354241"
+        ],
+        "est_hours": 9.0
+      },
+      {
+        "title": "Weekend 2: full comparison sweep",
+        "goal": "Table of tok/s, acceptance and VRAM for baseline, tiny draft and n-gram on 3 task types.",
+        "tasks": [
+          "Run paired-median sweeps over all prompts for each mode",
+          "Sweep draft length (and a second draft size if one exists)",
+          "Check greedy outputs match the baseline",
+          "Check whether llama.cpp logs per-token accept/reject; if not, plan the PyTorch trace"
+        ],
+        "est_hours": 8.0
+      },
+      {
+        "title": "Weekend 3: hit-rate probe chooser",
+        "goal": "Know whether a cheap n-gram probe beats the best fixed mode.",
+        "tasks": [
+          "Compute n-gram hit rate on a short prompt prefix for every prompt",
+          "Fit a simple threshold rule that picks a mode",
+          "Compare the rule to the best fixed mode on tok/s, using held-out prompts or cross-validation",
+          "Report the result either way"
+        ],
+        "est_hours": 7.0
+      },
+      {
+        "title": "Weekend 4: connect real data and write up",
+        "goal": "Explainer shows real measured points and one accept/reject strip, and a short report exists.",
+        "tasks": [
+          "Load the real JSON into the explainer and overlay 3-5 measured points on the predicted curve",
+          "Record one accept/reject trace (llama.cpp log or PyTorch loop) and render the strip",
+          "Compare the formula with the measured points and note where they diverge",
+          "Write a one-page summary with the results table, the plots, the risks and what remains unknown"
+        ],
+        "est_hours": 8.0
+      }
+    ],
+    "first_session": [
+      "Download a 7B Q4 GGUF and a tiny same-tokenizer draft GGUF; check that the tokenizers match (30 min)",
+      "Build or confirm a CUDA llama.cpp build and run llama-cli once on the 4090 (45 min)",
+      "Measure no-speculation tok/s and VRAM on one prompt (30 min)",
+      "Skim the READMEs of amagi-draftbench and specdecode-roi and note which flags and outputs to reuse (45 min)",
+      "Draft the JSON log schema (mode, task, prompt_id, tok/s, accepted, drafted, draft_n, vram_mb, output_hash) (30 min)"
+    ],
+    "tools": [
+      "llama.cpp (llama-cli, llama-speculative, llama-server, n-gram lookup)",
+      "amagilabs/amagi-draftbench (src_8cbd221e)",
+      "amanzainal/specdecode-roi (src_c1cacee9)",
+      "kuotunyu/qwen38-speculative-decoding-benchmark (src_57b250f5), for the method",
+      "suryavanshi/speculative_decoding (src_f95eb3d4), a PyTorch fallback for traces",
+      "Python, PyTorch, nvidia-smi",
+      "React and D3 (Vite static page)"
+    ],
+    "conventions": [
+      "Change one thing at a time and commit after each working step",
+      "Use one fixed run command per experiment, driven by a config file",
+      "Append every run to a single results JSONL/CSV that follows the shared schema; never overwrite",
+      "Always re-run the no-speculation baseline in the same session and report paired medians",
+      "Use greedy decoding and store an output hash to verify losslessness",
+      "Use a fixed seed, warm up first and pin the llama.cpp commit",
+      "Mark mock data clearly in the explainer so it is never confused with real results"
+    ],
+    "first_experiments": [
+      "Baseline: no speculation on all 3 prompt sets, logging tok/s, VRAM and the output hash.",
+      "N-gram lookup (draft-free) with default settings on the same prompts, checking acceptance, speedup and output equality.",
+      "Tiny draft model with a draft-length sweep (e.g. 2, 4, 8, 16) on the same prompts, then compare measured speedup against the predicted curve from src_ea354241.",
+      "N-gram hit-rate probe on each prompt, then test a threshold rule against the best fixed mode."
+    ]
+  },
+  "directions": [
+    {
+      "id": "dir_f821de21",
+      "seed_id": "sd_ad1b64d1",
+      "round": 1,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "4090 Draft-Model Sweep for a 7B",
+      "summary": "Measure lossless speculative decoding in llama.cpp on the RTX 4090 with a 7B GGUF target and several tiny drafts (e.g. ~100M–1B, same tokenizer family) at a few quantizations. Use the existing sweep harness to record tok/s, acceptance rate and VRAM across draft lengths, on 3 prompt types (chat, code, summarization). Output is a table and a recommended config. No training.",
+      "url": "",
+      "score": 0.597,
+      "reason": "A pure measurement sweep that overlaps heavily with src_1c50a8d8 in a crowded area; a small draft-size comparison can be folded into the kept comparison study instead.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Measure lossless speculative decoding in llama.cpp on the RTX 4090 with a 7B GGUF target and several tiny drafts (e.g. ~100M–1B, same tokenizer family) at a few quantizations. Use the existing sweep harness to record tok/s, acceptance rate and VRAM across draft lengths, on 3 prompt types (chat, code, summarization). Output is a table and a recommended config. No training.",
+        "framing": "Benchmark/measurement study that fills the documented gap: no 4090 numbers exist in the sources.",
+        "technologies": [
+          "llama.cpp",
+          "Python",
+          "amagi-draftbench"
+        ],
+        "scope": "In: 2–4 drafts, one 7B target, draft length 1–16, 3 prompt sets. Out: fine-tuning drafts, vLLM, tree drafting.",
+        "evolves": "",
+        "inspired_by": [
+          "src_8cbd221e",
+          "src_c1cacee9",
+          "src_04113093"
+        ],
+        "scores": {
+          "novelty": 0.3,
+          "feasibility": 0.85,
+          "crowdedness": 0.6,
+          "interest": 0.6,
+          "interest_model": 0.6,
+          "interest_learned": 0.5,
+          "overall": 0.597
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.3,
+            "feasibility": 0.85,
+            "crowdedness": 0.6,
+            "interest": 0.6,
+            "interest_model": 0.6,
+            "interest_learned": 0.5,
+            "overall": 0.597
+          },
+          "closest_work": [
+            {
+              "ref": "src_1c50a8d8",
+              "title": "Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware",
+              "how_it_differs": "Empirical study of speculative decoding on consumer hardware, so it overlaps heavily. Its exact GPU, models and llama.cpp coverage are not visible in the context. The 4090 + 7B GGUF draft-size/quantization sweep may still be new."
+            },
+            {
+              "ref": "src_e7ba11cb",
+              "title": "When Does Better Acceptance Pay? A Controlled Study of Speculative Decoding",
+              "how_it_differs": "Studies acceptance vs latency by retraining drafters on shared targets. This direction does no training and sweeps off-the-shelf tiny drafts in llama.cpp."
+            }
+          ],
+          "gap": "A reproducible 4090 table for a 7B GGUF target with several tiny drafts, quantizations and draft lengths across chat, code and summarization. The sources do not show it, but the abstract of src_1c50a8d8 is truncated, so that is unconfirmed.",
+          "feasibility_notes": "Binding constraint: finding tiny drafts that share the target's tokenizer. The sweep harness is already available, so a first table is reachable in about 2 weekends.",
+          "risks": [
+            "src_1c50a8d8 may already cover much of the 4090 numbers",
+            "Few tiny drafts share the 7B's tokenizer",
+            "Results are a measurement, not a new idea"
+          ],
+          "smoke_worthy": "llama.cpp's speculative example runs a 7B GGUF target with a small same-tokenizer draft on the 4090 and reports acceptance rate.",
+          "crowd": {
+            "total": 92766,
+            "recent": 24409,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_952812ce"
+        },
+        "rank": 3,
+        "pruned_round": 1
+      },
+      "created": "2026-11-04T09:36:24+00:00"
+    },
+    {
+      "id": "dir_ee9b3624",
+      "seed_id": "sd_ad1b64d1",
+      "round": 1,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Build Speculative Decoding From Scratch in PyTorch",
+      "summary": "Implement the accept/reject loop in plain PyTorch with Hugging Face models, verify the output distribution matches the target (greedy exact match, sampling via a statistical test), then measure speedup on the 4090. Then compare to llama.cpp's built-in result to see where overhead differs.",
+      "url": "",
+      "score": 0.67,
+      "reason": "A learning build with low novelty (0.3) whose HF eager-mode overhead and KV-cache rollback risks may hide any speedup, so it does little to make the 7B faster within four weekends.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Implement the accept/reject loop in plain PyTorch with Hugging Face models, verify the output distribution matches the target (greedy exact match, sampling via a statistical test), then measure speedup on the 4090. Then compare to llama.cpp's built-in result to see where overhead differs.",
+        "framing": "Simple-baseline-first learning build; correctness before speed.",
+        "technologies": [
+          "PyTorch",
+          "Hugging Face Transformers",
+          "llama.cpp"
+        ],
+        "scope": "In: greedy and sampled lossless decoding, one draft/target pair, speedup vs draft length. Out: trees, batching, custom kernels.",
+        "evolves": "",
+        "inspired_by": [
+          "src_578a06b8",
+          "src_f95eb3d4",
+          "src_741b92f5"
+        ],
+        "scores": {
+          "novelty": 0.3,
+          "feasibility": 0.8,
+          "crowdedness": 0.4,
+          "interest": 0.8,
+          "interest_model": 0.8,
+          "interest_learned": 0.5,
+          "overall": 0.67
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.3,
+            "feasibility": 0.8,
+            "crowdedness": 0.4,
+            "interest": 0.8,
+            "interest_model": 0.8,
+            "interest_learned": 0.5,
+            "overall": 0.67
+          },
+          "closest_work": [
+            {
+              "ref": "src_ea354241",
+              "title": "A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding",
+              "how_it_differs": "Provides a speedup cost model showing that long drafts can hurt. It does not give a from-scratch PyTorch implementation, a correctness test, or a comparison with llama.cpp."
+            },
+            {
+              "ref": "src_1c50a8d8",
+              "title": "Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware",
+              "how_it_differs": "Measures consumer-hardware overhead. This direction is a learning build that checks exact distribution equivalence and compares HF overhead with llama.cpp."
+            }
+          ],
+          "gap": "A small, verified from-scratch implementation with a statistical losslessness test and an overhead comparison against llama.cpp. It is mainly a learning build, so little new research is claimed.",
+          "feasibility_notes": "Binding constraint: HF generate overhead and KV-cache rollback. The algorithm is simple and fits the user's PyTorch skills. A 7B in fp16 fits on 24GB with a small draft.",
+          "risks": [
+            "HF eager-mode overhead may hide any speedup",
+            "KV-cache rollback bugs",
+            "The statistical test for sampling is subtle"
+          ],
+          "smoke_worthy": "Greedy speculative decoding in HF reproduces the target's exact output on 20 prompts.",
+          "crowd": {
+            "total": 186,
+            "recent": 119,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_c5602be4"
+        },
+        "rank": 4,
+        "pruned_round": 1
+      },
+      "created": "2026-11-04T09:36:24+00:00"
+    },
+    {
+      "id": "dir_6b691ae0",
+      "seed_id": "sd_ad1b64d1",
+      "round": 1,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Visual Explainer: When Does Drafting Pay Off?",
+      "summary": "Build an interactive React page where sliders for acceptance rate, draft length and draft/target cost ratio show the expected speedup curve and break-even point. Overlay real measured points from the 4090 runs, plus a per-token view of accepted and rejected draft tokens from a real generation.",
+      "url": "",
+      "score": 0.752,
+      "reason": "The round-2 direction dir_b33513ef narrows and replaces it with an explicit schema and a no-patch fallback for per-token logging, so keeping both would duplicate work.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Build an interactive React page where sliders for acceptance rate, draft length and draft/target cost ratio show the expected speedup curve and break-even point. Overlay real measured points from the 4090 runs, plus a per-token view of accepted and rejected draft tokens from a real generation.",
+        "framing": "Visual explainer plus data-viz tied to measured data; develops the cost model into something interactive.",
+        "technologies": [
+          "React",
+          "D3",
+          "Python",
+          "llama.cpp"
+        ],
+        "scope": "In: one page, speedup formula, logged runs loaded from JSON, token accept/reject timeline. Out: live inference server.",
+        "evolves": "",
+        "inspired_by": [
+          "src_ea354241",
+          "src_c1cacee9",
+          "src_ce1fb3d6"
+        ],
+        "scores": {
+          "novelty": 0.55,
+          "feasibility": 0.85,
+          "crowdedness": 0.5,
+          "interest": 0.9,
+          "interest_model": 0.9,
+          "interest_learned": 0.5,
+          "overall": 0.752
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.55,
+            "feasibility": 0.85,
+            "crowdedness": 0.5,
+            "interest": 0.9,
+            "interest_model": 0.9,
+            "interest_learned": 0.5,
+            "overall": 0.752
+          },
+          "closest_work": [
+            {
+              "ref": "src_ea354241",
+              "title": "A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding",
+              "how_it_differs": "Gives the unified speedup analysis formula but no interactive tool or per-token accept/reject view overlaid with real 4090 data."
+            }
+          ],
+          "gap": "An interactive explainer with sliders that overlays measured 4090 points and shows per-token accept/reject. None of the retrieved sources do this. The retrieval hits for the direction were mostly off-topic, so this is weak evidence.",
+          "feasibility_notes": "Binding constraint: needing real logged runs from another direction. The React/D3 work is within the user's skills, and the speedup formula is simple.",
+          "risks": [
+            "Depends on measurements from other directions",
+            "Logging per-token accept/reject from llama.cpp may need patching",
+            "Educational value is hard to measure"
+          ],
+          "smoke_worthy": "llama.cpp can log which draft tokens were accepted per round into a parseable file.",
+          "crowd": {
+            "total": 555976,
+            "recent": 140497,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_844ab6ec"
+        },
+        "rank": 3,
+        "deepen": "Fix the JSON schema for logged runs so it matches the comparison study's output. Check whether llama.cpp's speculative example can log per-token accept/reject without a patch. Verify the speedup formula against src_ea354241. Keep the scope to one page and no live server.",
+        "pruned_round": 2
+      },
+      "created": "2026-11-04T09:36:24+00:00"
+    },
+    {
+      "id": "dir_36a1ec02",
+      "seed_id": "sd_ad1b64d1",
+      "round": 1,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Tiny Draft vs No-Draft N-gram Lookup",
+      "summary": "Compare a tiny draft model against draft-free n-gram lookup speculation on the same 7B and 4090, across task types where repetition differs (code edits, summarization, open chat). Report speedup, VRAM cost and when each wins, and test a simple hybrid choice rule.",
+      "url": "",
+      "score": 0.712,
+      "reason": "The round-2 direction dir_1dd6374b covers the same draft vs n-gram comparison and adds harness references, paired-median measurement and a probe-based chooser, so this version is superseded.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Compare a tiny draft model against draft-free n-gram lookup speculation on the same 7B and 4090, across task types where repetition differs (code edits, summarization, open chat). Report speedup, VRAM cost and when each wins, and test a simple hybrid choice rule.",
+        "framing": "Comparative study with a cheap baseline, asking whether a draft model is worth its VRAM.",
+        "technologies": [
+          "llama.cpp",
+          "Python"
+        ],
+        "scope": "In: tiny draft vs n-gram lookup, 3 task types, lossless only. Out: training, self-speculative methods needing model changes.",
+        "evolves": "",
+        "inspired_by": [
+          "src_8321a05f",
+          "src_8cbd221e",
+          "src_ea354241"
+        ],
+        "scores": {
+          "novelty": 0.5,
+          "feasibility": 0.85,
+          "crowdedness": 0.3,
+          "interest": 0.7,
+          "interest_model": 0.7,
+          "interest_learned": 0.5,
+          "overall": 0.712
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.5,
+            "feasibility": 0.85,
+            "crowdedness": 0.3,
+            "interest": 0.7,
+            "interest_model": 0.7,
+            "interest_learned": 0.5,
+            "overall": 0.712
+          },
+          "closest_work": [
+            {
+              "ref": "src_1c50a8d8",
+              "title": "Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware",
+              "how_it_differs": "Studies speculative decoding on consumer hardware, but the context does not show a head-to-head against draft-free n-gram lookup with a hybrid selection rule."
+            }
+          ],
+          "gap": "A direct comparison of a tiny draft model against n-gram lookup on a 4090, split by task repetition, with a simple hybrid rule. The retrieved works do not cover it, but the retrieval was weak.",
+          "feasibility_notes": "Binding constraint: none severe. llama.cpp supports both modes, so a first result is reachable in about 1 weekend.",
+          "risks": [
+            "N-gram lookup may simply win on code and lose elsewhere, giving an obvious result",
+            "Hybrid rule gains may be small",
+            "Weak retrieval means prior work may be missed"
+          ],
+          "smoke_worthy": "llama.cpp's n-gram lookup mode runs on the same 7B GGUF and gives a measurable speedup on a code-edit prompt.",
+          "crowd": {
+            "total": 128,
+            "recent": 41,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_b506e2de"
+        },
+        "rank": 4,
+        "deepen": "Pick the tiny draft that shares the 7B's tokenizer and confirm it exists as a GGUF. Define the 3 prompt sets (code edit, summarization, chat). Log tok/s, acceptance rate and VRAM per run to JSON. Test whether a simple rule (for example, prompt repetition or a short probe of n-gram hit rate) picks the better mode. Check src_1c50a8d8 for overlap.",
+        "pruned_round": 2
+      },
+      "created": "2026-11-04T09:36:24+00:00"
+    },
+    {
+      "id": "dir_81f76a22",
+      "seed_id": "sd_ad1b64d1",
+      "round": 1,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Lossless vs Relaxed Acceptance Tradeoff",
+      "summary": "Add a relaxed acceptance threshold (accept a draft token if the target gives it enough probability) on top of the tiny-draft setup, via a PyTorch prototype. Plot speedup against output quality (agreement with the exact output and a small task score) to show how much speed the lossless guarantee costs.",
+      "url": "",
+      "score": 0.557,
+      "reason": "src_50a04cdb already covers training-free relaxed acceptance, and the PyTorch prototype is the least feasible (0.65) with noisy quality metrics at about 200 prompts.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Add a relaxed acceptance threshold (accept a draft token if the target gives it enough probability) on top of the tiny-draft setup, via a PyTorch prototype. Plot speedup against output quality (agreement with the exact output and a small task score) to show how much speed the lossless guarantee costs.",
+        "framing": "Small study that tests a training-free idea and states the quality cost directly.",
+        "technologies": [
+          "PyTorch",
+          "Hugging Face Transformers",
+          "llama.cpp"
+        ],
+        "scope": "In: one threshold rule, one pair, ~200 prompts, a simple quality metric. Out: tree methods, any training.",
+        "evolves": "",
+        "inspired_by": [
+          "src_8a20ea91",
+          "src_eb39deb4",
+          "src_578a06b8"
+        ],
+        "scores": {
+          "novelty": 0.3,
+          "feasibility": 0.65,
+          "crowdedness": 0.4,
+          "interest": 0.6,
+          "interest_model": 0.6,
+          "interest_learned": 0.5,
+          "overall": 0.557
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.3,
+            "feasibility": 0.65,
+            "crowdedness": 0.4,
+            "interest": 0.6,
+            "interest_model": 0.6,
+            "interest_learned": 0.5,
+            "overall": 0.557
+          },
+          "closest_work": [
+            {
+              "ref": "src_50a04cdb",
+              "title": "Acceptance Is Not Speed: Length Inflation in Training-Free Lossy Speculative Decoding",
+              "how_it_differs": "Directly studies training-free relaxed verification and shows that acceptance can overstate speed. This direction would be a smaller replication with a simple threshold rule on a 4090, with quality measured by agreement and a task score."
+            }
+          ],
+          "gap": "Only a small-scale replication on one pair with a simple threshold and quality plots. A near-identical recent paper exists, so the gap is small.",
+          "feasibility_notes": "Binding constraint: measuring quality for about 200 prompts and the HF prototype's overhead. The compute is fine.",
+          "risks": [
+            "src_50a04cdb already covers the main finding",
+            "Output length inflation can confound speed",
+            "Quality metrics are noisy at 200 prompts"
+          ],
+          "smoke_worthy": "A relaxed threshold in the PyTorch loop raises accepted tokens per round on 10 prompts.",
+          "crowd": {
+            "total": 203,
+            "recent": 95,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_e7f56550"
+        },
+        "rank": 5,
+        "pruned_round": 1
+      },
+      "created": "2026-11-04T09:36:24+00:00"
+    },
+    {
+      "id": "dir_b33513ef",
+      "seed_id": "sd_ad1b64d1",
+      "round": 2,
+      "kind": "direction",
+      "status": "top",
+      "title": "Interactive Draft-Length Explainer with Measured 4090 Points",
+      "summary": "Evolve the explainer into a single React/D3 page with sliders for acceptance, draft length and draft/target cost ratio. It loads JSON logs from the comparison study and plots measured points over the predicted speedup curve. It adds a per-token accept/reject strip taken from one real generation. Check the formula against the cost model in src_ea354241.",
+      "url": "",
+      "score": 0.74,
+      "reason": "Highest interest (0.9) with feasibility 0.8. It is the narrowed version of the explainer, with a shared JSON schema and a PyTorch-trace fallback, so it can't stall on the study. A mock-data version can be built in weekend 1.",
+      "parents": [
+        "dir_6b691ae0"
+      ],
+      "data": {
+        "description": "Evolve the explainer into a single React/D3 page with sliders for acceptance, draft length and draft/target cost ratio. It loads JSON logs from the comparison study and plots measured points over the predicted speedup curve. It adds a per-token accept/reject strip taken from one real generation. Check the formula against the cost model in src_ea354241.",
+        "framing": "Narrowed visual explainer: data-viz that depends on one fixed JSON schema shared with the comparison study, so it can't stall waiting for other work. Matches the user's preference for visual explanations.",
+        "technologies": [
+          "React",
+          "D3",
+          "Python",
+          "llama.cpp"
+        ],
+        "scope": "In: one static page, schema shared with the study, 3-5 measured points, one accept/reject timeline. Out: live server, patched llama.cpp (if per-token logging needs a patch, use a recorded trace from the PyTorch loop in src_f95eb3d4).",
+        "evolves": "dir_6b691ae0",
+        "inspired_by": [
+          "src_ea354241",
+          "src_f95eb3d4",
+          "src_57b250f5"
+        ],
+        "scores": {
+          "novelty": 0.5,
+          "feasibility": 0.8,
+          "crowdedness": 0.4,
+          "interest": 0.9,
+          "interest_model": 0.9,
+          "interest_learned": 0.5,
+          "overall": 0.74
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.5,
+            "feasibility": 0.8,
+            "crowdedness": 0.4,
+            "interest": 0.9,
+            "interest_model": 0.9,
+            "interest_learned": 0.5,
+            "overall": 0.74
+          },
+          "closest_work": [
+            {
+              "ref": "src_8a312966",
+              "title": "Phase-Scoped Query Layouts for Reference-Constrained Speculative Decoding",
+              "how_it_differs": "Covers speculative verification on a quantized target in a custom engine; it is not an interactive explainer or a viz of measured points."
+            }
+          ],
+          "gap": "An interactive page with sliders over acceptance, draft length and cost ratio, overlaid with measured 4090 points and a per-token accept/reject strip. No retrieved source does this, but the retrieval was mostly off-topic (visualization papers unrelated to speculative decoding), so this is weak evidence. The cost model in src_ea354241 is referenced by the direction but is not among this direction's candidates, so I could not check it here.",
+          "feasibility_notes": "Binding constraint: it needs JSON logs from the comparison study (dir_1dd6374b) or a PyTorch trace. React/D3 is within the user's skills and the formula is simple. A mock-data version can be built in the first weekend.",
+          "risks": [
+            "Depends on measurements from the comparison study",
+            "Per-token logging may need a PyTorch trace instead of llama.cpp",
+            "Educational value is hard to measure"
+          ],
+          "smoke_worthy": "Build the speedup curve from the formula with mock JSON in the agreed schema and confirm it renders with sliders.",
+          "crowd": {
+            "total": 139461,
+            "recent": 27547,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_320ae09a"
+        },
+        "rank": 1,
+        "deepen": "Fix the JSON schema together with dir_1dd6374b. Check the speedup formula against src_ea354241. Confirm whether llama.cpp's speculative example logs per-token accept/reject without a patch. If it doesn't, record a trace from the PyTorch loop (src_f95eb3d4). Build the mock-data page first."
+      },
+      "created": "2026-11-04T09:38:46+00:00"
+    },
+    {
+      "id": "dir_1dd6374b",
+      "seed_id": "sd_ad1b64d1",
+      "round": 2,
+      "kind": "direction",
+      "status": "top",
+      "title": "Tiny Draft vs N-gram: Hybrid Chooser on 4090",
+      "summary": "Evolve the comparison study. On one 7B Q4 GGUF and the 4090, run a tiny same-tokenizer draft and llama.cpp n-gram lookup on three prompt sets (code edit, summarization, chat). Log tok/s, acceptance and VRAM using the paired-median method from src_57b250f5. Then test a cheap rule that picks a mode from a short n-gram hit-rate probe on the prompt. Use src_8cbd221e and src_c1cacee9 as harness referen",
+      "url": "",
+      "score": 0.725,
+      "reason": "It supplies the real 4090 measurements the explainer needs. It is feasible (0.8) and the field is uncrowded. It reuses existing harness references and adds a concrete probe-based chooser. It supersedes dir_36a1ec02.",
+      "parents": [
+        "dir_36a1ec02"
+      ],
+      "data": {
+        "description": "Evolve the comparison study. On one 7B Q4 GGUF and the 4090, run a tiny same-tokenizer draft and llama.cpp n-gram lookup on three prompt sets (code edit, summarization, chat). Log tok/s, acceptance and VRAM using the paired-median method from src_57b250f5. Then test a cheap rule that picks a mode from a short n-gram hit-rate probe on the prompt. Use src_8cbd221e and src_c1cacee9 as harness references rather than writing a harness from scratch.",
+        "framing": "Comparative study with a simple baseline first: does the draft model earn its VRAM, and can a probe choose correctly?",
+        "technologies": [
+          "llama.cpp",
+          "Python"
+        ],
+        "scope": "In: lossless only, 3 prompt sets of about 20 prompts, 2 draft sizes if a GGUF exists, JSON logs. Out: training a draft, relaxed acceptance, MTP.",
+        "evolves": "dir_36a1ec02",
+        "inspired_by": [
+          "src_57b250f5",
+          "src_8cbd221e",
+          "src_c1cacee9",
+          "src_f402fce4",
+          "src_8321a05f"
+        ],
+        "scores": {
+          "novelty": 0.5,
+          "feasibility": 0.8,
+          "crowdedness": 0.2,
+          "interest": 0.75,
+          "interest_model": 0.75,
+          "interest_learned": 0.5,
+          "overall": 0.725
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.5,
+            "feasibility": 0.8,
+            "crowdedness": 0.2,
+            "interest": 0.75,
+            "interest_model": 0.75,
+            "interest_learned": 0.5,
+            "overall": 0.725
+          },
+          "closest_work": [
+            {
+              "ref": "src_9aef1bb0",
+              "title": "Measuring and Reducing Cross-Vendor Mismatch in Language Models",
+              "how_it_differs": "Studies logit mismatch across GPU vendors. It is not about speculative decoding speed, n-gram lookup, or mode selection."
+            }
+          ],
+          "gap": "A head-to-head of a tiny same-tokenizer draft against llama.cpp n-gram lookup on one 7B Q4 and a 4090, split by task type, with a cheap n-gram hit-rate probe as a mode chooser. The retrieved candidates are all off-topic, so none overlaps. The nearby work src_1c50a8d8 and the harness references src_8cbd221e, src_c1cacee9 and src_57b250f5 are named in the direction or in earlier checks but are not in this context's candidate list, so overlap with them is unverified. The recent crowdedness count is low (175 recent matches).",
+          "feasibility_notes": "Binding constraint: a small same-tokenizer draft GGUF for the chosen 7B must exist. Both modes are supported by llama.cpp. A first sweep is reachable in about one weekend, and the probe rule fits in the remaining weekends.",
+          "risks": [
+            "N-gram may win on code and lose elsewhere, giving an obvious result",
+            "The probe rule may add little over the best fixed mode",
+            "Overlap with src_1c50a8d8 is unchecked"
+          ],
+          "smoke_worthy": "Confirm that a same-tokenizer tiny draft GGUF exists for the chosen 7B and that llama.cpp runs both draft and n-gram modes with logged acceptance.",
+          "crowd": {
+            "total": 933,
+            "recent": 175,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_8c1d179a"
+        },
+        "rank": 2,
+        "deepen": "Confirm that a small same-tokenizer draft GGUF exists for the chosen 7B Q4. Check overlap with src_1c50a8d8. Run a first sweep on 3 prompt sets in weekend 1, logging tok/s, acceptance and VRAM to the shared schema. Then test whether the n-gram hit-rate probe beats the best fixed mode."
+      },
+      "created": "2026-11-04T09:38:46+00:00"
+    },
+    {
+      "id": "dir_5cd39024",
+      "seed_id": "sd_ad1b64d1",
+      "round": 2,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Position-Wise Acceptance on Long 7B Generations",
+      "summary": "Log, for each generated position, whether the tiny draft's tokens were accepted during long outputs (1-4k tokens) from the 7B. Plot acceptance vs position, by task, and check whether it stays flat as src_a49ee28d reports for independent drafts. Use the result to say whether longer draft lengths help late in a generation.",
+      "url": "",
+      "score": 0.555,
+      "reason": "It is a low-novelty replication of src_a49ee28d that likely confirms a flat acceptance curve. It also needs custom per-token logging, and its interest score is the lowest (0.6).",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Log, for each generated position, whether the tiny draft's tokens were accepted during long outputs (1-4k tokens) from the 7B. Plot acceptance vs position, by task, and check whether it stays flat as src_a49ee28d reports for independent drafts. Use the result to say whether longer draft lengths help late in a generation.",
+        "framing": "Small empirical replication on a different setup (tiny draft, dense 7B, consumer GPU) that feeds the explainer with a new chart.",
+        "technologies": [
+          "PyTorch",
+          "llama.cpp",
+          "Python",
+          "matplotlib"
+        ],
+        "scope": "In: one 7B, one draft, 3 task types, acceptance-by-position plots. Out: new methods, adaptive length. The PyTorch loop gives per-token logs if llama.cpp doesn't expose them.",
+        "evolves": "",
+        "inspired_by": [
+          "src_a49ee28d",
+          "src_f95eb3d4",
+          "src_578a06b8"
+        ],
+        "scores": {
+          "novelty": 0.35,
+          "feasibility": 0.7,
+          "crowdedness": 0.6,
+          "interest": 0.6,
+          "interest_model": 0.6,
+          "interest_learned": 0.5,
+          "overall": 0.555
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.35,
+            "feasibility": 0.7,
+            "crowdedness": 0.6,
+            "interest": 0.6,
+            "interest_model": 0.6,
+            "interest_learned": 0.5,
+            "overall": 0.555
+          },
+          "closest_work": [
+            {
+              "ref": "src_a49ee28d",
+              "title": "Speculative Acceptance Does Not Decay with Position: A Full-Length Diagnostic on Long Chain-of-Thought with Independent Drafts",
+              "how_it_differs": "Measures acceptance vs position on long chain-of-thought with independent drafts. This direction would repeat it with a tiny draft on a dense 7B, on consumer hardware, across 3 task types."
+            }
+          ],
+          "gap": "A small replication with a tiny draft and a 7B on a 4090, split by task type. The result would feed a draft-length recommendation. The twist is small, because the main finding already exists.",
+          "feasibility_notes": "Binding constraint: per-token accept logs. llama.cpp may not expose them, so the PyTorch loop would be needed. Long 1-4k token generations are cheap on a 4090.",
+          "risks": [
+            "The replication likely confirms a flat curve, which is a low-surprise result",
+            "Needs per-token logging, possibly a custom PyTorch loop",
+            "Accept rate differences by task may swamp any position effect"
+          ],
+          "smoke_worthy": "Run a 1k-token generation and check that per-position accept/reject can be logged.",
+          "crowd": {
+            "total": 123929,
+            "recent": 14862,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_1b39557f"
+        },
+        "rank": 6,
+        "pruned_round": 2
+      },
+      "created": "2026-11-04T09:38:46+00:00"
+    },
+    {
+      "id": "dir_21856563",
+      "seed_id": "sd_ad1b64d1",
+      "round": 2,
+      "kind": "direction",
+      "status": "pruned",
+      "title": "Adaptive Draft Length Controller in llama.cpp",
+      "summary": "Prototype a simple controller that shrinks or grows draft length from recent acceptance, using the break-even rule from src_ea354241 (stop drafting when acceptance falls below relative drafting cost). Start by sweeping fixed lengths with the llama-server flags, then add the adaptive rule in a small patch or wrapper. This could be a first small step into C++/CUDA-adjacent code, which the user wants",
+      "url": "",
+      "score": 0.575,
+      "reason": "Its feasibility is only 0.6 because the C++ patch to llama.cpp could use up the four weekends. The area is crowded (576 recent matches, src_d18898d6, src_ce79f5a8), and the gain over the best fixed draft length may be small.",
+      "parents": [
+        "sd_ad1b64d1"
+      ],
+      "data": {
+        "description": "Prototype a simple controller that shrinks or grows draft length from recent acceptance, using the break-even rule from src_ea354241 (stop drafting when acceptance falls below relative drafting cost). Start by sweeping fixed lengths with the llama-server flags, then add the adaptive rule in a small patch or wrapper. This could be a first small step into C++/CUDA-adjacent code, which the user wants to learn, and the user's Rust goal fits a later port. Compare against the best fixed length.",
+        "framing": "Buildable tool with a fixed-length baseline; adaptive length is an idea from src_ce1fb3d6, adapted to a plain tiny draft.",
+        "technologies": [
+          "llama.cpp",
+          "C++",
+          "Python"
+        ],
+        "scope": "In: fixed sweep first, then a wrapper or small patch for adaptive length, one 7B and one draft. Out: looped draft/target designs, custom CUDA kernels. Drop the patch if the fixed sweep shows flat gains.",
+        "evolves": "",
+        "inspired_by": [
+          "src_ea354241",
+          "src_ce1fb3d6",
+          "src_c1cacee9",
+          "src_792262f2"
+        ],
+        "scores": {
+          "novelty": 0.4,
+          "feasibility": 0.6,
+          "crowdedness": 0.7,
+          "interest": 0.8,
+          "interest_model": 0.8,
+          "interest_learned": 0.5,
+          "overall": 0.575
+        },
+        "check": {
+          "scores": {
+            "novelty": 0.4,
+            "feasibility": 0.6,
+            "crowdedness": 0.7,
+            "interest": 0.8,
+            "interest_model": 0.8,
+            "interest_learned": 0.5,
+            "overall": 0.575
+          },
+          "closest_work": [
+            {
+              "ref": "src_d18898d6",
+              "title": "Adaptive Multi-Token Prediction: How far should we go?",
+              "how_it_differs": "Learns the speculation horizon for multi-token prediction. This direction would use a simple rule on a plain tiny draft model in llama.cpp, with no training."
+            }
+          ],
+          "gap": "A training-free acceptance-based draft-length controller for llama.cpp with a tiny draft, compared against the best fixed length. The idea is known in the adaptive-length literature (src_d18898d6 and src_ce79f5a8 cover learned variants); the plain-rule port is the only new part. Whether llama.cpp already adapts draft length is unknown from this context.",
+          "feasibility_notes": "Binding constraint: C++ patching to llama.cpp's speculative loop within four weekends. A fixed-length sweep is easy. The patch is stretch work, and the direction's own scope says to drop it if the sweep shows flat gains.",
+          "risks": [
+            "The gain over the best fixed length may be small",
+            "llama.cpp patching can eat the weekends",
+            "Adaptive length may already exist in llama.cpp (unverified)"
+          ],
+          "smoke_worthy": "Sweep fixed draft lengths with the llama-server flags and check that the best-vs-worst speedup gap exceeds about 10%.",
+          "crowd": {
+            "total": 803,
+            "recent": 576,
+            "since": "2025-05-13"
+          },
+          "check_node": "chk_a1728661"
+        },
+        "rank": 5,
+        "pruned_round": 2
+      },
+      "created": "2026-11-04T09:38:46+00:00"
+    }
+  ],
+  "sources": [
+    {
+      "id": "src_8cbd221e",
+      "title": "amagilabs/amagi-draftbench",
+      "url": "https://github.com/amagilabs/amagi-draftbench",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Sweeps draft models and n-gram lookup for llama.cpp and vLLM, reporting tok/s, acceptance rate and peak VRAM per budget. Maps closely onto the seed's goal of picking a tiny draft for a 7B model on one GPU.",
+      "tool": "github"
+    },
+    {
+      "id": "src_c1cacee9",
+      "title": "amanzainal/specdecode-roi",
+      "url": "https://github.com/amanzainal/specdecode-roi",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Benchmarks whether speculative decoding pays off on your own model and GPU by sweeping draft length and finding break-even. Supports llama.cpp, so it could serve as the measurement harness for the 4090 experiment.",
+      "tool": "github"
+    },
+    {
+      "id": "src_04113093",
+      "title": "RanganBorah/SpecDecode",
+      "url": "https://github.com/RanganBorah/SpecDecode",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Pairs a small draft with a larger target via llama.cpp on a laptop GPU, with benchmarks and a fine-tuned draft. The closest existing example of the seed's exact setup; the fine-tuned draft is an extra step to skip at first.",
+      "tool": "github"
+    },
+    {
+      "id": "src_57b250f5",
+      "title": "kuotunyu/qwen38-speculative-decoding-benchmark",
+      "url": "https://github.com/kuotunyu/qwen38-speculative-decoding-benchmark",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Pinned llama.cpp benchmark on a single RTX 4090 (WSL2) for Qwen3.8-27B Q4_K_M with MTP and n-gram speculation, using a paired-median and acceptance-rate methodology. Same GPU and runtime as the seed, but the draft is not a tiny model.",
+      "tool": "github"
+    },
+    {
+      "id": "src_578a06b8",
+      "title": "DRSY/SpeculativeDecoding",
+      "url": "https://github.com/DRSY/SpeculativeDecoding",
+      "kind": "repo",
+      "year": 2023,
+      "summary": "A PyTorch and Hugging Face implementation comparing standard autoregressive decoding with speculative decoding. A simple baseline for checking correctness and speedup before porting to llama.cpp.",
+      "tool": "github"
+    },
+    {
+      "id": "src_8321a05f",
+      "title": "neerajdad123-byte/zero-vram-spec",
+      "url": "https://github.com/neerajdad123-byte/zero-vram-spec",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Shows speculative decoding for local GGUF code models in llama.cpp on an RTX 4050 with no draft model and no extra VRAM. A cheap baseline to compare the tiny-draft approach against on the same stack.",
+      "tool": "github"
+    },
+    {
+      "id": "src_8a20ea91",
+      "title": "A Practical Investigation of Training-free Relaxed Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2607.08690",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Practically tests training-free relaxed speculative decoding, which relaxes acceptance to gain speed without retraining. Directly matches the 'no retraining' constraint, but it trades away the lossless guarantee the seed implicitly wants.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_ea354241",
+      "title": "A Sparse Glimpse of the Whole: Train-Free Self-Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2607.27735",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Gives a unified speedup model showing that longer speculation can hurt when acceptance falls below relative drafting cost, and proposes a train-free self-speculative method. The cost model is useful for picking draft length on a 4090.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_f95eb3d4",
+      "title": "suryavanshi/speculative_decoding",
+      "url": "https://github.com/suryavanshi/speculative_decoding",
+      "kind": "repo",
+      "year": 2025,
+      "summary": "A basic PyTorch implementation of speculative decoding. Useful for understanding the accept/reject loop before moving to llama.cpp.",
+      "tool": "github"
+    },
+    {
+      "id": "src_93860505",
+      "title": "coffeegrind123/instantcoffee",
+      "url": "https://github.com/coffeegrind123/instantcoffee",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Docker Compose setup running llama.cpp with MTP and n-gram speculation for Qwen3.8-27B on one RTX 4090; useful as a reproducible llama.cpp configuration reference, not a tiny-draft result.",
+      "tool": "github"
+    },
+    {
+      "id": "src_eb39deb4",
+      "title": "Approximate Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2608.03447",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Approximate speculative decoding reuses target-scored suffixes after mismatches. It changes the output, so it departs from the lossless behavior the seed implies.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_a49ee28d",
+      "title": "Speculative Acceptance Does Not Decay with Position: A Full-Length Diagnostic on Long Chain-of-Thought with Independent Drafts",
+      "url": "https://www.alphaxiv.org/abs/2610.30644",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Measures acceptance rate versus generation position on long chain-of-thought with independent drafts; useful for checking whether acceptance holds over long 7B generations on the 4090.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_b5b4497a",
+      "title": "GHGuide/self-draft",
+      "url": "https://github.com/GHGuide/self-draft",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Wraps MTP self-speculative decoding in llama.cpp with one flag, reporting ~1.5x on Arm64 cloud. Depends on MTP heads in the model and is not a tiny draft model; the hardware differs from the 4090.",
+      "tool": "github"
+    },
+    {
+      "id": "src_741b92f5",
+      "title": "bassrehab/speculative-decoding",
+      "url": "https://github.com/bassrehab/speculative-decoding",
+      "kind": "repo",
+      "year": 2025,
+      "summary": "Reference implementation covering speculative decoding, EAGLE, Medusa and KV-cache compression, with roofline analysis. Helpful for reading the throughput model, though it is broader than the seed needs.",
+      "tool": "github"
+    },
+    {
+      "id": "src_792262f2",
+      "title": "rajivmehtaflex/llama-server-up",
+      "url": "https://github.com/rajivmehtaflex/llama-server-up",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Automatically picks a speculative drafter and sizes llama-server to host RAM, but on CPU. Its drafter-selection logic is reusable for a GPU setup.",
+      "tool": "github"
+    },
+    {
+      "id": "src_ce1fb3d6",
+      "title": "DLoop: Looped Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.07659",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Proposes adaptive draft length so the target skips verification when it accepts every drafted token. Useful as a later tuning idea, but it assumes a looped draft/target design rather than a plain tiny draft model.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_f402fce4",
+      "title": "wtlow003/ngram-decoding",
+      "url": "https://github.com/wtlow003/ngram-decoding",
+      "kind": "repo",
+      "year": 2024,
+      "summary": "Re-implements Prompt Lookup Decoding, a draft-free baseline that copies n-grams from the prompt; useful as a no-draft comparison point for the 7B run, not as the tiny-draft method.",
+      "tool": "github"
+    },
+    {
+      "id": "src_eccafcc1",
+      "title": "joelvarun/suffixspec",
+      "url": "https://github.com/joelvarun/suffixspec",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Draft-free suffix-retrieval speculation with confidence-tiered draft length; reduces wasted verification versus fixed prompt lookup but uses no draft model.",
+      "tool": "github"
+    },
+    {
+      "id": "src_236c098f",
+      "title": "my-other-github-account/minimax-m27-ngram-spec-spark",
+      "url": "https://github.com/my-other-github-account/minimax-m27-ngram-spec-spark",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Reproducer for n-gram speculation in llama.cpp (--spec-type ngram-simple) on DGX Spark, showing 1.255x over autoregressive on a large MoE-class model; hardware and model differ from the seed.",
+      "tool": "github"
+    },
+    {
+      "id": "src_855358c2",
+      "title": "joanmedina/qwen3-llama-cpp-inference-tuning",
+      "url": "https://github.com/joanmedina/qwen3-llama-cpp-inference-tuning",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Tuning guide and benchmarks for MTP and n-gram speculation in llama.cpp on AMD Strix Halo with Vulkan; reports +73% tok/s but on different hardware and model families.",
+      "tool": "github"
+    },
+    {
+      "id": "src_c27bff9b",
+      "title": "Understanding Target Probability Reuse in Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.29210",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Studies reuse of target next-token distributions when verifying draft trees. Relevant only if the project moves to tree drafting later.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_a61b0544",
+      "title": "Testing Processor Contracts in Speculative Decoding Engines",
+      "url": "https://www.alphaxiv.org/abs/2611.04042",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Shows that speculative sampling preserves the target distribution only if logits processors get the right prefix and state; relevant only if the seed adds custom samplers, and it tests on tiny random models.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_0cf69abd",
+      "title": "Speculative Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2603.03251",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Parallelizes speculation with verification to remove the sequential dependency; a systems-level change that would need a custom engine rather than stock llama.cpp.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_d8179e37",
+      "title": "Speculative Diffusion is a Tale of Two Tradeoffs",
+      "url": "https://www.alphaxiv.org/abs/2610.31819",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Analyzes speculative decoding against diffusion LLMs, which trade quality for speed. Only tangential to a lossless tiny-draft setup for a 7B model on a 4090.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_c065eab1",
+      "title": "CAST: Cost-Aware Speculative Trees from One-Pass Block Drafters",
+      "url": "https://www.alphaxiv.org/abs/2610.00321",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Builds cost-aware verification trees from one-pass block drafters. Assumes a block drafter, not a plain tiny autoregressive draft.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_936cbbee",
+      "title": "naver-ai/DLoop",
+      "url": "https://github.com/naver-ai/DLoop",
+      "kind": "repo",
+      "year": 2026,
+      "summary": "Official PyTorch code for DLoop's looped drafting. Not directly usable for a plain tiny draft on a 7B model.",
+      "tool": "github"
+    },
+    {
+      "id": "src_ea55043d",
+      "title": "LongSpark: Efficient speculative decoding with a fixed-cost parallel drafter",
+      "url": "https://www.alphaxiv.org/abs/2609.37029",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "A fixed-cost parallel drafter aimed at long contexts. Likely needs a trained drafter, and the seed's short prompts are not its target.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_8a6ce3c5",
+      "title": "Long-Context Drafting Does Not Require Long-Context Drafters",
+      "url": "https://www.alphaxiv.org/abs/2610.20865",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Argues that long-context speculative drafting is not needed at ultra-long context. Mainly relevant to long prompts, which the seed does not target.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_09e6cca3",
+      "title": "JetSpec++: Foresight Parallel Drafting with Self Refinements",
+      "url": "https://www.alphaxiv.org/abs/2610.19792",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Co-designs a learned draft with self-refinement to hide draft cost; needs training a draft model, which conflicts with the seed's no-retraining constraint.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_8a312966",
+      "title": "Phase-Scoped Query Layouts for Reference-Constrained Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.03228",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Graph-level attention transformation for speculative verification on a quantized target, tested on CUDA; relevant only if the seed moves to a custom engine instead of llama.cpp.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_1f832235",
+      "title": "Introducing Beam: Reflection’s 501B open-weight model",
+      "url": "https://www.alphaxiv.org/abs/2610.introducing-beam",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Beam is a 501B-parameter sparse Mixture-of-Experts model (23B active) trained with 23.8T pretraining tokens and over 100M RL rollouts for coding, reasoning, and agentic workloads.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_9b22525f",
+      "title": "HobbyLM: A Sparse Mixture-of-Experts Model Family on a Hobby Budget",
+      "url": "https://www.alphaxiv.org/abs/2610.34582",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "We describe HobbyLM, a family of small sparse Mixture-of-Experts (MoE) models trained from scratch with a few hundred to a few thousand dollars of rented GPU time. The core is a decoder-only transformer with fine-grained experts, sigmoid routing with auxiliary-loss-free load balancing, grouped-query",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_dc801bec",
+      "title": "Matching Workloads to Blackwell: Power-Resolved Benchmarking of NVIDIA B200 and B300 across HPC and AI Workloads",
+      "url": "https://www.alphaxiv.org/abs/2610.41919",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "We evaluate NVIDIA B200 and B300 (Blackwell Ultra) GPUs on two independent eight-GPU clusters, spanning computer-vision inference and training, LLM inference with Llama-3-8B and 70B~\\cite{llama3}, and six production HPC codes. The B300 is not a uniform successor to the B200: it trails by up to 5.6$\\",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_66718ffa",
+      "title": "Swap, Replicate, Read the Mass: A Protocol for Auditing Demographic Bias in System One Decision Models",
+      "url": "https://www.alphaxiv.org/abs/2611.00496",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "System One decision models replace text generation with typed, probability-scored answers and are entering production. Answers execute without a person in the loop, and no multi-model audit exists on established bias benchmarks. We provide that audit: three benchmarks: BBQ (all eleven categories), C",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_f409a3e4",
+      "title": "Twice as Fast, Until It Isn't: Quantized Serving of Mid-Size Open LLMs",
+      "url": "https://www.alphaxiv.org/abs/2611.04380",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "A team serving a 9B-20B open-weight language model on vLLM or SGLang must choose a quantization recipe, and needs two numbers: the speedup over BF16 and the accuracy given up. We assemble every public measurement of these numbers that we could verify and find that the record supplies them only in pi",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_5319d2d0",
+      "title": "Trees from Marginals: Autoregressive drafting with factorized priors",
+      "url": "https://www.alphaxiv.org/abs/2607.06763",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Speculative decoding greatly increases the interactivity of autoregressive language models by trading off computation for extra tokens generated in a single forward pass. Factorized draft models are especially efficient because they predict future-token marginals in parallel, but their independence ",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_1c50a8d8",
+      "title": "Lossless but Not Free: An Empirical Anatomy of Speculative Decoding on Consumer Hardware",
+      "url": "https://www.alphaxiv.org/abs/2607.17283",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Single-stream autoregressive decoding of large language models is bound by memory bandwidth: each generated token requires one full forward pass through the target model, and successive passes cannot be parallelized. Speculative decoding restructures this computation: a small draft model proposes $K",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_ddffdd37",
+      "title": "Speculative Pipeline Decoding: Higher-Accuracy Drafting with Hidden Latency via Pipeline Parallelism",
+      "url": "https://www.alphaxiv.org/abs/2605.30852",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Speculative Decoding (SD) accelerates low-concurrency LLM inference with a draft-then-verify paradigm. Mainstream methods, however, rely on multi-token prediction, which incurs compounding prediction difficulty and exposed draft latency. We propose Speculative Pipeline Decoding (SPD), which partitio",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_8154368f",
+      "title": "Return or Revise? Learning When Revision Helps Retrieval-Augmented QA",
+      "url": "https://www.alphaxiv.org/abs/2609.30087",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "We consider the decision of whether to return an existing draft answer or revise it using retrieved evidence, as in answer-revision systems. Draft confidence estimates whether the current answer is correct, but the decision requires estimating the effect of a specified revision. For offline training",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_3fdcd9c2",
+      "title": "The efficacy-competitiveness frontier in the Swiss system",
+      "url": "https://www.alphaxiv.org/abs/2610.01997",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "An ideal tournament is both efficacious and attractive: it selects the best player as the winner, but only at the end of the tournament in order to maintain suspense as long as possible. We identify and explore the trade-off between these criteria in Swiss-system chess team tournaments via simulatio",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_9e6a670b",
+      "title": "Text, Pixels, or Both? Evaluating Input Representations for Multimodal Document QA",
+      "url": "https://www.alphaxiv.org/abs/2609.22628",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Every document QA system begins with a choice that is rarely studied on its own: whether to feed the model page images, extracted text, or both. We isolate this choice, holding the prompt, judge, and scoring pipeline fixed, across four commercial model endpoints, two corpora, and two context regimes",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_725c1afb",
+      "title": "Outdated numeric values from Norwegian statutes and regulations in a further-trained model and its base model: a preregistered paired comparison of Borealis 2 and Gemma 4",
+      "url": "https://www.alphaxiv.org/abs/2611.02334",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "We compare how often two released language models give outdated numeric values from Norwegian statutes and regulations: NbAiLab/borealis2-26b-a4b-preview (Borealis 2), which the National Library of Norway further trained from google/gemma-4-26B-A4B-it (Gemma 4), and Gemma 4 itself. The study was pre",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_631f23f6",
+      "title": "Target Regeneration Shrinks the Gains of Draft-Training Objectives in Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.29013",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Speculative decoding accelerates large language models by verifying drafted tokens in parallel. New draft-training objectives are usually credited with the acceptance they add over cross-entropy on externally written responses, yet many pipelines let the target rewrite them. We ask how much of that ",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_d3f95438",
+      "title": "EnigmaForge: The Question Is Hidden in the Story",
+      "url": "https://www.alphaxiv.org/abs/2609.30144",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Most benchmarks hand the model a question. EnigmaForge hands it a stack of old documents and no question at all. Buried in the letters, receipts, and logbook margins is a small logic puzzle whose solution is unique - proved by a SAT solver at generation time, with an ablation certificate showing eve",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_8af2816a",
+      "title": "Jev-as-a-Judge for RAG Claim Verification: Confidence-Gated Cascading Between a Non-Generative Verifier and a Frontier LLM",
+      "url": "https://www.alphaxiv.org/abs/2610.20634",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Retrieval-augmented generation asks one question at volume: does this evidence support this claim? The answer is one bit, yet most pipelines obtain it from a text generator and pay generation prices for the prose wrapped around it. We compare a non-generative decision model, which returns a typed va",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_14b34e1b",
+      "title": "Benchmarking candidate coverage and rejection policy transfer in typed decision models",
+      "url": "https://www.alphaxiv.org/abs/2610.03387",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Rejection policies must remain useful as candidate sets and tasks change. We compare Laya, Jev and Qwen2.5-7B-Instruct using public reference labels, testing Laya/Jev policy transfer at equal calibration budgets and all three models on artificial omission, natural retrieval misses and public out-of-",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_e7ba11cb",
+      "title": "When Does Better Acceptance Pay? A Controlled Study of Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.24993",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "The throughput gains of speculative decoding depend on the trade-off between acceptance length and execution latency. We ask when additional acceptance is worth the cost of obtaining it. We establish a comparison protocol spanning training, inference, and evaluation, remeasuring released checkpoints",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_73a2970e",
+      "title": "Group Versus Batch Baseline Under a Fixed Sampling Budget",
+      "url": "https://www.alphaxiv.org/abs/2609.group-batch-means-sampling-budget",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "When the number of sampled responses is fixed, using several responses for one prompt leaves fewer opportunities to sample other prompts. A group reward mean is worthwhile when its local correction reduces gradient noise enough to pay for this cost. We make this comparison explicit and test 16 diffi",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_50a04cdb",
+      "title": "Acceptance Is Not Speed: Length Inflation in Training-Free Lossy Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.23818",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Speculative decoding typically characterizes speedup by draft tokens accepted per verification round. Lossless verification preserves the target model's output distribution and thus expected completion length, making this metric a meaningful efficiency proxy. Relaxed (lossy) verification accepts tok",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_997424d4",
+      "title": "The Handoff Tax: Continuing Non-Native Trajectories in LLM Agents",
+      "url": "https://www.alphaxiv.org/abs/2608.24358",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Coding agents perform long-running tasks spanning dozens of model calls, tool uses, and code edits. As these runs unfold, users face a practical cost-quality trade-off: escalating to a stronger model when a cheaper one struggles, or downshifting once the hard reasoning is complete. Each switch requi",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_1e107258",
+      "title": "EntityWeaver: Visual Exploration and Curation of Named-Entity Relationships in Document Collections",
+      "url": "https://www.alphaxiv.org/abs/2609.37329",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "We present an interactive visualization system for exploring named entities and their relationships across document collections, with a strong focus on handling uncertainty and supporting both distant and close reading. The system is built around a graph that links documents, entity mentions, and en",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_b827b158",
+      "title": "FrankenReport: Early Exiting in Long-Form Generation Using Expected Value of Computation",
+      "url": "https://www.alphaxiv.org/abs/2609.06320",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "While deep research systems address interactive information-seeking needs impressively, their real-world deployments face latency and resource-consumption challenges. We present FrankenReport, an interface for long-form knowledge-seeking report generation that supports adaptive early exiting per sec",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_23550560",
+      "title": "Object Model Analysis of a Supercomputer with Digital Twin",
+      "url": "https://www.alphaxiv.org/abs/2609.13571",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Operators and developers need a mental model of both the structure and the live behavior of a large supercomputer, but its physical layout, logical organization, and streams of per-node telemetry are difficult to relate to one another, making it hard to trace a metric or event back to a specific har",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_a5320f47",
+      "title": "Ordo-M: An Externally Addressed Sparse Memory Grafted onto a Frozen Language Model",
+      "url": "https://www.alphaxiv.org/abs/2608.ordo-m-sparse-memory-frozen-model",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "A sparse, externally addressed memory attached to a frozen model whose weights are never modified — and reports what it does and does not deliver across thirty-two measurement rounds on three real domains and two standard editing benchmarks.",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_70bb4b43",
+      "title": "Joint or Per-Option? Compact Encoders for Closed-Set Decisions from 17 Million to 1 Billion Parameters",
+      "url": "https://www.alphaxiv.org/abs/2610.30970",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Many language-model pipelines end in a closed-set decision, such as selecting a tool. Prompting a large language model for it is slow and order-sensitive. We ask how small an encoder for such decisions can be and whether it should read the options jointly or separately. In a three-seed study at 32 m",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_de7c11d0",
+      "title": "No Step at the Window Edge: Confusable Fake Facts in Matched Sliding-Window Hybrids",
+      "url": "https://www.alphaxiv.org/abs/2610.sliding-window-hybrids-fake-facts",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "To save memory, many recent language models are hybrids. Some of their layers read only the last few hundred tokens (a \"local window\"), and the rest read the whole text. Does a misleading fact become more dangerous once it falls inside that window? We tested this by planting a look-alike fake fact i",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_9aef1bb0",
+      "title": "Measuring and Reducing Cross-Vendor Mismatch in Language Models",
+      "url": "https://www.alphaxiv.org/abs/2610.05458",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Running the same language model on different graphics processing unit (GPU) vendors can produce different logits, even when the model weights and inputs are the same. We analyze cross-vendor mismatch in two dense and two mixture-of-experts (MoE) models with five metric families, namely bitwise equal",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_f2fc7eef",
+      "title": "Mixing Matters: Evidence Position Bias Across Sequence Mixers in Long-Context Question Answering",
+      "url": "https://www.alphaxiv.org/abs/2610.31135",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Long-context models often use answer-bearing evidence less effectively when it appears away from a prompt boundary. We compare this position bias across Transformer, state-space, and hybrid Mamba architectures by moving one gold document through a fixed set of nine distractors. The evaluated Transfo",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_3bad4b0f",
+      "title": "You don't need long context",
+      "url": "https://www.alphaxiv.org/abs/2611.05306",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Later tokens are costlier to generate than earlier tokens. On frontier open weight models, the disparity in cost may rise to as much as 7x. Through frequent compaction, we show across a broad range of long-horizon and long-input tasks that frontier language models sacrifice little to no task accurac",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_318eae5e",
+      "title": "RangeSWA: Training-Free Length Extrapolation for Continuous Diffusion Language Models",
+      "url": "https://www.alphaxiv.org/abs/2610.42084",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Continuous diffusion language models show promising potential in text generation tasks, but are prone to problems such as text repetition, semantic drift, and generation quality degradation when the generation length exceeds the training length. To address these challenges, we propose RangeSWA, a tr",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_f3fd2a19",
+      "title": "FOLD: Position-Free Far Memory with Local Order for Long-Context Speculative Decoding",
+      "url": "https://www.alphaxiv.org/abs/2610.20392",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Speculative decoding accelerates LLM generation through lightweight drafting and parallel verification. It is particularly promising for long inputs, where KV-cache access costs can be amortized over multiple accepted tokens. Yet most drafters are trained on short sequences and degrade on long input",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_d18898d6",
+      "title": "Adaptive Multi-Token Prediction: How far should we go?",
+      "url": "https://www.alphaxiv.org/abs/2610.28619",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Multi-token prediction (MTP) can accelerate language-model decoding by drafting several tokens and verifying them in a single target-model pass. However, the best speculation horizon changes with context: longer drafts offer greater amortization when reliable, but can waste compute on suffixes disca",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_599a6eb6",
+      "title": "DELA: Learning Controllable Edits for Diffusion Language Models",
+      "url": "https://www.alphaxiv.org/abs/2610.32096",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Diffusion language models (DLMs) support bidirectional denoising and iterative refinement, but generation remains largely controlled by token-level masking schedules. This leaves draft-level refinement implicit and limits explicit control over when to insert missing content, delete redundant spans, ",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_db46d36b",
+      "title": "Metacognitive Decoding: Efficient Inference for Diffusion Language Agents",
+      "url": "https://www.alphaxiv.org/abs/2610.37642",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Diffusion language models offer a promising path to efficient agents through parallel token generation. However, efficient interaction requires adapting both where computation is spent and how much text is generated. We introduce a metacognitive controller that guides diffusion generation according ",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_ce79f5a8",
+      "title": "Next Token or Vector? Learning How Far to Decode",
+      "url": "https://www.alphaxiv.org/abs/2610.22788",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Standard autoregressive decoding advances one token at a time, even when several upcoming tokens can be predicted together. We propose CADENCE (Context-Adaptive DEcoding), a generation method that learns both what to draft and how far to draft. Gaussian prediction heads represent future spans as con",
+      "tool": "alphaxiv"
+    },
+    {
+      "id": "src_80cfca29",
+      "title": "PID-Gated Continual Prompt Adaptation Under Noisy Feedback",
+      "url": "https://www.alphaxiv.org/abs/2610.16129",
+      "kind": "paper",
+      "year": 2026,
+      "summary": "Deploying LLM agents in non-stationary environments requires continually revising their instructions as the task drifts, yet rewriting after every reported mistake can turn noisy feedback into persistent errors. This raises an often-overlooked scheduling question in prompt adaptation: when should fe",
+      "tool": "alphaxiv"
+    }
+  ],
+  "pruned": [
+    {
+      "id": "dir_f821de21",
+      "title": "4090 Draft-Model Sweep for a 7B",
+      "summary": "Measure lossless speculative decoding in llama.cpp on the RTX 4090 with a 7B GGUF target and several tiny drafts (e.g. ~100M–1B, same tokenizer family) at a few quantizations. Use the existing sweep harness to record tok/s, acceptance rate and VRAM across draft lengths, on 3 prompt types (chat, code, summarization). Output is a table and a recommended config. No training.",
+      "reason": "A pure measurement sweep that overlaps heavily with src_1c50a8d8 in a crowded area; a small draft-size comparison can be folded into the kept comparison study instead.",
+      "round": 1,
+      "scores": {
+        "novelty": 0.3,
+        "feasibility": 0.85,
+        "crowdedness": 0.6,
+        "interest": 0.6,
+        "overall": 0.597
+      }
+    },
+    {
+      "id": "dir_ee9b3624",
+      "title": "Build Speculative Decoding From Scratch in PyTorch",
+      "summary": "Implement the accept/reject loop in plain PyTorch with Hugging Face models, verify the output distribution matches the target (greedy exact match, sampling via a statistical test), then measure speedup on the 4090. Then compare to llama.cpp's built-in result to see where overhead differs.",
+      "reason": "A learning build with low novelty (0.3) whose HF eager-mode overhead and KV-cache rollback risks may hide any speedup, so it does little to make the 7B faster within four weekends.",
+      "round": 1,
+      "scores": {
+        "novelty": 0.3,
+        "feasibility": 0.8,
+        "crowdedness": 0.4,
+        "interest": 0.8,
+        "overall": 0.67
+      }
+    },
+    {
+      "id": "dir_6b691ae0",
+      "title": "Visual Explainer: When Does Drafting Pay Off?",
+      "summary": "Build an interactive React page where sliders for acceptance rate, draft length and draft/target cost ratio show the expected speedup curve and break-even point. Overlay real measured points from the 4090 runs, plus a per-token view of accepted and rejected draft tokens from a real generation.",
+      "reason": "The round-2 direction dir_b33513ef narrows and replaces it with an explicit schema and a no-patch fallback for per-token logging, so keeping both would duplicate work.",
+      "round": 1,
+      "scores": {
+        "novelty": 0.55,
+        "feasibility": 0.85,
+        "crowdedness": 0.5,
+        "interest": 0.9,
+        "overall": 0.752
+      }
+    },
+    {
+      "id": "dir_36a1ec02",
+      "title": "Tiny Draft vs No-Draft N-gram Lookup",
+      "summary": "Compare a tiny draft model against draft-free n-gram lookup speculation on the same 7B and 4090, across task types where repetition differs (code edits, summarization, open chat). Report speedup, VRAM cost and when each wins, and test a simple hybrid choice rule.",
+      "reason": "The round-2 direction dir_1dd6374b covers the same draft vs n-gram comparison and adds harness references, paired-median measurement and a probe-based chooser, so this version is superseded.",
+      "round": 1,
+      "scores": {
+        "novelty": 0.5,
+        "feasibility": 0.85,
+        "crowdedness": 0.3,
+        "interest": 0.7,
+        "overall": 0.712
+      }
+    },
+    {
+      "id": "dir_81f76a22",
+      "title": "Lossless vs Relaxed Acceptance Tradeoff",
+      "summary": "Add a relaxed acceptance threshold (accept a draft token if the target gives it enough probability) on top of the tiny-draft setup, via a PyTorch prototype. Plot speedup against output quality (agreement with the exact output and a small task score) to show how much speed the lossless guarantee costs.",
+      "reason": "src_50a04cdb already covers training-free relaxed acceptance, and the PyTorch prototype is the least feasible (0.65) with noisy quality metrics at about 200 prompts.",
+      "round": 1,
+      "scores": {
+        "novelty": 0.3,
+        "feasibility": 0.65,
+        "crowdedness": 0.4,
+        "interest": 0.6,
+        "overall": 0.557
+      }
+    },
+    {
+      "id": "dir_5cd39024",
+      "title": "Position-Wise Acceptance on Long 7B Generations",
+      "summary": "Log, for each generated position, whether the tiny draft's tokens were accepted during long outputs (1-4k tokens) from the 7B. Plot acceptance vs position, by task, and check whether it stays flat as src_a49ee28d reports for independent drafts. Use the result to say whether longer draft lengths help late in a generation.",
+      "reason": "It is a low-novelty replication of src_a49ee28d that likely confirms a flat acceptance curve. It also needs custom per-token logging, and its interest score is the lowest (0.6).",
+      "round": 2,
+      "scores": {
+        "novelty": 0.35,
+        "feasibility": 0.7,
+        "crowdedness": 0.6,
+        "interest": 0.6,
+        "overall": 0.555
+      }
+    },
+    {
+      "id": "dir_21856563",
+      "title": "Adaptive Draft Length Controller in llama.cpp",
+      "summary": "Prototype a simple controller that shrinks or grows draft length from recent acceptance, using the break-even rule from src_ea354241 (stop drafting when acceptance falls below relative drafting cost). Start by sweeping fixed lengths with the llama-server flags, then add the adaptive rule in a small patch or wrapper. This could be a first small step into C++/CUDA-adjacent code, which the user wants to learn, and the user's Rust goal fits a later port. Compare against the best fixed length.",
+      "reason": "Its feasibility is only 0.6 because the C++ patch to llama.cpp could use up the four weekends. The area is crowded (576 recent matches, src_d18898d6, src_ce79f5a8), and the gain over the best fixed draft length may be small.",
+      "round": 2,
+      "scores": {
+        "novelty": 0.4,
+        "feasibility": 0.6,
+        "crowdedness": 0.7,
+        "interest": 0.8,
+        "overall": 0.575
+      }
+    }
+  ],
+  "visuals": [
+    {
+      "id": "vis_ad1b64d1_concept",
+      "seed_id": "sd_ad1b64d1",
+      "kind": "concept",
+      "title": "How it works: Speculative Decoding with a Tiny Draft Model",
+      "caption": "Each loop yields at least one token and often several for a single 7B pass. Because the target checks every token, quality is unchanged and no retraining is needed. The explainer's sliders (acceptance, draft length, cost ratio) change the speedup this loop produces.",
+      "files": {
+        "svg": "concept.svg",
+        "mermaid": "concept.mmd",
+        "json": "concept.json"
+      },
+      "round": 2,
+      "created": "2026-11-04T09:43:19+00:00"
+    },
+    {
+      "id": "vis_ad1b64d1_graph",
+      "seed_id": "sd_ad1b64d1",
+      "kind": "graph",
+      "title": "Exploration graph",
+      "caption": "Everything explored for this seed; pruned branches dimmed.",
+      "files": {
+        "mermaid": "graph.mmd"
+      },
+      "round": 2,
+      "created": "2026-11-04T09:39:37+00:00"
+    },
+    {
+      "id": "vis_ad1b64d1_landscape",
+      "seed_id": "sd_ad1b64d1",
+      "kind": "landscape",
+      "title": "Landscape map",
+      "caption": "Where existing work sits and where the gap is. Positions come from text similarity of titles and abstracts.",
+      "files": {
+        "svg": "landscape.svg",
+        "plotly": "landscape.plotly.json",
+        "html": "landscape.html"
+      },
+      "round": 2,
+      "created": "2026-11-04T09:43:19+00:00"
+    },
+    {
+      "id": "vis_ad1b64d1_scores",
+      "seed_id": "sd_ad1b64d1",
+      "kind": "scores",
+      "title": "Direction scores",
+      "caption": "Novelty, feasibility, room and interest per direction.",
+      "files": {
+        "svg": "scores.svg"
+      },
+      "round": 2,
+      "created": "2026-11-04T09:43:19+00:00"
+    },
+    {
+      "id": "vis_ad1b64d1_smoke",
+      "seed_id": "sd_ad1b64d1",
+      "kind": "smoke",
+      "title": "Smoke-check results",
+      "caption": "Metrics reported by approved smoke checks.",
+      "files": {
+        "svg": "smoke.svg"
+      },
+      "round": 0,
+      "created": "2026-11-04T09:40:33+00:00"
+    }
+  ],
+  "smoke": [
+    {
+      "id": "smk_e26e0e13",
+      "seed_id": "sd_ad1b64d1",
+      "direction_id": "dir_b33513ef",
+      "assumption": "The speculative decoding speedup formula can be computed from mock JSON in an agreed schema and yields a sensible curve over acceptance and draft length.",
+      "rationale": "The explainer depends on the formula and the JSON schema being consistent before building any React UI. This checks both cheaply. Cost model: expected tokens per round = (1-a^(k+1))/(1-a), cost per round = k*c + 1, speedup = tokens/cost. I did not verify this against src_ea354241 and the check does not either; that comparison is still to do.",
+      "code": "import json, math\n\ndef speedup(a, k, c):\n    tokens = (1 - a**(k+1)) / (1 - a) if a < 1 else k + 1\n    cost = k * c + 1\n    return tokens / cost\n\nmock = {\"runs\": [{\"accept\": 0.7, \"k\": 4, \"c\": 0.05, \"measured_speedup\": 2.1},\n                 {\"accept\": 0.5, \"k\": 8, \"c\": 0.05, \"measured_speedup\": 1.4}]}\ns = json.dumps(mock)\nd = json.loads(s)\nok_schema = all({\"accept\", \"k\", \"c\", \"measured_speedup\"} <= set(r) for r in d[\"runs\"])\n\ngrid = [speedup(a / 10, k, 0.05) for a in range(1, 10) for k in range(1, 13)]\nfinite = all(math.isfinite(g) and g > 0 for g in grid)\n\n# monotone in acceptance at fixed k\nmono = all(speedup((a + 1) / 10, 4, 0.05) >= speedup(a / 10, 4, 0.05) for a in range(1, 9))\n\n# an interior optimum k exists for a=0.7, c=0.1\nvals = [speedup(0.7, k, 0.1) for k in range(1, 20)]\nbest_k = vals.index(max(vals)) + 1\ninterior = 1 < best_k < 19\n\nprint(\"SMOKE_RESULT \" + json.dumps({\n    \"schema_ok\": int(ok_schema),\n    \"grid_finite\": int(finite),\n    \"monotone_in_accept\": int(mono),\n    \"best_k_a07_c01\": best_k,\n    \"interior_optimum\": int(interior),\n    \"max_speedup\": round(max(grid), 3)}))\n",
+      "expected": "schema_ok=1, grid_finite=1, monotone_in_accept=1, interior_optimum=1 (a finite best k), max_speedup above 1.",
+      "timeout_s": 15,
+      "status": "passed",
+      "stdout": "SMOKE_RESULT {\"schema_ok\": 1, \"grid_finite\": 1, \"monotone_in_accept\": 1, \"best_k_a07_c01\": 4, \"interior_optimum\": 1, \"max_speedup\": 4.661}\n",
+      "stderr": "",
+      "metrics": {
+        "schema_ok": 1.0,
+        "grid_finite": 1.0,
+        "monotone_in_accept": 1.0,
+        "best_k_a07_c01": 4.0,
+        "interior_optimum": 1.0,
+        "max_speedup": 4.661
+      },
+      "verdict": "ran and reported schema_ok=1, grid_finite=1, monotone_in_accept=1, best_k_a07_c01=4",
+      "created": "2026-11-04T09:39:19+00:00",
+      "finished": "2026-11-04T09:40:33+00:00"
+    },
+    {
+      "id": "smk_b046f0d7",
+      "seed_id": "sd_ad1b64d1",
+      "direction_id": "dir_1dd6374b",
+      "assumption": "llama.cpp binaries and a 7B GGUF with a same-tokenizer tiny draft are available locally, so draft and n-gram modes can be run.",
+      "rationale": "The comparison study cannot start without llama.cpp's speculative tools and GGUF models on disk. This is a local-only check with no download. It reports what is present and does not claim that a matching draft exists on the hub, which is unknown from the context.",
+      "code": "import shutil, os, glob, json, importlib.util\n\nnames = [\"llama-speculative\", \"llama-server\", \"llama-cli\", \"llama-lookup\", \"llama-bench\"]\nfound = {n: int(shutil.which(n) is not None) for n in names}\n\nggufs = []\nroots = [os.getcwd(), os.path.expanduser(\"~\"), os.path.join(os.path.expanduser(\"~\"), \"models\"),\n         os.path.join(os.path.expanduser(\"~\"), \"Downloads\")]\nfor r in roots:\n    if os.path.isdir(r):\n        ggufs += glob.glob(os.path.join(r, \"*.gguf\")) + glob.glob(os.path.join(r, \"*\", \"*.gguf\"))\nggufs = list(set(ggufs))\nsizes = sorted(os.path.getsize(g) / 1e9 for g in ggufs)\nbig = sum(1 for s in sizes if 3.5 <= s <= 6)\nsmall = sum(1 for s in sizes if s < 1.5)\n\nout = dict(found)\nout.update({\"gguf_count\": len(ggufs), \"gguf_7b_q4_sized\": big, \"gguf_tiny_sized\": small,\n            \"llama_cpp_python\": int(importlib.util.find_spec(\"llama_cpp\") is not None),\n            \"torch\": int(importlib.util.find_spec(\"torch\") is not None)})\nprint(\"SMOKE_RESULT \" + json.dumps(out))\n",
+      "expected": "At least one llama.cpp speculative or lookup binary found, one 7B Q4-sized GGUF (3.5-6 GB) and one tiny GGUF (<1.5 GB).",
+      "timeout_s": 30,
+      "status": "pending",
+      "stdout": "",
+      "stderr": "",
+      "metrics": {},
+      "verdict": "",
+      "created": "2026-11-04T09:39:19+00:00",
+      "finished": ""
+    },
+    {
+      "id": "smk_215fa7aa",
+      "seed_id": "sd_ad1b64d1",
+      "direction_id": "dir_6b691ae0",
+      "assumption": "llama.cpp's speculative example is installed locally and exposes draft-model and logging options, so accepted/rejected draft tokens can be captured to a file.",
+      "rationale": "The visual explainer needs per-token accept/reject data from real runs. If the binary is missing or has no verbose/log output, the plan needs a custom logging patch, which costs weekend time.",
+      "code": "import shutil, subprocess, json, importlib.util\nnames = ['llama-speculative','llama-speculative-simple','llama-server','llama-cli']\nfound = {n: shutil.which(n) or shutil.which(n + '.exe') for n in names}\nres = {'speculative_found': 0, 'has_draft_flag': 0, 'has_log_flag': 0, 'has_verbose_flag': 0}\nres['speculative_found'] = int(bool(found['llama-speculative'] or found['llama-speculative-simple']))\nexe = found['llama-speculative'] or found['llama-speculative-simple'] or found['llama-server'] or found['llama-cli']\nif exe:\n    try:\n        p = subprocess.run([exe, '--help'], capture_output=True, text=True, timeout=20)\n        t = (p.stdout or '') + (p.stderr or '')\n        res['has_draft_flag'] = int('--model-draft' in t or '-md' in t)\n        res['has_log_flag'] = int('--log-file' in t)\n        res['has_verbose_flag'] = int('--verbose' in t or '--log-verbosity' in t)\n    except Exception:\n        pass\nres['llama_cpp_python_available'] = int(importlib.util.find_spec('llama_cpp') is not None)\nres['any_llama_binary_found'] = int(any(found.values()))\nprint('found:', found)\nprint('SMOKE_RESULT ' + json.dumps(res))\n",
+      "expected": "speculative_found=1, has_draft_flag=1 and (has_log_flag=1 or has_verbose_flag=1). Then per-round acceptance can likely be parsed from logs.",
+      "timeout_s": 40,
+      "status": "pending",
+      "stdout": "",
+      "stderr": "",
+      "metrics": {},
+      "verdict": "",
+      "created": "2026-11-04T09:37:03+00:00",
+      "finished": ""
+    },
+    {
+      "id": "smk_08de7d76",
+      "seed_id": "sd_ad1b64d1",
+      "direction_id": "dir_36a1ec02",
+      "assumption": "llama.cpp's n-gram lookup mode and a 7B GGUF are available locally on a CUDA machine, so the lookup vs draft-model comparison can start immediately.",
+      "rationale": "The comparison needs the lookup binary, a 7B GGUF, a tiny draft GGUF, and a working GPU. Missing pieces change the first-weekend plan, for example by building llama.cpp with CUDA or downloading models.",
+      "code": "import shutil, os, json, subprocess, importlib.util\nlookup = None\nfor n in ['llama-lookup','llama-lookup-simple']:\n    lookup = lookup or shutil.which(n) or shutil.which(n + '.exe')\nggufs = []\nfor root, dirs, files in os.walk('.'):\n    if root.count(os.sep) > 3:\n        dirs[:] = []\n        continue\n    for f in files:\n        if f.lower().endswith('.gguf'):\n            ggufs.append((f, os.path.getsize(os.path.join(root, f)) / 1e9))\nbig = [g for g in ggufs if g[1] > 3.0]\nsmall = [g for g in ggufs if g[1] <= 1.5]\nsmi = 0\nif shutil.which('nvidia-smi'):\n    try:\n        smi = int(subprocess.run(['nvidia-smi', '-L'], capture_output=True, text=True, timeout=15).returncode == 0)\n    except Exception:\n        pass\nres = {\n 'lookup_binary_found': int(bool(lookup)),\n 'gguf_count': len(ggufs),\n 'gguf_7b_sized_found': int(len(big) > 0),\n 'gguf_tiny_draft_found': int(len(small) > 0),\n 'nvidia_gpu_visible': smi,\n 'torch_installed': int(importlib.util.find_spec('torch') is not None),\n}\nprint('ggufs:', ggufs)\nprint('SMOKE_RESULT ' + json.dumps(res))\n",
+      "expected": "lookup_binary_found=1, nvidia_gpu_visible=1, and at least one 7B-sized GGUF found. Missing items show what to download or build first.",
+      "timeout_s": 40,
+      "status": "pending",
+      "stdout": "",
+      "stderr": "",
+      "metrics": {},
+      "verdict": "",
+      "created": "2026-11-04T09:37:03+00:00",
+      "finished": ""
+    }
+  ],
+  "adapters": [
+    "build_plan",
+    "coding_agent",
+    "coscientist",
+    "openresearch"
+  ],
+  "cost": {
+    "usd": 0.6876,
+    "tokens": 183832.0
+  },
+  "generated_at": "2026-11-04T09:43:20+00:00"
+}

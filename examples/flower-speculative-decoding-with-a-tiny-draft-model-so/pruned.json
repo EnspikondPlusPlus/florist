@@ -1,0 +1,100 @@
+[
+  {
+    "id": "dir_f821de21",
+    "title": "4090 Draft-Model Sweep for a 7B",
+    "summary": "Measure lossless speculative decoding in llama.cpp on the RTX 4090 with a 7B GGUF target and several tiny drafts (e.g. ~100M\u20131B, same tokenizer family) at a few quantizations. Use the existing sweep harness to record tok/s, acceptance rate and VRAM across draft lengths, on 3 prompt types (chat, code, summarization). Output is a table and a recommended config. No training.",
+    "reason": "A pure measurement sweep that overlaps heavily with src_1c50a8d8 in a crowded area; a small draft-size comparison can be folded into the kept comparison study instead.",
+    "round": 1,
+    "scores": {
+      "novelty": 0.3,
+      "feasibility": 0.85,
+      "crowdedness": 0.6,
+      "interest": 0.6,
+      "overall": 0.597
+    }
+  },
+  {
+    "id": "dir_ee9b3624",
+    "title": "Build Speculative Decoding From Scratch in PyTorch",
+    "summary": "Implement the accept/reject loop in plain PyTorch with Hugging Face models, verify the output distribution matches the target (greedy exact match, sampling via a statistical test), then measure speedup on the 4090. Then compare to llama.cpp's built-in result to see where overhead differs.",
+    "reason": "A learning build with low novelty (0.3) whose HF eager-mode overhead and KV-cache rollback risks may hide any speedup, so it does little to make the 7B faster within four weekends.",
+    "round": 1,
+    "scores": {
+      "novelty": 0.3,
+      "feasibility": 0.8,
+      "crowdedness": 0.4,
+      "interest": 0.8,
+      "overall": 0.67
+    }
+  },
+  {
+    "id": "dir_6b691ae0",
+    "title": "Visual Explainer: When Does Drafting Pay Off?",
+    "summary": "Build an interactive React page where sliders for acceptance rate, draft length and draft/target cost ratio show the expected speedup curve and break-even point. Overlay real measured points from the 4090 runs, plus a per-token view of accepted and rejected draft tokens from a real generation.",
+    "reason": "The round-2 direction dir_b33513ef narrows and replaces it with an explicit schema and a no-patch fallback for per-token logging, so keeping both would duplicate work.",
+    "round": 1,
+    "scores": {
+      "novelty": 0.55,
+      "feasibility": 0.85,
+      "crowdedness": 0.5,
+      "interest": 0.9,
+      "overall": 0.752
+    }
+  },
+  {
+    "id": "dir_36a1ec02",
+    "title": "Tiny Draft vs No-Draft N-gram Lookup",
+    "summary": "Compare a tiny draft model against draft-free n-gram lookup speculation on the same 7B and 4090, across task types where repetition differs (code edits, summarization, open chat). Report speedup, VRAM cost and when each wins, and test a simple hybrid choice rule.",
+    "reason": "The round-2 direction dir_1dd6374b covers the same draft vs n-gram comparison and adds harness references, paired-median measurement and a probe-based chooser, so this version is superseded.",
+    "round": 1,
+    "scores": {
+      "novelty": 0.5,
+      "feasibility": 0.85,
+      "crowdedness": 0.3,
+      "interest": 0.7,
+      "overall": 0.712
+    }
+  },
+  {
+    "id": "dir_81f76a22",
+    "title": "Lossless vs Relaxed Acceptance Tradeoff",
+    "summary": "Add a relaxed acceptance threshold (accept a draft token if the target gives it enough probability) on top of the tiny-draft setup, via a PyTorch prototype. Plot speedup against output quality (agreement with the exact output and a small task score) to show how much speed the lossless guarantee costs.",
+    "reason": "src_50a04cdb already covers training-free relaxed acceptance, and the PyTorch prototype is the least feasible (0.65) with noisy quality metrics at about 200 prompts.",
+    "round": 1,
+    "scores": {
+      "novelty": 0.3,
+      "feasibility": 0.65,
+      "crowdedness": 0.4,
+      "interest": 0.6,
+      "overall": 0.557
+    }
+  },
+  {
+    "id": "dir_5cd39024",
+    "title": "Position-Wise Acceptance on Long 7B Generations",
+    "summary": "Log, for each generated position, whether the tiny draft's tokens were accepted during long outputs (1-4k tokens) from the 7B. Plot acceptance vs position, by task, and check whether it stays flat as src_a49ee28d reports for independent drafts. Use the result to say whether longer draft lengths help late in a generation.",
+    "reason": "It is a low-novelty replication of src_a49ee28d that likely confirms a flat acceptance curve. It also needs custom per-token logging, and its interest score is the lowest (0.6).",
+    "round": 2,
+    "scores": {
+      "novelty": 0.35,
+      "feasibility": 0.7,
+      "crowdedness": 0.6,
+      "interest": 0.6,
+      "overall": 0.555
+    }
+  },
+  {
+    "id": "dir_21856563",
+    "title": "Adaptive Draft Length Controller in llama.cpp",
+    "summary": "Prototype a simple controller that shrinks or grows draft length from recent acceptance, using the break-even rule from src_ea354241 (stop drafting when acceptance falls below relative drafting cost). Start by sweeping fixed lengths with the llama-server flags, then add the adaptive rule in a small patch or wrapper. This could be a first small step into C++/CUDA-adjacent code, which the user wants to learn, and the user's Rust goal fits a later port. Compare against the best fixed length.",
+    "reason": "Its feasibility is only 0.6 because the C++ patch to llama.cpp could use up the four weekends. The area is crowded (576 recent matches, src_d18898d6, src_ce79f5a8), and the gain over the best fixed draft length may be small.",
+    "round": 2,
+    "scores": {
+      "novelty": 0.4,
+      "feasibility": 0.6,
+      "crowdedness": 0.7,
+      "interest": 0.8,
+      "overall": 0.575
+    }
+  }
+]

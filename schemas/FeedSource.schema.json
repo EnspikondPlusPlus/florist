@@ -1,0 +1,65 @@
+{
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "rss",
+        "youtube",
+        "arxiv",
+        "alphaxiv",
+        "hf_papers",
+        "github",
+        "email",
+        "hn",
+        "reddit",
+        "lobsters",
+        "bluesky",
+        "mastodon",
+        "folder"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "config": {
+      "additionalProperties": true,
+      "description": "rss/youtube: url|channel_id; arxiv: category|query; github: repo|topic; email: folder|path; hn: query; reddit: subreddit; lobsters: tag; bluesky: handle; mastodon: account; folder: path",
+      "title": "Config",
+      "type": "object"
+    },
+    "enabled": {
+      "default": true,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "interval_hours": {
+      "default": 6,
+      "exclusiveMinimum": 0,
+      "title": "Interval Hours",
+      "type": "number"
+    },
+    "last_fetched": {
+      "default": "",
+      "title": "Last Fetched",
+      "type": "string"
+    },
+    "last_error": {
+      "default": "",
+      "title": "Last Error",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "name"
+  ],
+  "title": "FeedSource",
+  "type": "object"
+}

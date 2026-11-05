@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "labels": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "cluster id -> short theme label",
+      "title": "Labels",
+      "type": "object"
+    }
+  },
+  "title": "ClusterLabels",
+  "type": "object"
+}

@@ -1,0 +1,327 @@
+flowchart LR
+  sd_ad1b64d1(["Speculative decoding with a tiny draft model so…"])
+  tech_5d786ad2("speculative decoding")
+  tech_90ee62e4("draft model")
+  tech_73890742("llama.cpp")
+  tech_bbd8674c("PyTorch")
+  tech_311d9e5e("GGUF quantization")
+  tech_e4dfa4ec("CUDA")
+  tech_33c7150e("KV cache")
+  src_d8179e37[/"Speculative Diffusion is a Tale of Two Tradeoffs"/]
+  src_ce1fb3d6[/"DLoop: Looped Speculative Decoding"/]
+  src_c27bff9b[/"Understanding Target Probability Reuse in Specul"/]
+  src_8a20ea91[/"A Practical Investigation of Training-free Relax"/]
+  src_c065eab1[/"CAST: Cost-Aware Speculative Trees from One-Pass"/]
+  src_ea354241[/"A Sparse Glimpse of the Whole: Train-Free Self-S"/]
+  src_8321a05f[/"neerajdad123-byte/zero-vram-spec"/]
+  src_b5b4497a[/"GHGuide/self-draft"/]
+  src_c1cacee9[/"amanzainal/specdecode-roi"/]
+  src_8cbd221e[/"amagilabs/amagi-draftbench"/]
+  src_04113093[/"RanganBorah/SpecDecode"/]
+  src_792262f2[/"rajivmehtaflex/llama-server-up"/]
+  src_f95eb3d4[/"suryavanshi/speculative_decoding"/]
+  src_936cbbee[/"naver-ai/DLoop"/]
+  src_741b92f5[/"bassrehab/speculative-decoding"/]
+  src_578a06b8[/"DRSY/SpeculativeDecoding"/]
+  src_ea55043d[/"LongSpark: Efficient speculative decoding with a"/]
+  src_8a6ce3c5[/"Long-Context Drafting Does Not Require Long-Cont"/]
+  src_eb39deb4[/"Approximate Speculative Decoding"/]
+  dir_f821de21["4090 Draft-Model Sweep for a 7B"]
+  dir_ee9b3624["Build Speculative Decoding From Scratch in PyTor"]
+  dir_6b691ae0["Visual Explainer: When Does Drafting Pay Off?"]
+  dir_36a1ec02["Tiny Draft vs No-Draft N-gram Lookup"]
+  dir_81f76a22["Lossless vs Relaxed Acceptance Tradeoff"]
+  src_1f832235[/"Introducing Beam: Reflection’s 501B open-weight "/]
+  src_9b22525f[/"HobbyLM: A Sparse Mixture-of-Experts Model Famil"/]
+  src_dc801bec[/"Matching Workloads to Blackwell: Power-Resolved "/]
+  src_66718ffa[/"Swap, Replicate, Read the Mass: A Protocol for A"/]
+  src_f409a3e4[/"Twice as Fast, Until It Isn't: Quantized Serving"/]
+  src_5319d2d0[/"Trees from Marginals: Autoregressive drafting wi"/]
+  src_1c50a8d8[/"Lossless but Not Free: An Empirical Anatomy of S"/]
+  src_ddffdd37[/"Speculative Pipeline Decoding: Higher-Accuracy D"/]
+  src_8154368f[/"Return or Revise? Learning When Revision Helps R"/]
+  src_3fdcd9c2[/"The efficacy-competitiveness frontier in the Swi"/]
+  src_9e6a670b[/"Text, Pixels, or Both? Evaluating Input Represen"/]
+  src_725c1afb[/"Outdated numeric values from Norwegian statutes "/]
+  src_631f23f6[/"Target Regeneration Shrinks the Gains of Draft-T"/]
+  src_d3f95438[/"EnigmaForge: The Question Is Hidden in the Story"/]
+  src_8af2816a[/"Jev-as-a-Judge for RAG Claim Verification: Confi"/]
+  src_14b34e1b[/"Benchmarking candidate coverage and rejection po"/]
+  src_e7ba11cb[/"When Does Better Acceptance Pay? A Controlled St"/]
+  src_73a2970e[/"Group Versus Batch Baseline Under a Fixed Sampli"/]
+  src_50a04cdb[/"Acceptance Is Not Speed: Length Inflation in Tra"/]
+  src_997424d4[/"The Handoff Tax: Continuing Non-Native Trajector"/]
+  chk_952812ce{{"Check: 4090 Draft-Model Sweep for a 7B"}}
+  chk_c5602be4{{"Check: Build Speculative Decoding From Scratch i"}}
+  chk_844ab6ec{{"Check: Visual Explainer: When Does Drafting Pay "}}
+  chk_b506e2de{{"Check: Tiny Draft vs No-Draft N-gram Lookup"}}
+  chk_e7f56550{{"Check: Lossless vs Relaxed Acceptance Tradeoff"}}
+  smk_215fa7aa[["Smoke: llama.cpp's speculative example is instal"]]
+  smk_08de7d76[["Smoke: llama.cpp's n-gram lookup mode and a 7B G"]]
+  visn_ad1b64d1_concept("How it works: Speculative Decoding with a Tiny D")
+  visn_ad1b64d1_landscape("Landscape map")
+  visn_ad1b64d1_scores("Direction scores")
+  src_f402fce4[/"wtlow003/ngram-decoding"/]
+  src_eccafcc1[/"joelvarun/suffixspec"/]
+  tech_1a3b7d2e("n-gram prompt lookup")
+  tech_bd9f3506("acceptance rate")
+  src_57b250f5[/"kuotunyu/qwen38-speculative-decoding-benchmark"/]
+  src_236c098f[/"my-other-github-account/minimax-m27-ngram-spec-s"/]
+  src_93860505[/"coffeegrind123/instantcoffee"/]
+  src_855358c2[/"joanmedina/qwen3-llama-cpp-inference-tuning"/]
+  src_a61b0544[/"Testing Processor Contracts in Speculative Decod"/]
+  src_a49ee28d[/"Speculative Acceptance Does Not Decay with Posit"/]
+  src_09e6cca3[/"JetSpec++: Foresight Parallel Drafting with Self"/]
+  src_8a312966[/"Phase-Scoped Query Layouts for Reference-Constra"/]
+  src_0cf69abd[/"Speculative Speculative Decoding"/]
+  dir_b33513ef["Interactive Draft-Length Explainer with Measured"]
+  dir_1dd6374b["Tiny Draft vs N-gram: Hybrid Chooser on 4090"]
+  dir_5cd39024["Position-Wise Acceptance on Long 7B Generations"]
+  dir_21856563["Adaptive Draft Length Controller in llama.cpp"]
+  src_1e107258[/"EntityWeaver: Visual Exploration and Curation of"/]
+  src_b827b158[/"FrankenReport: Early Exiting in Long-Form Genera"/]
+  src_23550560[/"Object Model Analysis of a Supercomputer with Di"/]
+  src_a5320f47[/"Ordo-M: An Externally Addressed Sparse Memory Gr"/]
+  src_70bb4b43[/"Joint or Per-Option? Compact Encoders for Closed"/]
+  src_de7c11d0[/"No Step at the Window Edge: Confusable Fake Fact"/]
+  src_9aef1bb0[/"Measuring and Reducing Cross-Vendor Mismatch in "/]
+  src_f2fc7eef[/"Mixing Matters: Evidence Position Bias Across Se"/]
+  src_3bad4b0f[/"You don't need long context"/]
+  src_318eae5e[/"RangeSWA: Training-Free Length Extrapolation for"/]
+  src_f3fd2a19[/"FOLD: Position-Free Far Memory with Local Order "/]
+  src_d18898d6[/"Adaptive Multi-Token Prediction: How far should "/]
+  src_599a6eb6[/"DELA: Learning Controllable Edits for Diffusion "/]
+  src_db46d36b[/"Metacognitive Decoding: Efficient Inference for "/]
+  src_ce79f5a8[/"Next Token or Vector? Learning How Far to Decode"/]
+  src_80cfca29[/"PID-Gated Continual Prompt Adaptation Under Nois"/]
+  chk_320ae09a{{"Check: Interactive Draft-Length Explainer with M"}}
+  chk_8c1d179a{{"Check: Tiny Draft vs N-gram: Hybrid Chooser on 4"}}
+  chk_1b39557f{{"Check: Position-Wise Acceptance on Long 7B Gener"}}
+  chk_a1728661{{"Check: Adaptive Draft Length Controller in llama"}}
+  smk_e26e0e13[["Smoke: The speculative decoding speedup formula "]]
+  smk_b046f0d7[["Smoke: llama.cpp binaries and a 7B GGUF with a s"]]
+  fnd_ad1b64d1_0("llama.cpp benchmark methodology on a single RTX ")
+  fnd_ad1b64d1_1("Harness tooling exists for sweeping drafts and n")
+  fnd_ad1b64d1_2("A speedup model exists showing longer speculatio")
+  fnd_ad1b64d1_3("The closest setups are a small-draft llama.cpp p")
+  fnd_ad1b64d1_4("Relaxed or approximate acceptance methods fit th")
+  fnd_ad1b64d1_5("Plain PyTorch accept/reject loops exist, a fallb")
+  sd_ad1b64d1 --> tech_5d786ad2
+  sd_ad1b64d1 --> tech_90ee62e4
+  sd_ad1b64d1 --> tech_73890742
+  sd_ad1b64d1 --> tech_bbd8674c
+  sd_ad1b64d1 --> tech_311d9e5e
+  sd_ad1b64d1 --> tech_e4dfa4ec
+  sd_ad1b64d1 --> tech_33c7150e
+  sd_ad1b64d1 --> src_d8179e37
+  sd_ad1b64d1 --> src_ce1fb3d6
+  sd_ad1b64d1 --> src_c27bff9b
+  sd_ad1b64d1 --> src_8a20ea91
+  sd_ad1b64d1 --> src_c065eab1
+  sd_ad1b64d1 --> src_ea354241
+  sd_ad1b64d1 --> src_8321a05f
+  sd_ad1b64d1 --> src_b5b4497a
+  sd_ad1b64d1 --> src_c1cacee9
+  sd_ad1b64d1 --> src_8cbd221e
+  sd_ad1b64d1 --> src_04113093
+  sd_ad1b64d1 --> src_792262f2
+  sd_ad1b64d1 --> src_f95eb3d4
+  sd_ad1b64d1 --> src_936cbbee
+  sd_ad1b64d1 --> src_741b92f5
+  sd_ad1b64d1 --> src_578a06b8
+  sd_ad1b64d1 --> src_ea55043d
+  sd_ad1b64d1 --> src_8a6ce3c5
+  sd_ad1b64d1 --> src_eb39deb4
+  sd_ad1b64d1 --> dir_f821de21
+  src_8cbd221e --> dir_f821de21
+  src_c1cacee9 --> dir_f821de21
+  src_04113093 --> dir_f821de21
+  sd_ad1b64d1 --> dir_ee9b3624
+  src_578a06b8 --> dir_ee9b3624
+  src_f95eb3d4 --> dir_ee9b3624
+  src_741b92f5 --> dir_ee9b3624
+  sd_ad1b64d1 --> dir_6b691ae0
+  src_ea354241 --> dir_6b691ae0
+  src_c1cacee9 --> dir_6b691ae0
+  src_ce1fb3d6 --> dir_6b691ae0
+  sd_ad1b64d1 --> dir_36a1ec02
+  src_8321a05f --> dir_36a1ec02
+  src_8cbd221e --> dir_36a1ec02
+  src_ea354241 --> dir_36a1ec02
+  sd_ad1b64d1 --> dir_81f76a22
+  src_8a20ea91 --> dir_81f76a22
+  src_eb39deb4 --> dir_81f76a22
+  src_578a06b8 --> dir_81f76a22
+  dir_f821de21 --> src_1f832235
+  dir_f821de21 --> src_1f832235
+  dir_f821de21 --> src_9b22525f
+  dir_f821de21 --> src_9b22525f
+  dir_f821de21 --> src_dc801bec
+  dir_f821de21 --> src_dc801bec
+  dir_f821de21 --> src_66718ffa
+  dir_f821de21 --> src_66718ffa
+  dir_f821de21 --> src_f409a3e4
+  dir_f821de21 --> src_f409a3e4
+  dir_ee9b3624 --> src_c27bff9b
+  dir_ee9b3624 --> src_c27bff9b
+  dir_ee9b3624 --> src_ea354241
+  dir_ee9b3624 --> src_ea354241
+  dir_ee9b3624 --> src_5319d2d0
+  dir_ee9b3624 --> src_5319d2d0
+  dir_ee9b3624 --> src_1c50a8d8
+  dir_ee9b3624 --> src_1c50a8d8
+  dir_ee9b3624 --> src_ddffdd37
+  dir_ee9b3624 --> src_ddffdd37
+  dir_6b691ae0 --> src_d8179e37
+  dir_6b691ae0 --> src_d8179e37
+  dir_6b691ae0 --> src_c27bff9b
+  dir_6b691ae0 --> src_c27bff9b
+  dir_6b691ae0 --> src_8154368f
+  dir_6b691ae0 --> src_8154368f
+  dir_6b691ae0 --> src_3fdcd9c2
+  dir_6b691ae0 --> src_3fdcd9c2
+  dir_6b691ae0 --> src_9e6a670b
+  dir_6b691ae0 --> src_9e6a670b
+  dir_36a1ec02 --> src_725c1afb
+  dir_36a1ec02 --> src_725c1afb
+  dir_36a1ec02 --> src_631f23f6
+  dir_36a1ec02 --> src_631f23f6
+  dir_36a1ec02 --> src_d3f95438
+  dir_36a1ec02 --> src_d3f95438
+  dir_36a1ec02 --> src_8af2816a
+  dir_36a1ec02 --> src_8af2816a
+  dir_36a1ec02 --> src_14b34e1b
+  dir_36a1ec02 --> src_14b34e1b
+  dir_81f76a22 --> src_d8179e37
+  dir_81f76a22 --> src_d8179e37
+  dir_81f76a22 --> src_e7ba11cb
+  dir_81f76a22 --> src_e7ba11cb
+  dir_81f76a22 --> src_73a2970e
+  dir_81f76a22 --> src_73a2970e
+  dir_81f76a22 --> src_50a04cdb
+  dir_81f76a22 --> src_50a04cdb
+  dir_81f76a22 --> src_997424d4
+  dir_81f76a22 --> src_997424d4
+  dir_f821de21 --> chk_952812ce
+  src_1c50a8d8 --> chk_952812ce
+  src_e7ba11cb --> chk_952812ce
+  dir_ee9b3624 --> chk_c5602be4
+  src_ea354241 --> chk_c5602be4
+  src_1c50a8d8 --> chk_c5602be4
+  dir_6b691ae0 --> chk_844ab6ec
+  src_ea354241 --> chk_844ab6ec
+  dir_36a1ec02 --> chk_b506e2de
+  src_1c50a8d8 --> chk_b506e2de
+  dir_81f76a22 --> chk_e7f56550
+  src_50a04cdb --> chk_e7f56550
+  dir_6b691ae0 --> smk_215fa7aa
+  dir_36a1ec02 --> smk_08de7d76
+  dir_6b691ae0 --> visn_ad1b64d1_concept
+  sd_ad1b64d1 --> visn_ad1b64d1_landscape
+  sd_ad1b64d1 --> visn_ad1b64d1_scores
+  sd_ad1b64d1 --> tech_1a3b7d2e
+  sd_ad1b64d1 --> tech_bd9f3506
+  sd_ad1b64d1 --> src_f402fce4
+  sd_ad1b64d1 --> src_eccafcc1
+  sd_ad1b64d1 --> src_57b250f5
+  sd_ad1b64d1 --> src_236c098f
+  sd_ad1b64d1 --> src_93860505
+  sd_ad1b64d1 --> src_855358c2
+  sd_ad1b64d1 --> src_e7ba11cb
+  sd_ad1b64d1 --> src_a61b0544
+  sd_ad1b64d1 --> src_a49ee28d
+  sd_ad1b64d1 --> src_50a04cdb
+  sd_ad1b64d1 --> src_09e6cca3
+  sd_ad1b64d1 --> src_8a312966
+  sd_ad1b64d1 --> src_0cf69abd
+  sd_ad1b64d1 --> src_5319d2d0
+  dir_6b691ae0 --> dir_b33513ef
+  src_ea354241 --> dir_b33513ef
+  src_f95eb3d4 --> dir_b33513ef
+  src_57b250f5 --> dir_b33513ef
+  dir_36a1ec02 --> dir_1dd6374b
+  src_57b250f5 --> dir_1dd6374b
+  src_8cbd221e --> dir_1dd6374b
+  src_c1cacee9 --> dir_1dd6374b
+  src_f402fce4 --> dir_1dd6374b
+  src_8321a05f --> dir_1dd6374b
+  sd_ad1b64d1 --> dir_5cd39024
+  src_a49ee28d --> dir_5cd39024
+  src_f95eb3d4 --> dir_5cd39024
+  src_578a06b8 --> dir_5cd39024
+  sd_ad1b64d1 --> dir_21856563
+  src_ea354241 --> dir_21856563
+  src_ce1fb3d6 --> dir_21856563
+  src_c1cacee9 --> dir_21856563
+  src_792262f2 --> dir_21856563
+  dir_b33513ef --> src_8a312966
+  dir_b33513ef --> src_8a312966
+  dir_b33513ef --> src_1e107258
+  dir_b33513ef --> src_1e107258
+  dir_b33513ef --> src_b827b158
+  dir_b33513ef --> src_b827b158
+  dir_b33513ef --> src_23550560
+  dir_b33513ef --> src_23550560
+  dir_b33513ef --> src_a5320f47
+  dir_b33513ef --> src_a5320f47
+  dir_1dd6374b --> src_70bb4b43
+  dir_1dd6374b --> src_70bb4b43
+  dir_1dd6374b --> src_de7c11d0
+  dir_1dd6374b --> src_de7c11d0
+  dir_1dd6374b --> src_dc801bec
+  dir_1dd6374b --> src_dc801bec
+  dir_1dd6374b --> src_9aef1bb0
+  dir_1dd6374b --> src_9aef1bb0
+  dir_1dd6374b --> src_f2fc7eef
+  dir_1dd6374b --> src_f2fc7eef
+  dir_5cd39024 --> src_3bad4b0f
+  dir_5cd39024 --> src_3bad4b0f
+  dir_5cd39024 --> src_318eae5e
+  dir_5cd39024 --> src_318eae5e
+  dir_5cd39024 --> src_f3fd2a19
+  dir_5cd39024 --> src_f3fd2a19
+  dir_5cd39024 --> src_a49ee28d
+  dir_5cd39024 --> src_a49ee28d
+  dir_5cd39024 --> src_8a6ce3c5
+  dir_5cd39024 --> src_8a6ce3c5
+  dir_21856563 --> src_d18898d6
+  dir_21856563 --> src_d18898d6
+  dir_21856563 --> src_599a6eb6
+  dir_21856563 --> src_599a6eb6
+  dir_21856563 --> src_db46d36b
+  dir_21856563 --> src_db46d36b
+  dir_21856563 --> src_ce79f5a8
+  dir_21856563 --> src_ce79f5a8
+  dir_21856563 --> src_80cfca29
+  dir_21856563 --> src_80cfca29
+  dir_b33513ef --> chk_320ae09a
+  src_8a312966 --> chk_320ae09a
+  dir_1dd6374b --> chk_8c1d179a
+  src_9aef1bb0 --> chk_8c1d179a
+  dir_5cd39024 --> chk_1b39557f
+  src_a49ee28d --> chk_1b39557f
+  dir_21856563 --> chk_a1728661
+  src_d18898d6 --> chk_a1728661
+  dir_b33513ef --> smk_e26e0e13
+  dir_1dd6374b --> smk_b046f0d7
+  dir_b33513ef --> visn_ad1b64d1_concept
+  src_57b250f5 --> fnd_ad1b64d1_0
+  src_93860505 --> fnd_ad1b64d1_0
+  src_8cbd221e --> fnd_ad1b64d1_1
+  src_c1cacee9 --> fnd_ad1b64d1_1
+  src_ea354241 --> fnd_ad1b64d1_2
+  src_04113093 --> fnd_ad1b64d1_3
+  src_8321a05f --> fnd_ad1b64d1_3
+  src_8a20ea91 --> fnd_ad1b64d1_4
+  src_eb39deb4 --> fnd_ad1b64d1_4
+  src_f95eb3d4 --> fnd_ad1b64d1_5
+  src_578a06b8 --> fnd_ad1b64d1_5
+  style dir_f821de21 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_ee9b3624 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_6b691ae0 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_36a1ec02 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_81f76a22 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_b33513ef fill:#00a85a,color:#fff,stroke:#00773a
+  style dir_1dd6374b fill:#00a85a,color:#fff,stroke:#00773a
+  style dir_5cd39024 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3
+  style dir_21856563 fill:#f5f5f5,color:#a1a1a1,stroke:#d4d4d4,stroke-dasharray:3

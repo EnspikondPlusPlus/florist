@@ -1,0 +1,7 @@
+title: Co-Scientist and similar
+destination: "Google DeepMind Co-Scientist, Kosmos, AI Scientist"
+description: "A research goal statement with background, constraints and preferences."
+default: true
+outputs:
+  - template: research_goal.md.j2
+    path: research_goal.md

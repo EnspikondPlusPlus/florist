@@ -1,0 +1,75 @@
+{
+  "title": "Speculative Decoding with a Tiny Draft Model",
+  "key_insight": "A cheap draft model guesses several tokens ahead, and the big model checks them all in one pass, keeping the correct ones so output stays identical.",
+  "steps": [
+    {
+      "id": "context",
+      "label": "Current text",
+      "detail": "The prompt plus tokens accepted so far is the starting point for each round.",
+      "group": "input"
+    },
+    {
+      "id": "draft",
+      "label": "Draft k tokens",
+      "detail": "The tiny draft model generates k candidate tokens one by one; each step is cheap.",
+      "group": "model"
+    },
+    {
+      "id": "verify",
+      "label": "Verify in one pass",
+      "detail": "The 7B target scores all k drafted positions in a single parallel forward pass.",
+      "group": "model"
+    },
+    {
+      "id": "compare",
+      "label": "Compare token by token",
+      "detail": "Each draft token is accepted if the target agrees, with a probability test when sampling.",
+      "group": "model"
+    },
+    {
+      "id": "accept",
+      "label": "Keep accepted prefix",
+      "detail": "Accepted tokens are appended. At the first rejection, the target's own token replaces the draft's.",
+      "group": "output"
+    },
+    {
+      "id": "speed",
+      "label": "Speedup depends on α, k, cost",
+      "detail": "Higher acceptance and cheaper drafts mean more tokens per target pass. Too long a k wastes draft work.",
+      "group": "output"
+    }
+  ],
+  "edges": [
+    {
+      "source": "context",
+      "target": "draft",
+      "label": ""
+    },
+    {
+      "source": "draft",
+      "target": "verify",
+      "label": "k tokens"
+    },
+    {
+      "source": "verify",
+      "target": "compare",
+      "label": ""
+    },
+    {
+      "source": "compare",
+      "target": "accept",
+      "label": "accept/reject"
+    },
+    {
+      "source": "accept",
+      "target": "context",
+      "label": "next round"
+    },
+    {
+      "source": "accept",
+      "target": "speed",
+      "label": ""
+    }
+  ],
+  "caption": "Each loop yields at least one token and often several for a single 7B pass. Because the target checks every token, quality is unchanged and no retraining is needed. The explainer's sliders (acceptance, draft length, cost ratio) change the speedup this loop produces."
+}

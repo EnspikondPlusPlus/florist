@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "ProposedDirection": {
+      "properties": {
+        "title": {
+          "minLength": 3,
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "description": "what would be built or studied, 2-4 sentences",
+          "title": "Description",
+          "type": "string"
+        },
+        "framing": {
+          "default": "",
+          "description": "the angle that makes it distinct",
+          "title": "Framing",
+          "type": "string"
+        },
+        "technologies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Technologies",
+          "type": "array"
+        },
+        "scope": {
+          "default": "",
+          "description": "what is in and out for a first version",
+          "title": "Scope",
+          "type": "string"
+        },
+        "evolves": {
+          "default": "",
+          "description": "id of an existing direction this evolves/deepens, if any",
+          "title": "Evolves",
+          "type": "string"
+        },
+        "inspired_by": {
+          "description": "source node ids",
+          "items": {
+            "type": "string"
+          },
+          "title": "Inspired By",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "description"
+      ],
+      "title": "ProposedDirection",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "directions": {
+      "items": {
+        "$ref": "#/$defs/ProposedDirection"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Directions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "directions"
+  ],
+  "title": "ExploreOutput",
+  "type": "object"
+}

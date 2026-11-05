@@ -1,0 +1,57 @@
+{
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "seed_id": {
+      "title": "Seed Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "concept",
+        "landscape",
+        "scores",
+        "smoke",
+        "graph"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "caption": {
+      "default": "",
+      "title": "Caption",
+      "type": "string"
+    },
+    "files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "format -> path relative to the seed visuals dir",
+      "title": "Files",
+      "type": "object"
+    },
+    "round": {
+      "default": 0,
+      "title": "Round",
+      "type": "integer"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "seed_id",
+    "kind",
+    "title"
+  ],
+  "title": "Visual",
+  "type": "object"
+}

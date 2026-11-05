@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "FeedStatus": {
+      "enum": [
+        "new",
+        "kept",
+        "folded",
+        "composted",
+        "seeded",
+        "attached",
+        "dismissed"
+      ],
+      "title": "FeedStatus",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "source_id": {
+      "default": "",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_kind": {
+      "default": "manual",
+      "description": "rss | youtube | arxiv | alphaxiv | github | email | hn | manual",
+      "title": "Source Kind",
+      "type": "string"
+    },
+    "source_name": {
+      "default": "",
+      "title": "Source Name",
+      "type": "string"
+    },
+    "external_id": {
+      "default": "",
+      "title": "External Id",
+      "type": "string"
+    },
+    "url": {
+      "default": "",
+      "title": "Url",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "author": {
+      "default": "",
+      "title": "Author",
+      "type": "string"
+    },
+    "published": {
+      "default": "",
+      "title": "Published",
+      "type": "string"
+    },
+    "content": {
+      "default": "",
+      "description": "raw text excerpt used for summarizing",
+      "title": "Content",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    },
+    "relevance": {
+      "default": 0.0,
+      "description": "model relevance before preference blending",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Relevance",
+      "type": "number"
+    },
+    "score": {
+      "default": 0.0,
+      "description": "final ranking score",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Score",
+      "type": "number"
+    },
+    "why": {
+      "default": "",
+      "description": "one line: why this matters to you",
+      "title": "Why",
+      "type": "string"
+    },
+    "related_seed_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Related Seed Ids",
+      "type": "array"
+    },
+    "status": {
+      "$ref": "#/$defs/FeedStatus",
+      "default": "new"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title"
+  ],
+  "title": "FeedItem",
+  "type": "object"
+}

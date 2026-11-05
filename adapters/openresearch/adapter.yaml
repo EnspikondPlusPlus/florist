@@ -1,0 +1,9 @@
+title: OpenResearch / autoresearch
+destination: "OpenResearch (alphaXiv) or Karpathy-style autoresearch agents"
+description: "A program.md with objective, metric, what may and may not be changed, constraints and starting references."
+default: true
+outputs:
+  - template: program.md.j2
+    path: program.md
+  - template: README.md.j2
+    path: README.md

@@ -1,0 +1,7 @@
+title: Personal project build plan
+destination: "You (or a friend) building it by hand"
+description: "An ordered build plan: milestones, tasks, tools and the first session's to-do list."
+default: true
+outputs:
+  - template: BUILD_PLAN.md.j2
+    path: BUILD_PLAN.md

@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "ClosestWork": {
+      "properties": {
+        "ref": {
+          "description": "source node id",
+          "title": "Ref",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "how_it_differs": {
+          "title": "How It Differs",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "how_it_differs"
+      ],
+      "title": "ClosestWork",
+      "type": "object"
+    },
+    "DirectionCheck": {
+      "properties": {
+        "ref": {
+          "description": "direction node id",
+          "title": "Ref",
+          "type": "string"
+        },
+        "novelty": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "feasibility": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Feasibility",
+          "type": "number"
+        },
+        "crowdedness": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Crowdedness",
+          "type": "number"
+        },
+        "interest": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Interest",
+          "type": "number"
+        },
+        "closest_work": {
+          "items": {
+            "$ref": "#/$defs/ClosestWork"
+          },
+          "title": "Closest Work",
+          "type": "array"
+        },
+        "gap": {
+          "default": "",
+          "description": "what is genuinely not done yet; empty if nothing",
+          "title": "Gap",
+          "type": "string"
+        },
+        "feasibility_notes": {
+          "default": "",
+          "title": "Feasibility Notes",
+          "type": "string"
+        },
+        "risks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "smoke_worthy": {
+          "default": "",
+          "description": "a key assumption a tiny test could confirm, if any",
+          "title": "Smoke Worthy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "novelty",
+        "feasibility",
+        "crowdedness",
+        "interest"
+      ],
+      "title": "DirectionCheck",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/DirectionCheck"
+      },
+      "minItems": 1,
+      "title": "Checks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "checks"
+  ],
+  "title": "CheckOutput",
+  "type": "object"
+}

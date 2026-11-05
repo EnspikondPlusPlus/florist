@@ -1,0 +1,70 @@
+{
+  "$defs": {
+    "MinedSeed": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier",
+          "default": "exploration"
+        },
+        "compost_ids": {
+          "description": "the compost items this connects",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Compost Ids",
+          "type": "array"
+        },
+        "connection": {
+          "description": "what these items share and why it matters to the user",
+          "title": "Connection",
+          "type": "string"
+        },
+        "technologies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Technologies",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "prompt",
+        "compost_ids",
+        "connection"
+      ],
+      "title": "MinedSeed",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "exploration",
+        "personal",
+        "formal"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/MinedSeed"
+      },
+      "maxItems": 5,
+      "title": "Candidates",
+      "type": "array"
+    }
+  },
+  "title": "MiningOutput",
+  "type": "object"
+}

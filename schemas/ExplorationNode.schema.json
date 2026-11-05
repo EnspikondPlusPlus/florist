@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "NodeKind": {
+      "enum": [
+        "seed",
+        "source",
+        "technology",
+        "direction",
+        "check",
+        "smoke",
+        "visual",
+        "finding"
+      ],
+      "title": "NodeKind",
+      "type": "string"
+    },
+    "NodeStatus": {
+      "enum": [
+        "active",
+        "top",
+        "pruned"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "seed_id": {
+      "title": "Seed Id",
+      "type": "string"
+    },
+    "round": {
+      "default": 0,
+      "title": "Round",
+      "type": "integer"
+    },
+    "kind": {
+      "$ref": "#/$defs/NodeKind"
+    },
+    "status": {
+      "$ref": "#/$defs/NodeStatus",
+      "default": "active"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
+    "url": {
+      "default": "",
+      "title": "Url",
+      "type": "string"
+    },
+    "score": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Score"
+    },
+    "reason": {
+      "default": "",
+      "description": "why pruned / why selected",
+      "title": "Reason",
+      "type": "string"
+    },
+    "parents": {
+      "description": "ids of nodes this one grew from",
+      "items": {
+        "type": "string"
+      },
+      "title": "Parents",
+      "type": "array"
+    },
+    "data": {
+      "additionalProperties": true,
+      "title": "Data",
+      "type": "object"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "seed_id",
+    "kind",
+    "title"
+  ],
+  "title": "ExplorationNode",
+  "type": "object"
+}

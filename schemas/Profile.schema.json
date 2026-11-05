@@ -1,0 +1,271 @@
+{
+  "$defs": {
+    "Downtime": {
+      "properties": {
+        "mode": {
+          "default": "stop",
+          "description": "run: grow queued seeds now; scheduled: only in windows; stop: never",
+          "enum": [
+            "run",
+            "scheduled",
+            "stop"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "enabled": {
+          "default": false,
+          "description": "deprecated; use mode",
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "windows": {
+          "items": {
+            "$ref": "#/$defs/DowntimeWindow"
+          },
+          "title": "Windows",
+          "type": "array"
+        },
+        "max_usd_per_window": {
+          "default": 1.0,
+          "description": "Florist's own token-log meter",
+          "minimum": 0,
+          "title": "Max Usd Per Window",
+          "type": "number"
+        },
+        "subscription_fraction": {
+          "default": 0.2,
+          "description": "Share of a coding subscription Florist may use (advisory)",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Subscription Fraction",
+          "type": "number"
+        }
+      },
+      "title": "Downtime",
+      "type": "object"
+    },
+    "DowntimeWindow": {
+      "properties": {
+        "days": {
+          "items": {
+            "enum": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "type": "string"
+          },
+          "title": "Days",
+          "type": "array"
+        },
+        "start": {
+          "default": "01:00",
+          "pattern": "^\\d{2}:\\d{2}$",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "default": "07:00",
+          "pattern": "^\\d{2}:\\d{2}$",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "title": "DowntimeWindow",
+      "type": "object"
+    },
+    "LearnedPreference": {
+      "description": "A preference Florist learned from behaviour. Always visible and editable.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "tag",
+            "technology",
+            "source",
+            "statement"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "key": {
+          "description": "tag / technology / source name, or the statement text",
+          "title": "Key",
+          "type": "string"
+        },
+        "weight": {
+          "default": 0.0,
+          "description": "-1 avoid \u2026 +1 seek out",
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Weight",
+          "type": "number"
+        },
+        "evidence": {
+          "default": 0,
+          "description": "number of behavioural signals behind it",
+          "minimum": 0,
+          "title": "Evidence",
+          "type": "integer"
+        },
+        "locked": {
+          "default": false,
+          "description": "user-edited: Florist will not change it",
+          "title": "Locked",
+          "type": "boolean"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "updated": {
+          "title": "Updated",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "key"
+      ],
+      "title": "LearnedPreference",
+      "type": "object"
+    },
+    "Resources": {
+      "properties": {
+        "compute": {
+          "default": "",
+          "description": "e.g. '1x RTX 4090, no cluster'",
+          "title": "Compute",
+          "type": "string"
+        },
+        "budget_usd_month": {
+          "default": 0,
+          "description": "API budget per month in USD",
+          "minimum": 0,
+          "title": "Budget Usd Month",
+          "type": "number"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "title": "Resources",
+      "type": "object"
+    },
+    "TimeBudget": {
+      "properties": {
+        "hours_per_week": {
+          "default": 5,
+          "minimum": 0,
+          "title": "Hours Per Week",
+          "type": "number"
+        },
+        "goal_date": {
+          "default": "",
+          "description": "ISO date or free text, e.g. 'NeurIPS 2027'",
+          "title": "Goal Date",
+          "type": "string"
+        },
+        "goal_label": {
+          "default": "",
+          "title": "Goal Label",
+          "type": "string"
+        }
+      },
+      "title": "TimeBudget",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "name": {
+      "default": "",
+      "title": "Name",
+      "type": "string"
+    },
+    "interests": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Interests",
+      "type": "array"
+    },
+    "proficient_in": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Proficient In",
+      "type": "array"
+    },
+    "wants_to_learn": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Wants To Learn",
+      "type": "array"
+    },
+    "resources": {
+      "$ref": "#/$defs/Resources"
+    },
+    "time": {
+      "$ref": "#/$defs/TimeBudget"
+    },
+    "conference_targets": {
+      "description": "AI Deadlines conference ids or titles, e.g. 'neurips'",
+      "items": {
+        "type": "string"
+      },
+      "title": "Conference Targets",
+      "type": "array"
+    },
+    "work_preferences": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Work Preferences",
+      "type": "array"
+    },
+    "downtime": {
+      "$ref": "#/$defs/Downtime"
+    },
+    "compost_after_days": {
+      "default": 45,
+      "description": "seeds at lowest priority longer than this move to compost",
+      "minimum": 1,
+      "title": "Compost After Days",
+      "type": "integer"
+    },
+    "feed_fold_threshold": {
+      "default": 0.35,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Feed Fold Threshold",
+      "type": "number"
+    },
+    "learned_preferences": {
+      "items": {
+        "$ref": "#/$defs/LearnedPreference"
+      },
+      "title": "Learned Preferences",
+      "type": "array"
+    }
+  },
+  "title": "Profile",
+  "type": "object"
+}

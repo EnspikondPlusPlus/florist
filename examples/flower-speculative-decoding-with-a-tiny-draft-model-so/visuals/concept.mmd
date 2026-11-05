@@ -1,0 +1,14 @@
+flowchart LR
+  context["<b>Current text</b><br/><small>The prompt plus tokens accepted so far is the starting point for each round.</small>"]
+  draft["<b>Draft k tokens</b><br/><small>The tiny draft model generates k candidate tokens one by one; each step is cheap.</small>"]
+  verify["<b>Verify in one pass</b><br/><small>The 7B target scores all k drafted positions in a single parallel forward pass.</small>"]
+  compare["<b>Compare token by token</b><br/><small>Each draft token is accepted if the target agrees, with a probability test when sampling.</small>"]
+  accept["<b>Keep accepted prefix</b><br/><small>Accepted tokens are appended. At the first rejection, the target's own token replaces the draft's.</small>"]
+  speed["<b>Speedup depends on α, k, cost</b><br/><small>Higher acceptance and cheaper drafts mean more tokens per target pass. Too long a k wastes draft work.</small>"]
+  context --> draft
+  draft -->|k tokens| verify
+  verify --> compare
+  compare -->|accept/reject| accept
+  accept -.->|next round| context
+  accept --> speed
+  style context fill:#00a85a,color:#fff,stroke:#00a85a

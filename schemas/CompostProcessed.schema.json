@@ -1,0 +1,49 @@
+{
+  "properties": {
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "takeaways": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 5,
+      "title": "Takeaways",
+      "type": "array"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Tags",
+      "type": "array"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Technologies",
+      "type": "array"
+    },
+    "why_interesting": {
+      "default": "",
+      "title": "Why Interesting",
+      "type": "string"
+    },
+    "related_seed_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Related Seed Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "summary"
+  ],
+  "title": "CompostProcessed",
+  "type": "object"
+}

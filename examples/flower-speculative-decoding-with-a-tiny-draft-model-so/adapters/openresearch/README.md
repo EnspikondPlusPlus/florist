@@ -1,0 +1,9 @@
+# Handing “Speculative decoding with a tiny draft model so…” to OpenResearch
+
+1. Create or import the project repository in OpenResearch (`orx up` → new project).
+2. Copy `program.md` into the repository root and commit it.
+3. Start a chat in the project and say: *“Read program.md and follow it. Establish the baseline first.”*
+4. Keep `../../flower.md` handy: it holds the evidence, rejected directions and visuals behind this plan.
+
+For Karpathy-style autoresearch, `program.md` replaces the stock one; keep the split it describes
+under “What you may change” and “What you must not change”.

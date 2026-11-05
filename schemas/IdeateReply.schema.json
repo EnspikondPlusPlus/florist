@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "reply": {
+      "description": "markdown answer",
+      "title": "Reply",
+      "type": "string"
+    },
+    "suggest_seed": {
+      "default": false,
+      "description": "true when the conversation has converged on a seedable idea",
+      "title": "Suggest Seed",
+      "type": "boolean"
+    },
+    "seed_title": {
+      "default": "",
+      "title": "Seed Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reply"
+  ],
+  "title": "IdeateReply",
+  "type": "object"
+}

@@ -1,0 +1,181 @@
+{
+  "$defs": {
+    "ClosestWork": {
+      "properties": {
+        "ref": {
+          "description": "source node id",
+          "title": "Ref",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "how_it_differs": {
+          "title": "How It Differs",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "how_it_differs"
+      ],
+      "title": "ClosestWork",
+      "type": "object"
+    },
+    "Evidence": {
+      "description": "A pointer to a source node or a smoke-check result inside the seed's graph.",
+      "properties": {
+        "ref": {
+          "description": "exploration node id (source / smoke / check)",
+          "title": "Ref",
+          "type": "string"
+        },
+        "quote": {
+          "default": "",
+          "description": "short supporting quote or fact from that source",
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Finding": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "FlowerDirection": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "node_id": {
+          "default": "",
+          "description": "the direction node this recommends",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "pitch": {
+          "description": "2-3 sentences: what to do and why it is promising",
+          "title": "Pitch",
+          "type": "string"
+        },
+        "why_you": {
+          "default": "",
+          "description": "why it fits this user's skills, compute and interests",
+          "title": "Why You",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "pitch"
+      ],
+      "title": "FlowerDirection",
+      "type": "object"
+    },
+    "Novelty": {
+      "properties": {
+        "closest_work": {
+          "items": {
+            "$ref": "#/$defs/ClosestWork"
+          },
+          "title": "Closest Work",
+          "type": "array"
+        },
+        "gap": {
+          "default": "",
+          "title": "Gap",
+          "type": "string"
+        }
+      },
+      "title": "Novelty",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "idea": {
+      "title": "Idea",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "maxItems": 7,
+      "minItems": 1,
+      "title": "Findings",
+      "type": "array"
+    },
+    "directions": {
+      "items": {
+        "$ref": "#/$defs/FlowerDirection"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Directions",
+      "type": "array"
+    },
+    "novelty": {
+      "$ref": "#/$defs/Novelty"
+    },
+    "risks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Risks",
+      "type": "array"
+    },
+    "open_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Open Questions",
+      "type": "array"
+    },
+    "first_steps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "First Steps",
+      "type": "array"
+    },
+    "success_criteria": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Success Criteria",
+      "type": "array"
+    }
+  },
+  "required": [
+    "idea",
+    "findings",
+    "directions"
+  ],
+  "title": "FlowerDraft",
+  "type": "object"
+}

@@ -1,0 +1,116 @@
+{
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "links": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Links",
+      "type": "array"
+    },
+    "source": {
+      "default": "",
+      "title": "Source",
+      "type": "string"
+    },
+    "date": {
+      "default": "",
+      "title": "Date",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
+    "takeaways": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Takeaways",
+      "type": "array"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    },
+    "related_seed_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Related Seed Ids",
+      "type": "array"
+    },
+    "why_interesting": {
+      "default": "",
+      "title": "Why Interesting",
+      "type": "string"
+    },
+    "notes": {
+      "default": "",
+      "title": "Notes",
+      "type": "string"
+    },
+    "origin": {
+      "default": "manual",
+      "enum": [
+        "feed",
+        "manual",
+        "seed"
+      ],
+      "title": "Origin",
+      "type": "string"
+    },
+    "feed_item_id": {
+      "default": "",
+      "title": "Feed Item Id",
+      "type": "string"
+    },
+    "seed_id": {
+      "default": "",
+      "title": "Seed Id",
+      "type": "string"
+    },
+    "cluster": {
+      "default": "",
+      "title": "Cluster",
+      "type": "string"
+    },
+    "processed": {
+      "default": false,
+      "title": "Processed",
+      "type": "boolean"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    },
+    "updated": {
+      "title": "Updated",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title"
+  ],
+  "title": "CompostItem",
+  "type": "object"
+}

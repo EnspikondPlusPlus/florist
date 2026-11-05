@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "Tier": {
+      "enum": [
+        "exploration",
+        "personal",
+        "formal"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "title": {
+      "maxLength": 80,
+      "title": "Title",
+      "type": "string"
+    },
+    "prompt": {
+      "description": "2-5 sentences: the idea as it now stands, in the user's terms",
+      "title": "Prompt",
+      "type": "string"
+    },
+    "tier": {
+      "$ref": "#/$defs/Tier",
+      "default": "personal"
+    },
+    "technologies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technologies",
+      "type": "array"
+    },
+    "must_use": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Must Use",
+      "type": "array"
+    },
+    "must_avoid": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Must Avoid",
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "prompt"
+  ],
+  "title": "SeedFromChat",
+  "type": "object"
+}

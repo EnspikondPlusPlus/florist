@@ -1,0 +1,1082 @@
+{
+  "$defs": {
+    "ClosestWork": {
+      "properties": {
+        "ref": {
+          "description": "source node id",
+          "title": "Ref",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "how_it_differs": {
+          "title": "How It Differs",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "how_it_differs"
+      ],
+      "title": "ClosestWork",
+      "type": "object"
+    },
+    "Constraints": {
+      "properties": {
+        "time": {
+          "default": "",
+          "title": "Time",
+          "type": "string"
+        },
+        "compute": {
+          "default": "",
+          "title": "Compute",
+          "type": "string"
+        },
+        "skills": {
+          "default": "",
+          "title": "Skills",
+          "type": "string"
+        },
+        "must_use": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Use",
+          "type": "array"
+        },
+        "must_avoid": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Avoid",
+          "type": "array"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "title": "Constraints",
+      "type": "object"
+    },
+    "Evidence": {
+      "description": "A pointer to a source node or a smoke-check result inside the seed's graph.",
+      "properties": {
+        "ref": {
+          "description": "exploration node id (source / smoke / check)",
+          "title": "Ref",
+          "type": "string"
+        },
+        "quote": {
+          "default": "",
+          "description": "short supporting quote or fact from that source",
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "ExplorationNode": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "seed_id": {
+          "title": "Seed Id",
+          "type": "string"
+        },
+        "round": {
+          "default": 0,
+          "title": "Round",
+          "type": "integer"
+        },
+        "kind": {
+          "$ref": "#/$defs/NodeKind"
+        },
+        "status": {
+          "$ref": "#/$defs/NodeStatus",
+          "default": "active"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "default": "",
+          "title": "Summary",
+          "type": "string"
+        },
+        "url": {
+          "default": "",
+          "title": "Url",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        },
+        "reason": {
+          "default": "",
+          "description": "why pruned / why selected",
+          "title": "Reason",
+          "type": "string"
+        },
+        "parents": {
+          "description": "ids of nodes this one grew from",
+          "items": {
+            "type": "string"
+          },
+          "title": "Parents",
+          "type": "array"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "created": {
+          "title": "Created",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "seed_id",
+        "kind",
+        "title"
+      ],
+      "title": "ExplorationNode",
+      "type": "object"
+    },
+    "Finding": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Flower": {
+      "properties": {
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "seed_id": {
+          "title": "Seed Id",
+          "type": "string"
+        },
+        "version": {
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "round": {
+          "default": 1,
+          "title": "Round",
+          "type": "integer"
+        },
+        "idea": {
+          "description": "the idea in one paragraph",
+          "title": "Idea",
+          "type": "string"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "maxItems": 7,
+          "minItems": 1,
+          "title": "Findings",
+          "type": "array"
+        },
+        "directions": {
+          "items": {
+            "$ref": "#/$defs/FlowerDirection"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Directions",
+          "type": "array"
+        },
+        "novelty": {
+          "$ref": "#/$defs/Novelty"
+        },
+        "risks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "open_questions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Open Questions",
+          "type": "array"
+        },
+        "first_steps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "First Steps",
+          "type": "array"
+        },
+        "success_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Success Criteria",
+          "type": "array"
+        },
+        "stability": {
+          "default": 0.0,
+          "description": "similarity to the previous version",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Stability",
+          "type": "number"
+        },
+        "visuals": {
+          "description": "visual ids",
+          "items": {
+            "type": "string"
+          },
+          "title": "Visuals",
+          "type": "array"
+        },
+        "updated": {
+          "title": "Updated",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seed_id",
+        "idea",
+        "findings",
+        "directions"
+      ],
+      "title": "Flower",
+      "type": "object"
+    },
+    "FlowerDirection": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "node_id": {
+          "default": "",
+          "description": "the direction node this recommends",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "pitch": {
+          "description": "2-3 sentences: what to do and why it is promising",
+          "title": "Pitch",
+          "type": "string"
+        },
+        "why_you": {
+          "default": "",
+          "description": "why it fits this user's skills, compute and interests",
+          "title": "Why You",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "pitch"
+      ],
+      "title": "FlowerDirection",
+      "type": "object"
+    },
+    "FollowUp": {
+      "properties": {
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "answer": {
+          "default": "",
+          "title": "Answer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question"
+      ],
+      "title": "FollowUp",
+      "type": "object"
+    },
+    "Handoff": {
+      "properties": {
+        "objective": {
+          "title": "Objective",
+          "type": "string"
+        },
+        "metric": {
+          "description": "what number says it worked, and which direction is better",
+          "title": "Metric",
+          "type": "string"
+        },
+        "metric_direction": {
+          "default": "maximize",
+          "enum": [
+            "maximize",
+            "minimize",
+            "qualitative"
+          ],
+          "title": "Metric Direction",
+          "type": "string"
+        },
+        "baseline": {
+          "default": "",
+          "title": "Baseline",
+          "type": "string"
+        },
+        "may_change": {
+          "items": {
+            "type": "string"
+          },
+          "title": "May Change",
+          "type": "array"
+        },
+        "must_not_change": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Not Change",
+          "type": "array"
+        },
+        "constraints": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Constraints",
+          "type": "array"
+        },
+        "background": {
+          "default": "",
+          "title": "Background",
+          "type": "string"
+        },
+        "preferences": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Preferences",
+          "type": "array"
+        },
+        "milestones": {
+          "items": {
+            "$ref": "#/$defs/Milestone"
+          },
+          "title": "Milestones",
+          "type": "array"
+        },
+        "first_session": {
+          "items": {
+            "type": "string"
+          },
+          "title": "First Session",
+          "type": "array"
+        },
+        "tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tools",
+          "type": "array"
+        },
+        "conventions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Conventions",
+          "type": "array"
+        },
+        "first_experiments": {
+          "items": {
+            "type": "string"
+          },
+          "title": "First Experiments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "objective",
+        "metric"
+      ],
+      "title": "Handoff",
+      "type": "object"
+    },
+    "Milestone": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "goal": {
+          "default": "",
+          "title": "Goal",
+          "type": "string"
+        },
+        "tasks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tasks",
+          "type": "array"
+        },
+        "est_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Est Hours"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "Milestone",
+      "type": "object"
+    },
+    "NodeKind": {
+      "enum": [
+        "seed",
+        "source",
+        "technology",
+        "direction",
+        "check",
+        "smoke",
+        "visual",
+        "finding"
+      ],
+      "title": "NodeKind",
+      "type": "string"
+    },
+    "NodeStatus": {
+      "enum": [
+        "active",
+        "top",
+        "pruned"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    },
+    "Novelty": {
+      "properties": {
+        "closest_work": {
+          "items": {
+            "$ref": "#/$defs/ClosestWork"
+          },
+          "title": "Closest Work",
+          "type": "array"
+        },
+        "gap": {
+          "default": "",
+          "title": "Gap",
+          "type": "string"
+        }
+      },
+      "title": "Novelty",
+      "type": "object"
+    },
+    "PackSource": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "default": "",
+          "title": "Url",
+          "type": "string"
+        },
+        "kind": {
+          "default": "",
+          "title": "Kind",
+          "type": "string"
+        },
+        "year": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Year"
+        },
+        "summary": {
+          "default": "",
+          "title": "Summary",
+          "type": "string"
+        },
+        "tool": {
+          "default": "",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "title": "PackSource",
+      "type": "object"
+    },
+    "PrunedBranch": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "default": "",
+          "title": "Summary",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "round": {
+          "default": 0,
+          "title": "Round",
+          "type": "integer"
+        },
+        "scores": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Scores"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "reason"
+      ],
+      "title": "PrunedBranch",
+      "type": "object"
+    },
+    "Scores": {
+      "properties": {
+        "novelty": {
+          "default": 0.5,
+          "description": "1 = nothing like it exists",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "feasibility": {
+          "default": 0.5,
+          "description": "1 = easily doable under the user's constraints",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Feasibility",
+          "type": "number"
+        },
+        "crowdedness": {
+          "default": 0.5,
+          "description": "1 = very crowded area",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Crowdedness",
+          "type": "number"
+        },
+        "interest": {
+          "default": 0.5,
+          "description": "1 = squarely what the user cares about",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Interest",
+          "type": "number"
+        },
+        "overall": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Overall",
+          "type": "number"
+        }
+      },
+      "title": "Scores",
+      "type": "object"
+    },
+    "Seed": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "slug": {
+          "title": "Slug",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "prompt": {
+          "description": "what the idea is about, a sentence or a paragraph",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier",
+          "default": "personal"
+        },
+        "state": {
+          "$ref": "#/$defs/SeedState",
+          "default": "dormant"
+        },
+        "priority": {
+          "default": 3,
+          "description": "1 = lowest, 5 = highest",
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Priority",
+          "type": "integer"
+        },
+        "technologies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Technologies",
+          "type": "array"
+        },
+        "related_papers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Papers",
+          "type": "array"
+        },
+        "compost_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Compost Ids",
+          "type": "array"
+        },
+        "feed_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Feed Ids",
+          "type": "array"
+        },
+        "constraints": {
+          "$ref": "#/$defs/Constraints"
+        },
+        "followups": {
+          "items": {
+            "$ref": "#/$defs/FollowUp"
+          },
+          "title": "Followups",
+          "type": "array"
+        },
+        "passive": {
+          "default": false,
+          "description": "queued for background growth during downtime",
+          "title": "Passive",
+          "type": "boolean"
+        },
+        "budget": {
+          "$ref": "#/$defs/SeedBudget"
+        },
+        "origin": {
+          "default": "manual",
+          "enum": [
+            "manual",
+            "feed",
+            "compost",
+            "mining",
+            "ideate"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "conference_targets": {
+          "description": "per-project venues",
+          "items": {
+            "type": "string"
+          },
+          "title": "Conference Targets",
+          "type": "array"
+        },
+        "deadline": {
+          "default": "",
+          "description": "ISO date the user wants to hand off by",
+          "title": "Deadline",
+          "type": "string"
+        },
+        "rounds_done": {
+          "default": 0,
+          "title": "Rounds Done",
+          "type": "integer"
+        },
+        "created": {
+          "title": "Created",
+          "type": "string"
+        },
+        "updated": {
+          "title": "Updated",
+          "type": "string"
+        },
+        "priority_since": {
+          "title": "Priority Since",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "title",
+        "prompt"
+      ],
+      "title": "Seed",
+      "type": "object"
+    },
+    "SeedBudget": {
+      "properties": {
+        "max_rounds": {
+          "default": 3,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Rounds",
+          "type": "integer"
+        },
+        "max_usd": {
+          "default": 2.0,
+          "minimum": 0,
+          "title": "Max Usd",
+          "type": "number"
+        }
+      },
+      "title": "SeedBudget",
+      "type": "object"
+    },
+    "SeedState": {
+      "enum": [
+        "candidate",
+        "dormant",
+        "growing",
+        "flowering",
+        "picked",
+        "composted"
+      ],
+      "title": "SeedState",
+      "type": "string"
+    },
+    "SmokeCheck": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "seed_id": {
+          "title": "Seed Id",
+          "type": "string"
+        },
+        "direction_id": {
+          "default": "",
+          "title": "Direction Id",
+          "type": "string"
+        },
+        "assumption": {
+          "title": "Assumption",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "expected": {
+          "default": "",
+          "title": "Expected",
+          "type": "string"
+        },
+        "timeout_s": {
+          "default": 60,
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Timeout S",
+          "type": "integer"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "approved",
+            "running",
+            "passed",
+            "failed",
+            "rejected",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "stdout": {
+          "default": "",
+          "title": "Stdout",
+          "type": "string"
+        },
+        "stderr": {
+          "default": "",
+          "title": "Stderr",
+          "type": "string"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "verdict": {
+          "default": "",
+          "title": "Verdict",
+          "type": "string"
+        },
+        "created": {
+          "title": "Created",
+          "type": "string"
+        },
+        "finished": {
+          "default": "",
+          "title": "Finished",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "seed_id",
+        "assumption",
+        "code"
+      ],
+      "title": "SmokeCheck",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "exploration",
+        "personal",
+        "formal"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "Visual": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "seed_id": {
+          "title": "Seed Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "concept",
+            "landscape",
+            "scores",
+            "smoke",
+            "graph"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "caption": {
+          "default": "",
+          "title": "Caption",
+          "type": "string"
+        },
+        "files": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "format -> path relative to the seed visuals dir",
+          "title": "Files",
+          "type": "object"
+        },
+        "round": {
+          "default": 0,
+          "title": "Round",
+          "type": "integer"
+        },
+        "created": {
+          "title": "Created",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "seed_id",
+        "kind",
+        "title"
+      ],
+      "title": "Visual",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "florist_version": {
+      "default": "",
+      "title": "Florist Version",
+      "type": "string"
+    },
+    "slug": {
+      "title": "Slug",
+      "type": "string"
+    },
+    "seed": {
+      "$ref": "#/$defs/Seed"
+    },
+    "constraints_snapshot": {
+      "additionalProperties": true,
+      "title": "Constraints Snapshot",
+      "type": "object"
+    },
+    "flower": {
+      "$ref": "#/$defs/Flower"
+    },
+    "handoff": {
+      "$ref": "#/$defs/Handoff"
+    },
+    "directions": {
+      "items": {
+        "$ref": "#/$defs/ExplorationNode"
+      },
+      "title": "Directions",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/PackSource"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "pruned": {
+      "items": {
+        "$ref": "#/$defs/PrunedBranch"
+      },
+      "title": "Pruned",
+      "type": "array"
+    },
+    "visuals": {
+      "items": {
+        "$ref": "#/$defs/Visual"
+      },
+      "title": "Visuals",
+      "type": "array"
+    },
+    "smoke": {
+      "items": {
+        "$ref": "#/$defs/SmokeCheck"
+      },
+      "title": "Smoke",
+      "type": "array"
+    },
+    "adapters": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Adapters",
+      "type": "array"
+    },
+    "cost": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Cost",
+      "type": "object"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "slug",
+    "seed",
+    "flower",
+    "handoff"
+  ],
+  "title": "FlowerPack",
+  "type": "object"
+}

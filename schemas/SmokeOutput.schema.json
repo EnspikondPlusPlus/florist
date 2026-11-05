@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "SmokeProposal": {
+      "properties": {
+        "direction_ref": {
+          "default": "",
+          "title": "Direction Ref",
+          "type": "string"
+        },
+        "assumption": {
+          "title": "Assumption",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "code": {
+          "description": "self-contained Python, stdlib preferred, prints SMOKE_RESULT {json}",
+          "title": "Code",
+          "type": "string"
+        },
+        "expected": {
+          "default": "",
+          "title": "Expected",
+          "type": "string"
+        },
+        "timeout_s": {
+          "default": 60,
+          "maximum": 300,
+          "minimum": 5,
+          "title": "Timeout S",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "assumption",
+        "code"
+      ],
+      "title": "SmokeProposal",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "proposals": {
+      "items": {
+        "$ref": "#/$defs/SmokeProposal"
+      },
+      "maxItems": 2,
+      "title": "Proposals",
+      "type": "array"
+    }
+  },
+  "title": "SmokeOutput",
+  "type": "object"
+}

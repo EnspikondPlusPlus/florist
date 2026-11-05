@@ -1,0 +1,95 @@
+{
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "seed_id": {
+      "title": "Seed Id",
+      "type": "string"
+    },
+    "direction_id": {
+      "default": "",
+      "title": "Direction Id",
+      "type": "string"
+    },
+    "assumption": {
+      "title": "Assumption",
+      "type": "string"
+    },
+    "rationale": {
+      "default": "",
+      "title": "Rationale",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "expected": {
+      "default": "",
+      "title": "Expected",
+      "type": "string"
+    },
+    "timeout_s": {
+      "default": 60,
+      "maximum": 300,
+      "minimum": 1,
+      "title": "Timeout S",
+      "type": "integer"
+    },
+    "status": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "approved",
+        "running",
+        "passed",
+        "failed",
+        "rejected",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "stdout": {
+      "default": "",
+      "title": "Stdout",
+      "type": "string"
+    },
+    "stderr": {
+      "default": "",
+      "title": "Stderr",
+      "type": "string"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "verdict": {
+      "default": "",
+      "title": "Verdict",
+      "type": "string"
+    },
+    "created": {
+      "title": "Created",
+      "type": "string"
+    },
+    "finished": {
+      "default": "",
+      "title": "Finished",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "seed_id",
+    "assumption",
+    "code"
+  ],
+  "title": "SmokeCheck",
+  "type": "object"
+}

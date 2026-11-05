@@ -1,0 +1,57 @@
+# Research goal: {{ seed.title }}
+
+## Goal
+
+{{ handoff.objective }}
+
+## Background
+
+{{ handoff.background }}
+
+Key findings so far (each with a source):
+
+{% for f in flower.findings %}
+- {{ f.text }} [{% for e in f.evidence %}{{ cite(e.ref) }}{{ "; " if not loop.last }}{% endfor %}]
+{% endfor %}
+
+## What is already known (closest work) and the gap
+
+{% for c in flower.novelty.closest_work %}
+- {{ cite(c.ref) }} — {{ c.how_it_differs }}
+{% endfor %}
+
+Gap: {{ flower.novelty.gap or "to be established" }}
+
+## Hypothesis directions to start from
+
+{% for d in flower.directions %}
+- **{{ d.title }}** — {{ d.pitch }}
+{% endfor %}
+
+Directions already considered and rejected:
+
+{% for p in pruned %}
+- {{ p.title }}: {{ p.reason }}
+{% else %}
+- none
+{% endfor %}
+
+## Constraints
+
+{% for c in handoff.constraints %}
+- {{ c }}
+{% endfor %}
+- Success is measured by: {{ handoff.metric }} ({{ handoff.metric_direction }})
+
+## Preferences
+
+{% for p in handoff.preferences %}
+- {{ p }}
+{% endfor %}
+- Prefer hypotheses testable with {{ constraints.compute or "modest compute" }} and {{ constraints.hours_per_week }} h/week of human time.
+
+## Open questions
+
+{% for q in flower.open_questions %}
+- {{ q }}
+{% endfor %}

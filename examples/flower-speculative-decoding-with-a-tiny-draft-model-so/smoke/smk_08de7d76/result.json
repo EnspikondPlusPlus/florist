@@ -1,0 +1,16 @@
+{
+  "id": "smk_08de7d76",
+  "seed_id": "sd_ad1b64d1",
+  "direction_id": "dir_36a1ec02",
+  "assumption": "llama.cpp's n-gram lookup mode and a 7B GGUF are available locally on a CUDA machine, so the lookup vs draft-model comparison can start immediately.",
+  "rationale": "The comparison needs the lookup binary, a 7B GGUF, a tiny draft GGUF, and a working GPU. Missing pieces change the first-weekend plan, for example by building llama.cpp with CUDA or downloading models.",
+  "expected": "lookup_binary_found=1, nvidia_gpu_visible=1, and at least one 7B-sized GGUF found. Missing items show what to download or build first.",
+  "timeout_s": 40,
+  "status": "pending",
+  "stdout": "",
+  "stderr": "",
+  "metrics": {},
+  "verdict": "",
+  "created": "2026-11-04T09:37:03+00:00",
+  "finished": ""
+}

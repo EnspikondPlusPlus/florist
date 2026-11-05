@@ -1,0 +1,9 @@
+title: Coding agent (Claude Code, Codex)
+destination: "A coding agent working in a fresh repository"
+description: "CLAUDE.md / AGENTS.md with context, plan and conventions."
+default: true
+outputs:
+  - template: AGENT.md.j2
+    path: CLAUDE.md
+  - template: AGENT.md.j2
+    path: AGENTS.md

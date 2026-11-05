@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1622 578" width="1622" height="578" font-family="-apple-system, 'Segoe UI', system-ui, Inter, Roboto, sans-serif" role="img" aria-label="Speculative Decoding with a Tiny Draft Model">
+<rect width="1622" height="578" rx="14" fill="#ffffff"/>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker><radialGradient id="halo"><stop offset="0" stop-color="#3a8dff" stop-opacity="0.16"/><stop offset="1" stop-color="#3a8dff" stop-opacity="0"/></radialGradient></defs>
+<text x="40" y="44" font-size="20" font-weight="650" fill="#171717">Speculative Decoding with a Tiny Draft Model</text>
+<rect x="40" y="60" width="1542" height="34" rx="8" fill="#c9eedb"/>
+<text x="54" y="82" font-size="13.5" fill="#00773a" font-weight="600">Key insight: <tspan font-weight="400" fill="#171717">A cheap draft model guesses several tokens ahead, and the big model checks them all in one pass, keeping the correct ones so output stays identical.</tspan></text>
+<rect x="28" y="108" width="1566" height="106" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<text x="40" y="165.0" font-size="11" fill="#6b6b6b" font-weight="600" letter-spacing="0.06em">INPUT</text>
+<rect x="28" y="228" width="1566" height="106" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<text x="40" y="285.0" font-size="11" fill="#6b6b6b" font-weight="600" letter-spacing="0.06em">MODEL</text>
+<rect x="28" y="348" width="1566" height="106" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<text x="40" y="405.0" font-size="11" fill="#6b6b6b" font-weight="600" letter-spacing="0.06em">OUTPUT</text>
+<path d="M332,161.0 C356.0,161.0 356.0,281.0 380,281.0" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)"/>
+<path d="M578,281.0 L626,281.0" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="602.0" y="274.0" font-size="11" fill="#6b6b6b" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4">k tokens</text>
+<path d="M824,281.0 L872,281.0" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)"/>
+<path d="M1070,281.0 C1094.0,281.0 1094.0,401.0 1118,401.0" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="1094.0" y="335.0" font-size="11" fill="#6b6b6b" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4">accept/reject</text>
+<path d="M1218.0,444 C1218.0,478 234.0,478 234.0,206" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+<text x="726.0" y="474" font-size="11" fill="#6b6b6b" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4">next round</text>
+<path d="M1316,401.0 L1364,401.0" fill="none" stroke="#6b6b6b" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="136" y="118" width="196" height="86" rx="10" fill="#00a85a" stroke="#00a85a" stroke-width="1.2"/>
+<text x="148" y="140" font-size="13" font-weight="650" fill="#ffffff">Current text</text>
+<text x="148" y="158" font-size="11" fill="#eafff3">The prompt plus tokens accepted</text>
+<text x="148" y="172" font-size="11" fill="#eafff3">so far is the starting point for</text>
+<text x="148" y="186" font-size="11" fill="#eafff3">each round.</text>
+<rect x="382" y="238" width="196" height="86" rx="10" fill="#ffffff" stroke="#d4d4d4" stroke-width="1.2"/>
+<text x="394" y="260" font-size="13" font-weight="650" fill="#171717">Draft k tokens</text>
+<text x="394" y="278" font-size="11" fill="#6b6b6b">The tiny draft model generates k</text>
+<text x="394" y="292" font-size="11" fill="#6b6b6b">candidate tokens one by one;</text>
+<text x="394" y="306" font-size="11" fill="#6b6b6b">each step is cheap.</text>
+<rect x="628" y="238" width="196" height="86" rx="10" fill="#ffffff" stroke="#d4d4d4" stroke-width="1.2"/>
+<text x="640" y="260" font-size="13" font-weight="650" fill="#171717">Verify in one pass</text>
+<text x="640" y="278" font-size="11" fill="#6b6b6b">The 7B target scores all k</text>
+<text x="640" y="292" font-size="11" fill="#6b6b6b">drafted positions in a single</text>
+<text x="640" y="306" font-size="11" fill="#6b6b6b">parallel forward pass.</text>
+<rect x="874" y="238" width="196" height="86" rx="10" fill="#ffffff" stroke="#d4d4d4" stroke-width="1.2"/>
+<text x="886" y="260" font-size="13" font-weight="650" fill="#171717">Compare token by token</text>
+<text x="886" y="278" font-size="11" fill="#6b6b6b">Each draft token is accepted if</text>
+<text x="886" y="292" font-size="11" fill="#6b6b6b">the target agrees, with a</text>
+<text x="886" y="306" font-size="11" fill="#6b6b6b">probability test when sampling.</text>
+<rect x="1120" y="358" width="196" height="86" rx="10" fill="#ffffff" stroke="#d4d4d4" stroke-width="1.2"/>
+<text x="1132" y="380" font-size="13" font-weight="650" fill="#171717">Keep accepted prefix</text>
+<text x="1132" y="398" font-size="11" fill="#6b6b6b">Accepted tokens are appended. At</text>
+<text x="1132" y="412" font-size="11" fill="#6b6b6b">the first rejection, the</text>
+<text x="1132" y="426" font-size="11" fill="#6b6b6b">target&#x27;s own token replaces the</text>
+<text x="1132" y="440" font-size="11" fill="#6b6b6b">draft&#x27;s.</text>
+<rect x="1366" y="358" width="196" height="86" rx="10" fill="#ffffff" stroke="#d4d4d4" stroke-width="1.2"/>
+<text x="1378" y="380" font-size="13" font-weight="650" fill="#171717">Speedup depends on α, k,…</text>
+<text x="1378" y="398" font-size="11" fill="#6b6b6b">Higher acceptance and cheaper</text>
+<text x="1378" y="412" font-size="11" fill="#6b6b6b">drafts mean more tokens per</text>
+<text x="1378" y="426" font-size="11" fill="#6b6b6b">target pass. Too long a k wastes</text>
+<text x="1378" y="440" font-size="11" fill="#6b6b6b">draft work.</text>
+<text x="40" y="528" font-size="12.5" fill="#6b6b6b">Each loop yields at least one token and often several for a single 7B pass. Because the target checks every token, quality is unchanged and no retraining is needed. The explainer&#x27;s sliders (acceptance, draft length, cost ratio)</text>
+<text x="40" y="544" font-size="12.5" fill="#6b6b6b">change the speedup this loop produces.</text>
+</svg>

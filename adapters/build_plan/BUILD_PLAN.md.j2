@@ -1,0 +1,60 @@
+# Build plan — {{ seed.title }}
+
+**Goal:** {{ handoff.objective }}
+
+**Done when:** {{ handoff.metric }}{% if handoff.baseline %} (beats: {{ handoff.baseline }}){% endif %}
+
+
+**Budget:** {{ constraints.hours_per_week }} h/week{% if constraints.goal_date %} until {{ constraints.goal_date }}{% endif %} · compute: {{ constraints.compute or "your machine" }}
+
+## First session (start here)
+
+{% for t in handoff.first_session %}
+- [ ] {{ t }}
+{% endfor %}
+
+## Milestones
+{% set ns = namespace(total=0) %}
+
+{% for m in handoff.milestones %}
+### {{ loop.index }}. {{ m.title }}{% if m.est_hours %} · ~{{ m.est_hours | round(1) }} h{% set ns.total = ns.total + m.est_hours %}{% endif %}
+
+
+{% if m.goal %}
+{{ m.goal }}
+
+{% endif %}
+{% for t in m.tasks %}
+- [ ] {{ t }}
+{% endfor %}
+
+{% endfor %}
+{% if ns.total %}
+**Estimated total:** ~{{ ns.total | round(1) }} h ≈ {{ (ns.total / (constraints.hours_per_week or 1)) | round(1) }} weeks at your pace.
+{% endif %}
+
+## Tools
+
+{% for t in handoff.tools %}
+- {{ t }}
+{% endfor %}
+
+## Why this direction
+
+{{ primary.pitch }}
+
+{% if primary.why_you %}
+{{ primary.why_you }}
+{% endif %}
+
+## Watch out for
+
+{% for r in flower.risks %}
+- {{ r }}
+{% endfor %}
+
+## You'll know it worked when
+
+{% for s in flower.success_criteria %}
+- {{ s }}
+{% endfor %}

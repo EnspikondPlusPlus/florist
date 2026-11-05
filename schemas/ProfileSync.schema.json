@@ -1,0 +1,75 @@
+{
+  "properties": {
+    "interests": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Interests",
+      "type": "array"
+    },
+    "proficient_in": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Proficient In",
+      "type": "array"
+    },
+    "wants_to_learn": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Wants To Learn",
+      "type": "array"
+    },
+    "compute": {
+      "default": "",
+      "title": "Compute",
+      "type": "string"
+    },
+    "budget_usd_month": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Budget Usd Month"
+    },
+    "hours_per_week": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Hours Per Week"
+    },
+    "goal_date": {
+      "default": "",
+      "title": "Goal Date",
+      "type": "string"
+    },
+    "conference_targets": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conference Targets",
+      "type": "array"
+    },
+    "work_preferences": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Work Preferences",
+      "type": "array"
+    }
+  },
+  "title": "ProfileSync",
+  "type": "object"
+}

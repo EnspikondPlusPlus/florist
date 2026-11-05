@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "ChatAction": {
+      "properties": {
+        "type": {
+          "enum": [
+            "steer",
+            "prune",
+            "boost",
+            "deepen",
+            "add_constraint",
+            "set_tier",
+            "run_round",
+            "none"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "target": {
+          "default": "",
+          "description": "node id for prune/boost/deepen; constraint text; tier name",
+          "title": "Target",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "ChatAction",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "reply": {
+      "title": "Reply",
+      "type": "string"
+    },
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/ChatAction"
+      },
+      "title": "Actions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "reply"
+  ],
+  "title": "ChatReply",
+  "type": "object"
+}

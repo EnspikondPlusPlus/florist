@@ -1,0 +1,16 @@
+{
+  "id": "smk_b046f0d7",
+  "seed_id": "sd_ad1b64d1",
+  "direction_id": "dir_1dd6374b",
+  "assumption": "llama.cpp binaries and a 7B GGUF with a same-tokenizer tiny draft are available locally, so draft and n-gram modes can be run.",
+  "rationale": "The comparison study cannot start without llama.cpp's speculative tools and GGUF models on disk. This is a local-only check with no download. It reports what is present and does not claim that a matching draft exists on the hub, which is unknown from the context.",
+  "expected": "At least one llama.cpp speculative or lookup binary found, one 7B Q4-sized GGUF (3.5-6 GB) and one tiny GGUF (<1.5 GB).",
+  "timeout_s": 30,
+  "status": "pending",
+  "stdout": "",
+  "stderr": "",
+  "metrics": {},
+  "verdict": "",
+  "created": "2026-11-04T09:39:19+00:00",
+  "finished": ""
+}

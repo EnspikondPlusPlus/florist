@@ -1,0 +1,43 @@
+{
+  "$defs": {
+    "LearnedStatement": {
+      "properties": {
+        "statement": {
+          "description": "a plain-language preference, e.g. 'prefers hands-on repos to surveys'",
+          "title": "Statement",
+          "type": "string"
+        },
+        "weight": {
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Weight",
+          "type": "number"
+        },
+        "evidence": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Evidence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "statement",
+        "weight"
+      ],
+      "title": "LearnedStatement",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "statements": {
+      "items": {
+        "$ref": "#/$defs/LearnedStatement"
+      },
+      "maxItems": 8,
+      "title": "Statements",
+      "type": "array"
+    }
+  },
+  "title": "PreferenceDistill",
+  "type": "object"
+}
